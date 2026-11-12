@@ -500,6 +500,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "changeProxyFailedTip": MessageLookupByLibrary.simpleMessage(
       "Échec du changement de proxy ; la sélection précédente a été rétablie",
     ),
+    "changeRule": MessageLookupByLibrary.simpleMessage("Modifier la règle"),
     "changelogBreaking": MessageLookupByLibrary.simpleMessage(
       "Changements majeurs",
     ),

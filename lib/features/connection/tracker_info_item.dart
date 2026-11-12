@@ -1,5 +1,6 @@
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/enum/enum.dart';
+import 'package:fl_clash/features/form/simple_rule.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/providers/config.dart';
 import 'package:fl_clash/ui/icons/icons.dart';
@@ -55,6 +56,12 @@ List<PopupMenuItem> trackerInfoMenuItems(
   }
 
   return [
+    if (metadata.host.isNotEmpty)
+      PopupMenuItem(
+        glyph: AppGlyphs.rules,
+        label: appLocalizations.changeRule,
+        onPressed: () => editWebsiteRule(context, metadata.host),
+      ),
     if (metadata.host.isNotEmpty)
       PopupMenuItem(
         glyph: AppGlyphs.copy,
@@ -376,6 +383,16 @@ class TrackerInfoDetailView extends ConsumerWidget {
             (appLocalizations.download, trackerInfo.download.traffic.show),
           ]),
         ),
+        if (metadata.host.isNotEmpty)
+          generateSection(
+            items: [
+              ListItem(
+                leading: const GlyphIcon(AppGlyphs.rules),
+                title: Text(appLocalizations.changeRule),
+                onTap: () => editWebsiteRule(context, metadata.host),
+              ),
+            ],
+          ),
         generateSection(
           title: appLocalizations.address,
           items: _buildRows([

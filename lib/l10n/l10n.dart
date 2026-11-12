@@ -9262,6 +9262,11 @@ class AppLocalizations {
       args: [],
     );
   }
+
+  /// `Change rule`
+  String get changeRule {
+    return Intl.message('Change rule', name: 'changeRule', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

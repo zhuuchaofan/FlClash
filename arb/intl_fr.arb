@@ -1099,5 +1099,6 @@
   "failoverOrderTip": "Le basculement utilise le premier nœud disponible dans cet ordre",
   "noRuleSendsHere": "Aucune règle n’envoie encore de trafic ici",
   "nodesGone": "{count} nœuds ne sont plus dans l’abonnement",
-  "rulesEditedInProfile": "Les règles de ce profil se modifient dans le profil"
+  "rulesEditedInProfile": "Les règles de ce profil se modifient dans le profil",
+  "changeRule": "Modifier la règle"
 }

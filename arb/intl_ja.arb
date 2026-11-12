@@ -1099,5 +1099,6 @@
   "failoverOrderTip": "フェイルオーバーはこの順で最初に使えるノードを使います",
   "noRuleSendsHere": "まだこのグループに向かうルールはありません",
   "nodesGone": "{count} 個のノードがサブスクリプションから消えました",
-  "rulesEditedInProfile": "このプロファイルのルールはプロファイル内で編集します"
+  "rulesEditedInProfile": "このプロファイルのルールはプロファイル内で編集します",
+  "changeRule": "ルールを変更"
 }

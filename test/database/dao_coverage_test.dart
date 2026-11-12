@@ -835,6 +835,45 @@ void main() {
     }
   });
 
+  test('a restore keeps a url profile\'s auto groups and the subscription '
+      'rules it turned off', () async {
+    const profile = Profile(
+      id: 1,
+      type: ProfileType.url,
+      url: 'https://example.com/sub',
+      autoUpdateDuration: Duration.zero,
+      disabledRules: {'MATCH,Proxy'},
+    );
+    const group = ProxyGroup(
+      id: 2,
+      profileId: 1,
+      name: 'JP auto',
+      type: GroupType.URLTest,
+      filter: '(?i)JP',
+      includeAllProxies: true,
+      interval: 180,
+      tolerance: 50,
+    );
+
+    for (final isOverride in [false, true]) {
+      await database.restore(
+        [profile],
+        const [],
+        const [],
+        const [],
+        [group],
+        isOverride: isOverride,
+      );
+
+      final restored = await database.profilesDao.query().get();
+      expect(restored.single.disabledRules, {'MATCH,Proxy'});
+      final groups = await database.proxyGroupsDao.query(1).get();
+      expect(groups.single.name, 'JP auto');
+      expect(groups.single.filter, '(?i)JP');
+      expect(groups.single.tolerance, 50);
+    }
+  });
+
   test(
     'an override restore replaces more rules than one statement can bind',
     () async {

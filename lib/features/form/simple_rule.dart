@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/models/clash_config.dart';
@@ -238,4 +239,37 @@ class _SimpleRuleFormState extends State<SimpleRuleForm> {
       ],
     );
   }
+}
+
+/// Opens the website form for [host] on the current profile, editing the
+/// rule that already names it, and applies what is saved.
+Future<void> editWebsiteRule(BuildContext context, String host) async {
+  final container = ProviderScope.containerOf(context, listen: false);
+  final profile = container.read(currentProfileProvider);
+  if (profile == null ||
+      profile.type == ProfileType.custom ||
+      profile.extendType != ExtendType.standard) {
+    dialogs.showBanner(context.appLocalizations.rulesEditedInProfile);
+    return;
+  }
+  final website = normalizeWebsite(host);
+  final rules = await container.read(profileRulesProvider(profile.id).future);
+  if (!context.mounted) {
+    return;
+  }
+  final existing = rules.firstWhereOrNull(
+    (rule) => SimpleRuleForm.canEdit(rule) && rule.content == website,
+  );
+  final res = await showFormSheet<Rule>(
+    context: context,
+    builder: (_) =>
+        SimpleRuleForm(profileId: profile.id, rule: existing, website: website),
+  );
+  if (res == null) {
+    return;
+  }
+  container.read(profileRulesProvider(profile.id).notifier).put(res);
+  container
+      .read(setupActionProvider.notifier)
+      .applyProfileDebounce(silence: true);
 }

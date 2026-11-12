@@ -393,6 +393,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "changeProxyFailedTip": MessageLookupByLibrary.simpleMessage(
       "프록시를 전환하지 못해 이전 선택을 복원했습니다",
     ),
+    "changeRule": MessageLookupByLibrary.simpleMessage("규칙 변경"),
     "changelogBreaking": MessageLookupByLibrary.simpleMessage("호환성 변경"),
     "changelogFeatures": MessageLookupByLibrary.simpleMessage("새로운 기능"),
     "changelogFixes": MessageLookupByLibrary.simpleMessage("버그 수정"),

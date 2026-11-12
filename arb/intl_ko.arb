@@ -1099,5 +1099,6 @@
   "failoverOrderTip": "장애 조치는 이 순서에서 처음 사용 가능한 노드를 씁니다",
   "noRuleSendsHere": "아직 이 그룹으로 보내는 규칙이 없습니다",
   "nodesGone": "노드 {count}개가 더 이상 구독에 없습니다",
-  "rulesEditedInProfile": "이 프로필의 규칙은 프로필에서 편집합니다"
+  "rulesEditedInProfile": "이 프로필의 규칙은 프로필에서 편집합니다",
+  "changeRule": "규칙 변경"
 }

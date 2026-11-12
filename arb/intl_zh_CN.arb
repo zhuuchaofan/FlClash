@@ -1099,5 +1099,6 @@
   "failoverOrderTip": "故障切换按此顺序使用第一个可用节点",
   "noRuleSendsHere": "还没有规则指向此组",
   "nodesGone": "{count} 个节点已不在订阅中",
-  "rulesEditedInProfile": "当前配置的规则需在配置中编辑"
+  "rulesEditedInProfile": "当前配置的规则需在配置中编辑",
+  "changeRule": "修改规则"
 }

@@ -1099,5 +1099,6 @@
   "failoverOrderTip": "Failover uses the first available node in this order",
   "noRuleSendsHere": "No rule sends traffic here yet",
   "nodesGone": "{count} nodes are no longer in the subscription",
-  "rulesEditedInProfile": "This profile’s rules are edited in the profile itself"
+  "rulesEditedInProfile": "This profile’s rules are edited in the profile itself",
+  "changeRule": "Change rule"
 }
