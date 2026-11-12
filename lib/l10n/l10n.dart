@@ -9092,6 +9092,166 @@ class AppLocalizations {
       args: [],
     );
   }
+
+  /// `Include subdomains`
+  String get includeSubdomains {
+    return Intl.message(
+      'Include subdomains',
+      name: 'includeSubdomains',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Access`
+  String get accessMethod {
+    return Intl.message('Access', name: 'accessMethod', desc: '', args: []);
+  }
+
+  /// `Default proxy`
+  String get defaultProxy {
+    return Intl.message(
+      'Default proxy',
+      name: 'defaultProxy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Block`
+  String get block {
+    return Intl.message('Block', name: 'block', desc: '', args: []);
+  }
+
+  /// `Auto groups`
+  String get autoGroups {
+    return Intl.message('Auto groups', name: 'autoGroups', desc: '', args: []);
+  }
+
+  /// `Subscription groups`
+  String get subscriptionGroups {
+    return Intl.message(
+      'Subscription groups',
+      name: 'subscriptionGroups',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add website rule`
+  String get addWebsiteRule {
+    return Intl.message(
+      'Add website rule',
+      name: 'addWebsiteRule',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add auto group`
+  String get addAutoGroup {
+    return Intl.message(
+      'Add auto group',
+      name: 'addAutoGroup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit auto group`
+  String get editAutoGroup {
+    return Intl.message(
+      'Edit auto group',
+      name: 'editAutoGroup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Lowest delay`
+  String get lowestDelay {
+    return Intl.message(
+      'Lowest delay',
+      name: 'lowestDelay',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Failover`
+  String get failover {
+    return Intl.message('Failover', name: 'failover', desc: '', args: []);
+  }
+
+  /// `Nodes`
+  String get candidateNodes {
+    return Intl.message('Nodes', name: 'candidateNodes', desc: '', args: []);
+  }
+
+  /// `Match by name`
+  String get matchByName {
+    return Intl.message(
+      'Match by name',
+      name: 'matchByName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pick nodes`
+  String get pickNodes {
+    return Intl.message('Pick nodes', name: 'pickNodes', desc: '', args: []);
+  }
+
+  /// `Name contains`
+  String get nameContains {
+    return Intl.message(
+      'Name contains',
+      name: 'nameContains',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Region`
+  String get region {
+    return Intl.message('Region', name: 'region', desc: '', args: []);
+  }
+
+  /// `Add node`
+  String get addNode {
+    return Intl.message('Add node', name: 'addNode', desc: '', args: []);
+  }
+
+  /// `Failover uses the first available node in this order`
+  String get failoverOrderTip {
+    return Intl.message(
+      'Failover uses the first available node in this order',
+      name: 'failoverOrderTip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No rule sends traffic here yet`
+  String get noRuleSendsHere {
+    return Intl.message(
+      'No rule sends traffic here yet',
+      name: 'noRuleSendsHere',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} nodes are no longer in the subscription`
+  String nodesGone(Object count) {
+    return Intl.message(
+      '$count nodes are no longer in the subscription',
+      name: 'nodesGone',
+      desc: '',
+      args: [count],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

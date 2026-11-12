@@ -160,6 +160,7 @@ void main() {
             (_, _) => current ? profile.id : profile.id + 1,
           ),
           profileRulesProvider.overrideWith2((_) => _TestProfileRules([])),
+          proxyGroupsProvider.overrideWith2((_) => _TestProxyGroups([])),
           profileDisabledRuleIdsProvider.overrideWith2(
             (_) => _TestDisabledRuleIds(),
           ),

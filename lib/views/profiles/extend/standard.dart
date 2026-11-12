@@ -6,6 +6,8 @@ import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/ui/icons/icons.dart';
 import 'package:fl_clash/views/config/rules.dart';
 import 'package:fl_clash/widgets/widgets.dart';
+
+import 'auto_groups.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -23,12 +25,28 @@ class _StandardContentState extends ConsumerState<StandardContent> {
   Future<void> _handleAddOrUpdate([Rule? rule]) async {
     final res = await showFormSheet<Rule>(
       context: context,
-      builder: (_) => RuleForm(rule: rule),
+      builder: (_) => rule == null || SimpleRuleForm.canEdit(rule)
+          ? SimpleRuleForm(
+              profileId: _profileId,
+              rule: rule,
+              onAdvanced: rule == null ? _handleAddAdvanced : null,
+            )
+          : RuleForm(rule: rule),
     );
     if (res == null) {
       return;
     }
     ref.read(profileRulesProvider(_profileId).notifier).put(res);
+  }
+
+  Future<void> _handleAddAdvanced() async {
+    final res = await showFormSheet<Rule>(
+      context: context,
+      builder: (_) => const RuleForm(),
+    );
+    if (res != null) {
+      ref.read(profileRulesProvider(_profileId).notifier).put(res);
+    }
   }
 
   void _handleQuickActions() {
@@ -136,6 +154,7 @@ class _StandardContentState extends ConsumerState<StandardContent> {
             },
       child: SliverMainAxisGroup(
         slivers: [
+          SliverToBoxAdapter(child: AutoGroupsSection(profileId: _profileId)),
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),

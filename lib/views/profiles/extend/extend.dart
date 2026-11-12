@@ -66,10 +66,11 @@ class _ExtendViewState extends ConsumerState<ExtendView> {
     final disabledRuleIds = ref
         .watch(profileDisabledRuleIdsProvider(profileId))
         .value;
-    if (rules == null || disabledRuleIds == null) {
+    final proxyGroups = ref.watch(proxyGroupsProvider(profileId)).value;
+    if (rules == null || disabledRuleIds == null || proxyGroups == null) {
       return null;
     }
-    return [profile, rules, disabledRuleIds];
+    return [profile, rules, disabledRuleIds, proxyGroups];
   }
 
   Future<void> _handleApplyNow(List<Object?> inputs) async {
