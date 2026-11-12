@@ -113,7 +113,12 @@ class _StandardContentState extends ConsumerState<StandardContent> {
     BaseNavigator.push(context, _EditSubscriptionRules(_profileId));
   }
 
-  Widget _buildRuleItem(List<Rule> rules, int index, Set<dynamic> selected) {
+  Widget _buildRuleItem(
+    List<Rule> rules,
+    int index,
+    Set<dynamic> selected,
+    Set<int> disabledIds,
+  ) {
     final rule = rules[index];
     return ReorderDragStartListener(
       key: ObjectKey(rule),
@@ -127,6 +132,13 @@ class _StandardContentState extends ConsumerState<StandardContent> {
             isEditing: selected.isNotEmpty,
             isSelected: selected.contains(rule.id),
             rule: rule,
+            enabled: !disabledIds.contains(rule.id),
+            onEnabledChanged: (enabled) {
+              final disabled = ref.read(
+                profileDisabledRuleIdsProvider(_profileId).notifier,
+              );
+              enabled ? disabled.del(rule.id) : disabled.put(rule.id);
+            },
             onSelected: () {
               _handleSelected(rule.id);
             },
@@ -145,6 +157,9 @@ class _StandardContentState extends ConsumerState<StandardContent> {
     _profileId = ProfileIdProvider.of(context)!.profileId;
     final addedRules = ref.watch(profileRulesProvider(_profileId)).value ?? [];
     final selectedRules = ref.watch(itemsProvider(_key));
+    final disabledIds = {
+      ...?ref.watch(profileDisabledRuleIdsProvider(_profileId)).value,
+    };
     return PopGuard(
       onPop: selectedRules.isEmpty
           ? null
@@ -191,9 +206,9 @@ class _StandardContentState extends ConsumerState<StandardContent> {
           SliverPrismReorderableList(
             itemCount: addedRules.length,
             itemBuilder: (_, index) =>
-                _buildRuleItem(addedRules, index, selectedRules),
+                _buildRuleItem(addedRules, index, selectedRules, disabledIds),
             proxyDecorator: (child, index, animation) => commonProxyDecorator(
-              _buildRuleItem(addedRules, index, selectedRules),
+              _buildRuleItem(addedRules, index, selectedRules, disabledIds),
               index,
               animation,
             ),

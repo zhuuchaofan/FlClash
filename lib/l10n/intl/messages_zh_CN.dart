@@ -1459,6 +1459,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "rules": MessageLookupByLibrary.simpleMessage("规则"),
     "rulesCount": m88,
+    "rulesEditedInProfile": MessageLookupByLibrary.simpleMessage(
+      "当前配置的规则需在配置中编辑",
+    ),
     "runTime": MessageLookupByLibrary.simpleMessage("运行时长"),
     "running": MessageLookupByLibrary.simpleMessage("运行中"),
     "runtimeConfig": MessageLookupByLibrary.simpleMessage("运行时配置"),

@@ -1976,6 +1976,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "rules": MessageLookupByLibrary.simpleMessage("Правила"),
     "rulesCount": m88,
+    "rulesEditedInProfile": MessageLookupByLibrary.simpleMessage(
+      "Правила этого профиля редактируются в самом профиле",
+    ),
     "runTime": MessageLookupByLibrary.simpleMessage("Время работы"),
     "running": MessageLookupByLibrary.simpleMessage("Работает"),
     "runtimeConfig": MessageLookupByLibrary.simpleMessage(

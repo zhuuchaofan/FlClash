@@ -1879,6 +1879,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "rules": MessageLookupByLibrary.simpleMessage("Rules"),
     "rulesCount": m88,
+    "rulesEditedInProfile": MessageLookupByLibrary.simpleMessage(
+      "This profile’s rules are edited in the profile itself",
+    ),
     "runTime": MessageLookupByLibrary.simpleMessage("Run time"),
     "running": MessageLookupByLibrary.simpleMessage("Running"),
     "runtimeConfig": MessageLookupByLibrary.simpleMessage("Runtime config"),

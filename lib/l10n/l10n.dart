@@ -9252,6 +9252,16 @@ class AppLocalizations {
       args: [count],
     );
   }
+
+  /// `This profile’s rules are edited in the profile itself`
+  String get rulesEditedInProfile {
+    return Intl.message(
+      'This profile’s rules are edited in the profile itself',
+      name: 'rulesEditedInProfile',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalizations> {

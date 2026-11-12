@@ -33,6 +33,10 @@ class RuleItem extends StatelessWidget {
   final void Function(Rule rule) onEdit;
   final String? Function(Rule rule)? invalidMessageOf;
 
+  /// With a callback the row ends in a switch that turns the rule on or off.
+  final bool enabled;
+  final ValueChanged<bool>? onEnabledChanged;
+
   const RuleItem({
     super.key,
     required this.isSelected,
@@ -40,6 +44,8 @@ class RuleItem extends StatelessWidget {
     required this.onSelected,
     required this.onEdit,
     this.invalidMessageOf,
+    this.enabled = true,
+    this.onEnabledChanged,
     this.isEditing = false,
     this.hasMatch = false,
   });
@@ -131,7 +137,10 @@ class RuleItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Expanded(
-                  child: _RuleItemLabel(rule: rule, style: labelStyle),
+                  child: Opacity(
+                    opacity: enabled ? 1 : 0.5,
+                    child: _RuleItemLabel(rule: rule, style: labelStyle),
+                  ),
                 ),
                 const SizedBox(width: _labelTargetGap),
                 ConstrainedBox(
@@ -162,6 +171,10 @@ class RuleItem extends StatelessWidget {
                     ],
                   ),
                 ),
+                if (onEnabledChanged case final onChanged? when !isEditing) ...[
+                  const SizedBox(width: 8),
+                  Switch(value: enabled, onChanged: onChanged),
+                ],
               ],
             );
           },

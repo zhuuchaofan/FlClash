@@ -85,6 +85,34 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
+  testWidgets('a rule row with a switch turns its rule off and on', (
+    tester,
+  ) async {
+    final changes = <bool>[];
+    Widget item({required bool enabled, bool isEditing = false}) => TestApp(
+      child: Surface(
+        child: RuleItem(
+          isSelected: false,
+          isEditing: isEditing,
+          rule: const Rule(content: 'example.com', ruleTarget: 'DIRECT'),
+          enabled: enabled,
+          onEnabledChanged: changes.add,
+          onSelected: () {},
+          onEdit: (_) {},
+        ),
+      ),
+    );
+    await tester.pumpWidget(item(enabled: true));
+
+    await tester.tap(find.byType(Switch));
+    expect(changes, [false]);
+
+    await tester.pumpWidget(item(enabled: false, isEditing: true));
+    expect(find.byType(Switch), findsNothing);
+
+    await tester.pumpWidget(const SizedBox.shrink());
+  });
+
   testWidgets('a rule without content centers its action', (tester) async {
     await tester.pumpWidget(
       TestApp(

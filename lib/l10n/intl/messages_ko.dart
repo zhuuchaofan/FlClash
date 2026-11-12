@@ -1583,6 +1583,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "rules": MessageLookupByLibrary.simpleMessage("규칙"),
     "rulesCount": m88,
+    "rulesEditedInProfile": MessageLookupByLibrary.simpleMessage(
+      "이 프로필의 규칙은 프로필에서 편집합니다",
+    ),
     "runTime": MessageLookupByLibrary.simpleMessage("실행 시간"),
     "running": MessageLookupByLibrary.simpleMessage("실행 중"),
     "runtimeConfig": MessageLookupByLibrary.simpleMessage("런타임 구성"),

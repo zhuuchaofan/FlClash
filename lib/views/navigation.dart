@@ -27,9 +27,15 @@ class Navigation implements NavigationPort {
             : [],
       ),
       NavigationItem(
+        glyph: AppGlyphs.rules,
+        label: PageLabel.rules,
+        builder: (_) => const RulesView(),
+      ),
+      NavigationItem(
         glyph: AppGlyphs.profiles,
         label: PageLabel.profiles,
         builder: (_) => const ProfilesView(),
+        modes: [NavigationItemMode.desktop, NavigationItemMode.more],
       ),
       NavigationItem(
         glyph: AppGlyphs.requests,

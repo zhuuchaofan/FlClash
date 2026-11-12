@@ -1098,5 +1098,6 @@
   "addNode": "ノードを追加",
   "failoverOrderTip": "フェイルオーバーはこの順で最初に使えるノードを使います",
   "noRuleSendsHere": "まだこのグループに向かうルールはありません",
-  "nodesGone": "{count} 個のノードがサブスクリプションから消えました"
+  "nodesGone": "{count} 個のノードがサブスクリプションから消えました",
+  "rulesEditedInProfile": "このプロファイルのルールはプロファイル内で編集します"
 }

@@ -1098,5 +1098,6 @@
   "addNode": "Añadir nodo",
   "failoverOrderTip": "La conmutación usa el primer nodo disponible en este orden",
   "noRuleSendsHere": "Ninguna regla envía tráfico aquí todavía",
-  "nodesGone": "{count} nodos ya no están en la suscripción"
+  "nodesGone": "{count} nodos ya no están en la suscripción",
+  "rulesEditedInProfile": "Las reglas de este perfil se editan en el propio perfil"
 }
