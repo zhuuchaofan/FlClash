@@ -287,9 +287,294 @@ as String,
 
 
 /// @nodoc
+mixin _$AutoGroup {
+
+ String get name; String? get regex; List<String> get proxies; AutoGroupStrategy get strategy;
+/// Create a copy of AutoGroup
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$AutoGroupCopyWith<AutoGroup> get copyWith => _$AutoGroupCopyWithImpl<AutoGroup>(this as AutoGroup, _$identity);
+
+  /// Serializes this AutoGroup to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as AutoGroup;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AutoGroup&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.regex, _this.regex) || other.regex == _this.regex)&&const DeepCollectionEquality().equals(other.proxies, _this.proxies)&&(identical(other.strategy, _this.strategy) || other.strategy == _this.strategy));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+  final _this = this as AutoGroup;
+  return Object.hash(runtimeType,_this.name,_this.regex,const DeepCollectionEquality().hash(_this.proxies),_this.strategy);
+}
+
+@override
+String toString() {
+  final _this = this as AutoGroup;
+  return 'AutoGroup(name: ${_this.name}, regex: ${_this.regex}, proxies: ${_this.proxies}, strategy: ${_this.strategy})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $AutoGroupCopyWith<$Res>  {
+  factory $AutoGroupCopyWith(AutoGroup value, $Res Function(AutoGroup) _then) = _$AutoGroupCopyWithImpl;
+@useResult
+$Res call({
+ String name, String? regex, List<String> proxies, AutoGroupStrategy strategy
+});
+
+
+
+
+}
+/// @nodoc
+class _$AutoGroupCopyWithImpl<$Res>
+    implements $AutoGroupCopyWith<$Res> {
+  _$AutoGroupCopyWithImpl(this._self, this._then);
+
+  final AutoGroup _self;
+  final $Res Function(AutoGroup) _then;
+
+/// Create a copy of AutoGroup
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? name = null,Object? regex = freezed,Object? proxies = null,Object? strategy = null,}) {
+  return _then(AutoGroup(
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,regex: freezed == regex ? _self.regex : regex // ignore: cast_nullable_to_non_nullable
+as String?,proxies: null == proxies ? _self.proxies : proxies // ignore: cast_nullable_to_non_nullable
+as List<String>,strategy: null == strategy ? _self.strategy : strategy // ignore: cast_nullable_to_non_nullable
+as AutoGroupStrategy,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [AutoGroup].
+extension AutoGroupPatterns on AutoGroup {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _AutoGroup value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _AutoGroup() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _AutoGroup value)  $default,){
+final _that = this;
+switch (_that) {
+case _AutoGroup():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _AutoGroup value)?  $default,){
+final _that = this;
+switch (_that) {
+case _AutoGroup() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String name,  String? regex,  List<String> proxies,  AutoGroupStrategy strategy)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _AutoGroup() when $default != null:
+return $default(_that.name,_that.regex,_that.proxies,_that.strategy);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String name,  String? regex,  List<String> proxies,  AutoGroupStrategy strategy)  $default,) {final _that = this;
+switch (_that) {
+case _AutoGroup():
+return $default(_that.name,_that.regex,_that.proxies,_that.strategy);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String name,  String? regex,  List<String> proxies,  AutoGroupStrategy strategy)?  $default,) {final _that = this;
+switch (_that) {
+case _AutoGroup() when $default != null:
+return $default(_that.name,_that.regex,_that.proxies,_that.strategy);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _AutoGroup implements AutoGroup {
+  const _AutoGroup({required this.name, this.regex,  List<String> proxies = const [], this.strategy = AutoGroupStrategy.fastest}): _proxies = proxies;
+  factory _AutoGroup.fromJson(Map<String, dynamic> json) => _$AutoGroupFromJson(json);
+
+@override final  String name;
+@override final  String? regex;
+ final  List<String> _proxies;
+@override@JsonKey() List<String> get proxies {
+  if (_proxies is EqualUnmodifiableListView) return _proxies;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_proxies);
+}
+
+@override@JsonKey() final  AutoGroupStrategy strategy;
+
+/// Create a copy of AutoGroup
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$AutoGroupCopyWith<_AutoGroup> get copyWith => __$AutoGroupCopyWithImpl<_AutoGroup>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$AutoGroupToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AutoGroup&&(identical(other.name, name) || other.name == name)&&(identical(other.regex, regex) || other.regex == regex)&&const DeepCollectionEquality().equals(other.proxies, _proxies)&&(identical(other.strategy, strategy) || other.strategy == strategy));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode {
+    return Object.hash(runtimeType,name,regex,const DeepCollectionEquality().hash(_proxies),strategy);
+}
+
+@override
+String toString() {
+    return 'AutoGroup(name: $name, regex: $regex, proxies: $proxies, strategy: $strategy)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$AutoGroupCopyWith<$Res> implements $AutoGroupCopyWith<$Res> {
+  factory _$AutoGroupCopyWith(_AutoGroup value, $Res Function(_AutoGroup) _then) = __$AutoGroupCopyWithImpl;
+@override @useResult
+$Res call({
+ String name, String? regex, List<String> proxies, AutoGroupStrategy strategy
+});
+
+
+
+
+}
+/// @nodoc
+class __$AutoGroupCopyWithImpl<$Res>
+    implements _$AutoGroupCopyWith<$Res> {
+  __$AutoGroupCopyWithImpl(this._self, this._then);
+
+  final _AutoGroup _self;
+  final $Res Function(_AutoGroup) _then;
+
+/// Create a copy of AutoGroup
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? name = null,Object? regex = freezed,Object? proxies = null,Object? strategy = null,}) {
+  return _then(_AutoGroup(
+name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,regex: freezed == regex ? _self.regex : regex // ignore: cast_nullable_to_non_nullable
+as String?,proxies: null == proxies ? _self._proxies : proxies // ignore: cast_nullable_to_non_nullable
+as List<String>,strategy: null == strategy ? _self.strategy : strategy // ignore: cast_nullable_to_non_nullable
+as AutoGroupStrategy,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
 mixin _$AppSettingProps {
 
- String? get locale;@JsonKey(fromJson: dashboardWidgetsFromJson) List<DashboardWidget> get dashboardWidgets; bool get onlyStatisticsProxy; bool get showNotificationStopAction; bool get autoLaunch; bool get silentLaunch; bool get autoRun; bool get openLogs; bool get closeConnections; RequestFeed get requestFeed; int get delayTestTimeout;@JsonKey(readValue: _readTabAnimation) TabAnimation get tabAnimation; bool get floatingNavigationBar; bool get autoCheckUpdate;@JsonKey(readValue: _readSidebarExpanded) bool get sidebarExpanded; int get acceptedDisclaimerVersion; bool get minimizeOnExit; bool get hidden; bool get developerMode; RestoreStrategy get restoreStrategy; bool get showTrayTitle; bool get monochromeTrayIcon; bool get checkCertificate;@JsonKey(readValue: _readUserAgents) List<String> get userAgents; List<Filter> get filters; bool get hideIp; bool get editorLineWrap; EditorFontSize get editorFontSize; List<String> get serviceOrder; List<String> get disabledServices; Map<String, Map<String, double>> get tableColumnWidths; Map<String, String> get recordGroupings;
+ String? get locale;@JsonKey(fromJson: dashboardWidgetsFromJson) List<DashboardWidget> get dashboardWidgets; bool get onlyStatisticsProxy; bool get showNotificationStopAction; bool get autoLaunch; bool get silentLaunch; bool get autoRun; bool get openLogs; bool get closeConnections; RequestFeed get requestFeed; int get delayTestTimeout;@JsonKey(readValue: _readTabAnimation) TabAnimation get tabAnimation; bool get floatingNavigationBar; bool get autoCheckUpdate;@JsonKey(readValue: _readSidebarExpanded) bool get sidebarExpanded; int get acceptedDisclaimerVersion; bool get minimizeOnExit; bool get hidden; bool get developerMode; RestoreStrategy get restoreStrategy; bool get showTrayTitle; bool get monochromeTrayIcon; bool get checkCertificate;@JsonKey(readValue: _readUserAgents) List<String> get userAgents; List<Filter> get filters; bool get hideIp; bool get editorLineWrap; EditorFontSize get editorFontSize; List<String> get serviceOrder; List<String> get disabledServices; Map<String, Map<String, double>> get tableColumnWidths; Map<String, String> get recordGroupings; List<AutoGroup> get autoGroups;
 /// Create a copy of AppSettingProps
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -303,20 +588,20 @@ $AppSettingPropsCopyWith<AppSettingProps> get copyWith => _$AppSettingPropsCopyW
 @override
 bool operator ==(Object other) {
   final _this = this as AppSettingProps;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppSettingProps&&(identical(other.locale, _this.locale) || other.locale == _this.locale)&&const DeepCollectionEquality().equals(other.dashboardWidgets, _this.dashboardWidgets)&&(identical(other.onlyStatisticsProxy, _this.onlyStatisticsProxy) || other.onlyStatisticsProxy == _this.onlyStatisticsProxy)&&(identical(other.showNotificationStopAction, _this.showNotificationStopAction) || other.showNotificationStopAction == _this.showNotificationStopAction)&&(identical(other.autoLaunch, _this.autoLaunch) || other.autoLaunch == _this.autoLaunch)&&(identical(other.silentLaunch, _this.silentLaunch) || other.silentLaunch == _this.silentLaunch)&&(identical(other.autoRun, _this.autoRun) || other.autoRun == _this.autoRun)&&(identical(other.openLogs, _this.openLogs) || other.openLogs == _this.openLogs)&&(identical(other.closeConnections, _this.closeConnections) || other.closeConnections == _this.closeConnections)&&(identical(other.requestFeed, _this.requestFeed) || other.requestFeed == _this.requestFeed)&&(identical(other.delayTestTimeout, _this.delayTestTimeout) || other.delayTestTimeout == _this.delayTestTimeout)&&(identical(other.tabAnimation, _this.tabAnimation) || other.tabAnimation == _this.tabAnimation)&&(identical(other.floatingNavigationBar, _this.floatingNavigationBar) || other.floatingNavigationBar == _this.floatingNavigationBar)&&(identical(other.autoCheckUpdate, _this.autoCheckUpdate) || other.autoCheckUpdate == _this.autoCheckUpdate)&&(identical(other.sidebarExpanded, _this.sidebarExpanded) || other.sidebarExpanded == _this.sidebarExpanded)&&(identical(other.acceptedDisclaimerVersion, _this.acceptedDisclaimerVersion) || other.acceptedDisclaimerVersion == _this.acceptedDisclaimerVersion)&&(identical(other.minimizeOnExit, _this.minimizeOnExit) || other.minimizeOnExit == _this.minimizeOnExit)&&(identical(other.hidden, _this.hidden) || other.hidden == _this.hidden)&&(identical(other.developerMode, _this.developerMode) || other.developerMode == _this.developerMode)&&(identical(other.restoreStrategy, _this.restoreStrategy) || other.restoreStrategy == _this.restoreStrategy)&&(identical(other.showTrayTitle, _this.showTrayTitle) || other.showTrayTitle == _this.showTrayTitle)&&(identical(other.monochromeTrayIcon, _this.monochromeTrayIcon) || other.monochromeTrayIcon == _this.monochromeTrayIcon)&&(identical(other.checkCertificate, _this.checkCertificate) || other.checkCertificate == _this.checkCertificate)&&const DeepCollectionEquality().equals(other.userAgents, _this.userAgents)&&const DeepCollectionEquality().equals(other.filters, _this.filters)&&(identical(other.hideIp, _this.hideIp) || other.hideIp == _this.hideIp)&&(identical(other.editorLineWrap, _this.editorLineWrap) || other.editorLineWrap == _this.editorLineWrap)&&(identical(other.editorFontSize, _this.editorFontSize) || other.editorFontSize == _this.editorFontSize)&&const DeepCollectionEquality().equals(other.serviceOrder, _this.serviceOrder)&&const DeepCollectionEquality().equals(other.disabledServices, _this.disabledServices)&&const DeepCollectionEquality().equals(other.tableColumnWidths, _this.tableColumnWidths)&&const DeepCollectionEquality().equals(other.recordGroupings, _this.recordGroupings));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppSettingProps&&(identical(other.locale, _this.locale) || other.locale == _this.locale)&&const DeepCollectionEquality().equals(other.dashboardWidgets, _this.dashboardWidgets)&&(identical(other.onlyStatisticsProxy, _this.onlyStatisticsProxy) || other.onlyStatisticsProxy == _this.onlyStatisticsProxy)&&(identical(other.showNotificationStopAction, _this.showNotificationStopAction) || other.showNotificationStopAction == _this.showNotificationStopAction)&&(identical(other.autoLaunch, _this.autoLaunch) || other.autoLaunch == _this.autoLaunch)&&(identical(other.silentLaunch, _this.silentLaunch) || other.silentLaunch == _this.silentLaunch)&&(identical(other.autoRun, _this.autoRun) || other.autoRun == _this.autoRun)&&(identical(other.openLogs, _this.openLogs) || other.openLogs == _this.openLogs)&&(identical(other.closeConnections, _this.closeConnections) || other.closeConnections == _this.closeConnections)&&(identical(other.requestFeed, _this.requestFeed) || other.requestFeed == _this.requestFeed)&&(identical(other.delayTestTimeout, _this.delayTestTimeout) || other.delayTestTimeout == _this.delayTestTimeout)&&(identical(other.tabAnimation, _this.tabAnimation) || other.tabAnimation == _this.tabAnimation)&&(identical(other.floatingNavigationBar, _this.floatingNavigationBar) || other.floatingNavigationBar == _this.floatingNavigationBar)&&(identical(other.autoCheckUpdate, _this.autoCheckUpdate) || other.autoCheckUpdate == _this.autoCheckUpdate)&&(identical(other.sidebarExpanded, _this.sidebarExpanded) || other.sidebarExpanded == _this.sidebarExpanded)&&(identical(other.acceptedDisclaimerVersion, _this.acceptedDisclaimerVersion) || other.acceptedDisclaimerVersion == _this.acceptedDisclaimerVersion)&&(identical(other.minimizeOnExit, _this.minimizeOnExit) || other.minimizeOnExit == _this.minimizeOnExit)&&(identical(other.hidden, _this.hidden) || other.hidden == _this.hidden)&&(identical(other.developerMode, _this.developerMode) || other.developerMode == _this.developerMode)&&(identical(other.restoreStrategy, _this.restoreStrategy) || other.restoreStrategy == _this.restoreStrategy)&&(identical(other.showTrayTitle, _this.showTrayTitle) || other.showTrayTitle == _this.showTrayTitle)&&(identical(other.monochromeTrayIcon, _this.monochromeTrayIcon) || other.monochromeTrayIcon == _this.monochromeTrayIcon)&&(identical(other.checkCertificate, _this.checkCertificate) || other.checkCertificate == _this.checkCertificate)&&const DeepCollectionEquality().equals(other.userAgents, _this.userAgents)&&const DeepCollectionEquality().equals(other.filters, _this.filters)&&(identical(other.hideIp, _this.hideIp) || other.hideIp == _this.hideIp)&&(identical(other.editorLineWrap, _this.editorLineWrap) || other.editorLineWrap == _this.editorLineWrap)&&(identical(other.editorFontSize, _this.editorFontSize) || other.editorFontSize == _this.editorFontSize)&&const DeepCollectionEquality().equals(other.serviceOrder, _this.serviceOrder)&&const DeepCollectionEquality().equals(other.disabledServices, _this.disabledServices)&&const DeepCollectionEquality().equals(other.tableColumnWidths, _this.tableColumnWidths)&&const DeepCollectionEquality().equals(other.recordGroupings, _this.recordGroupings)&&const DeepCollectionEquality().equals(other.autoGroups, _this.autoGroups));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as AppSettingProps;
-  return Object.hashAll([runtimeType,_this.locale,const DeepCollectionEquality().hash(_this.dashboardWidgets),_this.onlyStatisticsProxy,_this.showNotificationStopAction,_this.autoLaunch,_this.silentLaunch,_this.autoRun,_this.openLogs,_this.closeConnections,_this.requestFeed,_this.delayTestTimeout,_this.tabAnimation,_this.floatingNavigationBar,_this.autoCheckUpdate,_this.sidebarExpanded,_this.acceptedDisclaimerVersion,_this.minimizeOnExit,_this.hidden,_this.developerMode,_this.restoreStrategy,_this.showTrayTitle,_this.monochromeTrayIcon,_this.checkCertificate,const DeepCollectionEquality().hash(_this.userAgents),const DeepCollectionEquality().hash(_this.filters),_this.hideIp,_this.editorLineWrap,_this.editorFontSize,const DeepCollectionEquality().hash(_this.serviceOrder),const DeepCollectionEquality().hash(_this.disabledServices),const DeepCollectionEquality().hash(_this.tableColumnWidths),const DeepCollectionEquality().hash(_this.recordGroupings)]);
+  return Object.hashAll([runtimeType,_this.locale,const DeepCollectionEquality().hash(_this.dashboardWidgets),_this.onlyStatisticsProxy,_this.showNotificationStopAction,_this.autoLaunch,_this.silentLaunch,_this.autoRun,_this.openLogs,_this.closeConnections,_this.requestFeed,_this.delayTestTimeout,_this.tabAnimation,_this.floatingNavigationBar,_this.autoCheckUpdate,_this.sidebarExpanded,_this.acceptedDisclaimerVersion,_this.minimizeOnExit,_this.hidden,_this.developerMode,_this.restoreStrategy,_this.showTrayTitle,_this.monochromeTrayIcon,_this.checkCertificate,const DeepCollectionEquality().hash(_this.userAgents),const DeepCollectionEquality().hash(_this.filters),_this.hideIp,_this.editorLineWrap,_this.editorFontSize,const DeepCollectionEquality().hash(_this.serviceOrder),const DeepCollectionEquality().hash(_this.disabledServices),const DeepCollectionEquality().hash(_this.tableColumnWidths),const DeepCollectionEquality().hash(_this.recordGroupings),const DeepCollectionEquality().hash(_this.autoGroups)]);
 }
 
 @override
 String toString() {
   final _this = this as AppSettingProps;
-  return 'AppSettingProps(locale: ${_this.locale}, dashboardWidgets: ${_this.dashboardWidgets}, onlyStatisticsProxy: ${_this.onlyStatisticsProxy}, showNotificationStopAction: ${_this.showNotificationStopAction}, autoLaunch: ${_this.autoLaunch}, silentLaunch: ${_this.silentLaunch}, autoRun: ${_this.autoRun}, openLogs: ${_this.openLogs}, closeConnections: ${_this.closeConnections}, requestFeed: ${_this.requestFeed}, delayTestTimeout: ${_this.delayTestTimeout}, tabAnimation: ${_this.tabAnimation}, floatingNavigationBar: ${_this.floatingNavigationBar}, autoCheckUpdate: ${_this.autoCheckUpdate}, sidebarExpanded: ${_this.sidebarExpanded}, acceptedDisclaimerVersion: ${_this.acceptedDisclaimerVersion}, minimizeOnExit: ${_this.minimizeOnExit}, hidden: ${_this.hidden}, developerMode: ${_this.developerMode}, restoreStrategy: ${_this.restoreStrategy}, showTrayTitle: ${_this.showTrayTitle}, monochromeTrayIcon: ${_this.monochromeTrayIcon}, checkCertificate: ${_this.checkCertificate}, userAgents: ${_this.userAgents}, filters: ${_this.filters}, hideIp: ${_this.hideIp}, editorLineWrap: ${_this.editorLineWrap}, editorFontSize: ${_this.editorFontSize}, serviceOrder: ${_this.serviceOrder}, disabledServices: ${_this.disabledServices}, tableColumnWidths: ${_this.tableColumnWidths}, recordGroupings: ${_this.recordGroupings})';
+  return 'AppSettingProps(locale: ${_this.locale}, dashboardWidgets: ${_this.dashboardWidgets}, onlyStatisticsProxy: ${_this.onlyStatisticsProxy}, showNotificationStopAction: ${_this.showNotificationStopAction}, autoLaunch: ${_this.autoLaunch}, silentLaunch: ${_this.silentLaunch}, autoRun: ${_this.autoRun}, openLogs: ${_this.openLogs}, closeConnections: ${_this.closeConnections}, requestFeed: ${_this.requestFeed}, delayTestTimeout: ${_this.delayTestTimeout}, tabAnimation: ${_this.tabAnimation}, floatingNavigationBar: ${_this.floatingNavigationBar}, autoCheckUpdate: ${_this.autoCheckUpdate}, sidebarExpanded: ${_this.sidebarExpanded}, acceptedDisclaimerVersion: ${_this.acceptedDisclaimerVersion}, minimizeOnExit: ${_this.minimizeOnExit}, hidden: ${_this.hidden}, developerMode: ${_this.developerMode}, restoreStrategy: ${_this.restoreStrategy}, showTrayTitle: ${_this.showTrayTitle}, monochromeTrayIcon: ${_this.monochromeTrayIcon}, checkCertificate: ${_this.checkCertificate}, userAgents: ${_this.userAgents}, filters: ${_this.filters}, hideIp: ${_this.hideIp}, editorLineWrap: ${_this.editorLineWrap}, editorFontSize: ${_this.editorFontSize}, serviceOrder: ${_this.serviceOrder}, disabledServices: ${_this.disabledServices}, tableColumnWidths: ${_this.tableColumnWidths}, recordGroupings: ${_this.recordGroupings}, autoGroups: ${_this.autoGroups})';
 }
 
 
@@ -327,7 +612,7 @@ abstract mixin class $AppSettingPropsCopyWith<$Res>  {
   factory $AppSettingPropsCopyWith(AppSettingProps value, $Res Function(AppSettingProps) _then) = _$AppSettingPropsCopyWithImpl;
 @useResult
 $Res call({
- String? locale,@JsonKey(fromJson: dashboardWidgetsFromJson) List<DashboardWidget> dashboardWidgets, bool onlyStatisticsProxy, bool showNotificationStopAction, bool autoLaunch, bool silentLaunch, bool autoRun, bool openLogs, bool closeConnections, RequestFeed requestFeed, int delayTestTimeout,@JsonKey(readValue: _readTabAnimation) TabAnimation tabAnimation, bool floatingNavigationBar, bool autoCheckUpdate,@JsonKey(readValue: _readSidebarExpanded) bool sidebarExpanded, int acceptedDisclaimerVersion, bool minimizeOnExit, bool hidden, bool developerMode, RestoreStrategy restoreStrategy, bool showTrayTitle, bool monochromeTrayIcon, bool checkCertificate,@JsonKey(readValue: _readUserAgents) List<String> userAgents, List<Filter> filters, bool hideIp, bool editorLineWrap, EditorFontSize editorFontSize, List<String> serviceOrder, List<String> disabledServices, Map<String, Map<String, double>> tableColumnWidths, Map<String, String> recordGroupings
+ String? locale,@JsonKey(fromJson: dashboardWidgetsFromJson) List<DashboardWidget> dashboardWidgets, bool onlyStatisticsProxy, bool showNotificationStopAction, bool autoLaunch, bool silentLaunch, bool autoRun, bool openLogs, bool closeConnections, RequestFeed requestFeed, int delayTestTimeout,@JsonKey(readValue: _readTabAnimation) TabAnimation tabAnimation, bool floatingNavigationBar, bool autoCheckUpdate,@JsonKey(readValue: _readSidebarExpanded) bool sidebarExpanded, int acceptedDisclaimerVersion, bool minimizeOnExit, bool hidden, bool developerMode, RestoreStrategy restoreStrategy, bool showTrayTitle, bool monochromeTrayIcon, bool checkCertificate,@JsonKey(readValue: _readUserAgents) List<String> userAgents, List<Filter> filters, bool hideIp, bool editorLineWrap, EditorFontSize editorFontSize, List<String> serviceOrder, List<String> disabledServices, Map<String, Map<String, double>> tableColumnWidths, Map<String, String> recordGroupings, List<AutoGroup> autoGroups
 });
 
 
@@ -344,7 +629,7 @@ class _$AppSettingPropsCopyWithImpl<$Res>
 
 /// Create a copy of AppSettingProps
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? locale = freezed,Object? dashboardWidgets = null,Object? onlyStatisticsProxy = null,Object? showNotificationStopAction = null,Object? autoLaunch = null,Object? silentLaunch = null,Object? autoRun = null,Object? openLogs = null,Object? closeConnections = null,Object? requestFeed = null,Object? delayTestTimeout = null,Object? tabAnimation = null,Object? floatingNavigationBar = null,Object? autoCheckUpdate = null,Object? sidebarExpanded = null,Object? acceptedDisclaimerVersion = null,Object? minimizeOnExit = null,Object? hidden = null,Object? developerMode = null,Object? restoreStrategy = null,Object? showTrayTitle = null,Object? monochromeTrayIcon = null,Object? checkCertificate = null,Object? userAgents = null,Object? filters = null,Object? hideIp = null,Object? editorLineWrap = null,Object? editorFontSize = null,Object? serviceOrder = null,Object? disabledServices = null,Object? tableColumnWidths = null,Object? recordGroupings = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? locale = freezed,Object? dashboardWidgets = null,Object? onlyStatisticsProxy = null,Object? showNotificationStopAction = null,Object? autoLaunch = null,Object? silentLaunch = null,Object? autoRun = null,Object? openLogs = null,Object? closeConnections = null,Object? requestFeed = null,Object? delayTestTimeout = null,Object? tabAnimation = null,Object? floatingNavigationBar = null,Object? autoCheckUpdate = null,Object? sidebarExpanded = null,Object? acceptedDisclaimerVersion = null,Object? minimizeOnExit = null,Object? hidden = null,Object? developerMode = null,Object? restoreStrategy = null,Object? showTrayTitle = null,Object? monochromeTrayIcon = null,Object? checkCertificate = null,Object? userAgents = null,Object? filters = null,Object? hideIp = null,Object? editorLineWrap = null,Object? editorFontSize = null,Object? serviceOrder = null,Object? disabledServices = null,Object? tableColumnWidths = null,Object? recordGroupings = null,Object? autoGroups = null,}) {
   return _then(AppSettingProps(
 locale: freezed == locale ? _self.locale : locale // ignore: cast_nullable_to_non_nullable
 as String?,dashboardWidgets: null == dashboardWidgets ? _self.dashboardWidgets : dashboardWidgets // ignore: cast_nullable_to_non_nullable
@@ -378,7 +663,8 @@ as EditorFontSize,serviceOrder: null == serviceOrder ? _self.serviceOrder : serv
 as List<String>,disabledServices: null == disabledServices ? _self.disabledServices : disabledServices // ignore: cast_nullable_to_non_nullable
 as List<String>,tableColumnWidths: null == tableColumnWidths ? _self.tableColumnWidths : tableColumnWidths // ignore: cast_nullable_to_non_nullable
 as Map<String, Map<String, double>>,recordGroupings: null == recordGroupings ? _self.recordGroupings : recordGroupings // ignore: cast_nullable_to_non_nullable
-as Map<String, String>,
+as Map<String, String>,autoGroups: null == autoGroups ? _self.autoGroups : autoGroups // ignore: cast_nullable_to_non_nullable
+as List<AutoGroup>,
   ));
 }
 
@@ -463,10 +749,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? locale, @JsonKey(fromJson: dashboardWidgetsFromJson)  List<DashboardWidget> dashboardWidgets,  bool onlyStatisticsProxy,  bool showNotificationStopAction,  bool autoLaunch,  bool silentLaunch,  bool autoRun,  bool openLogs,  bool closeConnections,  RequestFeed requestFeed,  int delayTestTimeout, @JsonKey(readValue: _readTabAnimation)  TabAnimation tabAnimation,  bool floatingNavigationBar,  bool autoCheckUpdate, @JsonKey(readValue: _readSidebarExpanded)  bool sidebarExpanded,  int acceptedDisclaimerVersion,  bool minimizeOnExit,  bool hidden,  bool developerMode,  RestoreStrategy restoreStrategy,  bool showTrayTitle,  bool monochromeTrayIcon,  bool checkCertificate, @JsonKey(readValue: _readUserAgents)  List<String> userAgents,  List<Filter> filters,  bool hideIp,  bool editorLineWrap,  EditorFontSize editorFontSize,  List<String> serviceOrder,  List<String> disabledServices,  Map<String, Map<String, double>> tableColumnWidths,  Map<String, String> recordGroupings)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? locale, @JsonKey(fromJson: dashboardWidgetsFromJson)  List<DashboardWidget> dashboardWidgets,  bool onlyStatisticsProxy,  bool showNotificationStopAction,  bool autoLaunch,  bool silentLaunch,  bool autoRun,  bool openLogs,  bool closeConnections,  RequestFeed requestFeed,  int delayTestTimeout, @JsonKey(readValue: _readTabAnimation)  TabAnimation tabAnimation,  bool floatingNavigationBar,  bool autoCheckUpdate, @JsonKey(readValue: _readSidebarExpanded)  bool sidebarExpanded,  int acceptedDisclaimerVersion,  bool minimizeOnExit,  bool hidden,  bool developerMode,  RestoreStrategy restoreStrategy,  bool showTrayTitle,  bool monochromeTrayIcon,  bool checkCertificate, @JsonKey(readValue: _readUserAgents)  List<String> userAgents,  List<Filter> filters,  bool hideIp,  bool editorLineWrap,  EditorFontSize editorFontSize,  List<String> serviceOrder,  List<String> disabledServices,  Map<String, Map<String, double>> tableColumnWidths,  Map<String, String> recordGroupings,  List<AutoGroup> autoGroups)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _AppSettingProps() when $default != null:
-return $default(_that.locale,_that.dashboardWidgets,_that.onlyStatisticsProxy,_that.showNotificationStopAction,_that.autoLaunch,_that.silentLaunch,_that.autoRun,_that.openLogs,_that.closeConnections,_that.requestFeed,_that.delayTestTimeout,_that.tabAnimation,_that.floatingNavigationBar,_that.autoCheckUpdate,_that.sidebarExpanded,_that.acceptedDisclaimerVersion,_that.minimizeOnExit,_that.hidden,_that.developerMode,_that.restoreStrategy,_that.showTrayTitle,_that.monochromeTrayIcon,_that.checkCertificate,_that.userAgents,_that.filters,_that.hideIp,_that.editorLineWrap,_that.editorFontSize,_that.serviceOrder,_that.disabledServices,_that.tableColumnWidths,_that.recordGroupings);case _:
+return $default(_that.locale,_that.dashboardWidgets,_that.onlyStatisticsProxy,_that.showNotificationStopAction,_that.autoLaunch,_that.silentLaunch,_that.autoRun,_that.openLogs,_that.closeConnections,_that.requestFeed,_that.delayTestTimeout,_that.tabAnimation,_that.floatingNavigationBar,_that.autoCheckUpdate,_that.sidebarExpanded,_that.acceptedDisclaimerVersion,_that.minimizeOnExit,_that.hidden,_that.developerMode,_that.restoreStrategy,_that.showTrayTitle,_that.monochromeTrayIcon,_that.checkCertificate,_that.userAgents,_that.filters,_that.hideIp,_that.editorLineWrap,_that.editorFontSize,_that.serviceOrder,_that.disabledServices,_that.tableColumnWidths,_that.recordGroupings,_that.autoGroups);case _:
   return orElse();
 
 }
@@ -484,10 +770,10 @@ return $default(_that.locale,_that.dashboardWidgets,_that.onlyStatisticsProxy,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? locale, @JsonKey(fromJson: dashboardWidgetsFromJson)  List<DashboardWidget> dashboardWidgets,  bool onlyStatisticsProxy,  bool showNotificationStopAction,  bool autoLaunch,  bool silentLaunch,  bool autoRun,  bool openLogs,  bool closeConnections,  RequestFeed requestFeed,  int delayTestTimeout, @JsonKey(readValue: _readTabAnimation)  TabAnimation tabAnimation,  bool floatingNavigationBar,  bool autoCheckUpdate, @JsonKey(readValue: _readSidebarExpanded)  bool sidebarExpanded,  int acceptedDisclaimerVersion,  bool minimizeOnExit,  bool hidden,  bool developerMode,  RestoreStrategy restoreStrategy,  bool showTrayTitle,  bool monochromeTrayIcon,  bool checkCertificate, @JsonKey(readValue: _readUserAgents)  List<String> userAgents,  List<Filter> filters,  bool hideIp,  bool editorLineWrap,  EditorFontSize editorFontSize,  List<String> serviceOrder,  List<String> disabledServices,  Map<String, Map<String, double>> tableColumnWidths,  Map<String, String> recordGroupings)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? locale, @JsonKey(fromJson: dashboardWidgetsFromJson)  List<DashboardWidget> dashboardWidgets,  bool onlyStatisticsProxy,  bool showNotificationStopAction,  bool autoLaunch,  bool silentLaunch,  bool autoRun,  bool openLogs,  bool closeConnections,  RequestFeed requestFeed,  int delayTestTimeout, @JsonKey(readValue: _readTabAnimation)  TabAnimation tabAnimation,  bool floatingNavigationBar,  bool autoCheckUpdate, @JsonKey(readValue: _readSidebarExpanded)  bool sidebarExpanded,  int acceptedDisclaimerVersion,  bool minimizeOnExit,  bool hidden,  bool developerMode,  RestoreStrategy restoreStrategy,  bool showTrayTitle,  bool monochromeTrayIcon,  bool checkCertificate, @JsonKey(readValue: _readUserAgents)  List<String> userAgents,  List<Filter> filters,  bool hideIp,  bool editorLineWrap,  EditorFontSize editorFontSize,  List<String> serviceOrder,  List<String> disabledServices,  Map<String, Map<String, double>> tableColumnWidths,  Map<String, String> recordGroupings,  List<AutoGroup> autoGroups)  $default,) {final _that = this;
 switch (_that) {
 case _AppSettingProps():
-return $default(_that.locale,_that.dashboardWidgets,_that.onlyStatisticsProxy,_that.showNotificationStopAction,_that.autoLaunch,_that.silentLaunch,_that.autoRun,_that.openLogs,_that.closeConnections,_that.requestFeed,_that.delayTestTimeout,_that.tabAnimation,_that.floatingNavigationBar,_that.autoCheckUpdate,_that.sidebarExpanded,_that.acceptedDisclaimerVersion,_that.minimizeOnExit,_that.hidden,_that.developerMode,_that.restoreStrategy,_that.showTrayTitle,_that.monochromeTrayIcon,_that.checkCertificate,_that.userAgents,_that.filters,_that.hideIp,_that.editorLineWrap,_that.editorFontSize,_that.serviceOrder,_that.disabledServices,_that.tableColumnWidths,_that.recordGroupings);case _:
+return $default(_that.locale,_that.dashboardWidgets,_that.onlyStatisticsProxy,_that.showNotificationStopAction,_that.autoLaunch,_that.silentLaunch,_that.autoRun,_that.openLogs,_that.closeConnections,_that.requestFeed,_that.delayTestTimeout,_that.tabAnimation,_that.floatingNavigationBar,_that.autoCheckUpdate,_that.sidebarExpanded,_that.acceptedDisclaimerVersion,_that.minimizeOnExit,_that.hidden,_that.developerMode,_that.restoreStrategy,_that.showTrayTitle,_that.monochromeTrayIcon,_that.checkCertificate,_that.userAgents,_that.filters,_that.hideIp,_that.editorLineWrap,_that.editorFontSize,_that.serviceOrder,_that.disabledServices,_that.tableColumnWidths,_that.recordGroupings,_that.autoGroups);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -504,10 +790,10 @@ return $default(_that.locale,_that.dashboardWidgets,_that.onlyStatisticsProxy,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? locale, @JsonKey(fromJson: dashboardWidgetsFromJson)  List<DashboardWidget> dashboardWidgets,  bool onlyStatisticsProxy,  bool showNotificationStopAction,  bool autoLaunch,  bool silentLaunch,  bool autoRun,  bool openLogs,  bool closeConnections,  RequestFeed requestFeed,  int delayTestTimeout, @JsonKey(readValue: _readTabAnimation)  TabAnimation tabAnimation,  bool floatingNavigationBar,  bool autoCheckUpdate, @JsonKey(readValue: _readSidebarExpanded)  bool sidebarExpanded,  int acceptedDisclaimerVersion,  bool minimizeOnExit,  bool hidden,  bool developerMode,  RestoreStrategy restoreStrategy,  bool showTrayTitle,  bool monochromeTrayIcon,  bool checkCertificate, @JsonKey(readValue: _readUserAgents)  List<String> userAgents,  List<Filter> filters,  bool hideIp,  bool editorLineWrap,  EditorFontSize editorFontSize,  List<String> serviceOrder,  List<String> disabledServices,  Map<String, Map<String, double>> tableColumnWidths,  Map<String, String> recordGroupings)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? locale, @JsonKey(fromJson: dashboardWidgetsFromJson)  List<DashboardWidget> dashboardWidgets,  bool onlyStatisticsProxy,  bool showNotificationStopAction,  bool autoLaunch,  bool silentLaunch,  bool autoRun,  bool openLogs,  bool closeConnections,  RequestFeed requestFeed,  int delayTestTimeout, @JsonKey(readValue: _readTabAnimation)  TabAnimation tabAnimation,  bool floatingNavigationBar,  bool autoCheckUpdate, @JsonKey(readValue: _readSidebarExpanded)  bool sidebarExpanded,  int acceptedDisclaimerVersion,  bool minimizeOnExit,  bool hidden,  bool developerMode,  RestoreStrategy restoreStrategy,  bool showTrayTitle,  bool monochromeTrayIcon,  bool checkCertificate, @JsonKey(readValue: _readUserAgents)  List<String> userAgents,  List<Filter> filters,  bool hideIp,  bool editorLineWrap,  EditorFontSize editorFontSize,  List<String> serviceOrder,  List<String> disabledServices,  Map<String, Map<String, double>> tableColumnWidths,  Map<String, String> recordGroupings,  List<AutoGroup> autoGroups)?  $default,) {final _that = this;
 switch (_that) {
 case _AppSettingProps() when $default != null:
-return $default(_that.locale,_that.dashboardWidgets,_that.onlyStatisticsProxy,_that.showNotificationStopAction,_that.autoLaunch,_that.silentLaunch,_that.autoRun,_that.openLogs,_that.closeConnections,_that.requestFeed,_that.delayTestTimeout,_that.tabAnimation,_that.floatingNavigationBar,_that.autoCheckUpdate,_that.sidebarExpanded,_that.acceptedDisclaimerVersion,_that.minimizeOnExit,_that.hidden,_that.developerMode,_that.restoreStrategy,_that.showTrayTitle,_that.monochromeTrayIcon,_that.checkCertificate,_that.userAgents,_that.filters,_that.hideIp,_that.editorLineWrap,_that.editorFontSize,_that.serviceOrder,_that.disabledServices,_that.tableColumnWidths,_that.recordGroupings);case _:
+return $default(_that.locale,_that.dashboardWidgets,_that.onlyStatisticsProxy,_that.showNotificationStopAction,_that.autoLaunch,_that.silentLaunch,_that.autoRun,_that.openLogs,_that.closeConnections,_that.requestFeed,_that.delayTestTimeout,_that.tabAnimation,_that.floatingNavigationBar,_that.autoCheckUpdate,_that.sidebarExpanded,_that.acceptedDisclaimerVersion,_that.minimizeOnExit,_that.hidden,_that.developerMode,_that.restoreStrategy,_that.showTrayTitle,_that.monochromeTrayIcon,_that.checkCertificate,_that.userAgents,_that.filters,_that.hideIp,_that.editorLineWrap,_that.editorFontSize,_that.serviceOrder,_that.disabledServices,_that.tableColumnWidths,_that.recordGroupings,_that.autoGroups);case _:
   return null;
 
 }
@@ -519,7 +805,7 @@ return $default(_that.locale,_that.dashboardWidgets,_that.onlyStatisticsProxy,_t
 @JsonSerializable()
 
 class _AppSettingProps implements AppSettingProps {
-  const _AppSettingProps({this.locale, @JsonKey(fromJson: dashboardWidgetsFromJson)  List<DashboardWidget> dashboardWidgets = defaultDashboardWidgets, this.onlyStatisticsProxy = false, this.showNotificationStopAction = true, this.autoLaunch = false, this.silentLaunch = false, this.autoRun = false, this.openLogs = false, this.closeConnections = true, this.requestFeed = RequestFeed.live, this.delayTestTimeout = defaultDelayTestTimeout, @JsonKey(readValue: _readTabAnimation) this.tabAnimation = TabAnimation.fade, this.floatingNavigationBar = true, this.autoCheckUpdate = true, @JsonKey(readValue: _readSidebarExpanded) this.sidebarExpanded = true, this.acceptedDisclaimerVersion = 0, this.minimizeOnExit = true, this.hidden = false, this.developerMode = false, this.restoreStrategy = RestoreStrategy.compatible, this.showTrayTitle = true, this.monochromeTrayIcon = true, this.checkCertificate = true, @JsonKey(readValue: _readUserAgents)  List<String> userAgents = defaultUserAgents,  List<Filter> filters = defaultFilters, this.hideIp = false, this.editorLineWrap = false, this.editorFontSize = EditorFontSize.standard,  List<String> serviceOrder = const [],  List<String> disabledServices = const [],  Map<String, Map<String, double>> tableColumnWidths = const {},  Map<String, String> recordGroupings = const {}}): _dashboardWidgets = dashboardWidgets,_userAgents = userAgents,_filters = filters,_serviceOrder = serviceOrder,_disabledServices = disabledServices,_tableColumnWidths = tableColumnWidths,_recordGroupings = recordGroupings;
+  const _AppSettingProps({this.locale, @JsonKey(fromJson: dashboardWidgetsFromJson)  List<DashboardWidget> dashboardWidgets = defaultDashboardWidgets, this.onlyStatisticsProxy = false, this.showNotificationStopAction = true, this.autoLaunch = false, this.silentLaunch = false, this.autoRun = false, this.openLogs = false, this.closeConnections = true, this.requestFeed = RequestFeed.live, this.delayTestTimeout = defaultDelayTestTimeout, @JsonKey(readValue: _readTabAnimation) this.tabAnimation = TabAnimation.fade, this.floatingNavigationBar = true, this.autoCheckUpdate = true, @JsonKey(readValue: _readSidebarExpanded) this.sidebarExpanded = true, this.acceptedDisclaimerVersion = 0, this.minimizeOnExit = true, this.hidden = false, this.developerMode = false, this.restoreStrategy = RestoreStrategy.compatible, this.showTrayTitle = true, this.monochromeTrayIcon = true, this.checkCertificate = true, @JsonKey(readValue: _readUserAgents)  List<String> userAgents = defaultUserAgents,  List<Filter> filters = defaultFilters, this.hideIp = false, this.editorLineWrap = false, this.editorFontSize = EditorFontSize.standard,  List<String> serviceOrder = const [],  List<String> disabledServices = const [],  Map<String, Map<String, double>> tableColumnWidths = const {},  Map<String, String> recordGroupings = const {},  List<AutoGroup> autoGroups = const []}): _dashboardWidgets = dashboardWidgets,_userAgents = userAgents,_filters = filters,_serviceOrder = serviceOrder,_disabledServices = disabledServices,_tableColumnWidths = tableColumnWidths,_recordGroupings = recordGroupings,_autoGroups = autoGroups;
   factory _AppSettingProps.fromJson(Map<String, dynamic> json) => _$AppSettingPropsFromJson(json);
 
 @override final  String? locale;
@@ -596,6 +882,13 @@ class _AppSettingProps implements AppSettingProps {
   return EqualUnmodifiableMapView(_recordGroupings);
 }
 
+ final  List<AutoGroup> _autoGroups;
+@override@JsonKey() List<AutoGroup> get autoGroups {
+  if (_autoGroups is EqualUnmodifiableListView) return _autoGroups;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_autoGroups);
+}
+
 
 /// Create a copy of AppSettingProps
 /// with the given fields replaced by the non-null parameter values.
@@ -610,18 +903,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppSettingProps&&(identical(other.locale, locale) || other.locale == locale)&&const DeepCollectionEquality().equals(other.dashboardWidgets, _dashboardWidgets)&&(identical(other.onlyStatisticsProxy, onlyStatisticsProxy) || other.onlyStatisticsProxy == onlyStatisticsProxy)&&(identical(other.showNotificationStopAction, showNotificationStopAction) || other.showNotificationStopAction == showNotificationStopAction)&&(identical(other.autoLaunch, autoLaunch) || other.autoLaunch == autoLaunch)&&(identical(other.silentLaunch, silentLaunch) || other.silentLaunch == silentLaunch)&&(identical(other.autoRun, autoRun) || other.autoRun == autoRun)&&(identical(other.openLogs, openLogs) || other.openLogs == openLogs)&&(identical(other.closeConnections, closeConnections) || other.closeConnections == closeConnections)&&(identical(other.requestFeed, requestFeed) || other.requestFeed == requestFeed)&&(identical(other.delayTestTimeout, delayTestTimeout) || other.delayTestTimeout == delayTestTimeout)&&(identical(other.tabAnimation, tabAnimation) || other.tabAnimation == tabAnimation)&&(identical(other.floatingNavigationBar, floatingNavigationBar) || other.floatingNavigationBar == floatingNavigationBar)&&(identical(other.autoCheckUpdate, autoCheckUpdate) || other.autoCheckUpdate == autoCheckUpdate)&&(identical(other.sidebarExpanded, sidebarExpanded) || other.sidebarExpanded == sidebarExpanded)&&(identical(other.acceptedDisclaimerVersion, acceptedDisclaimerVersion) || other.acceptedDisclaimerVersion == acceptedDisclaimerVersion)&&(identical(other.minimizeOnExit, minimizeOnExit) || other.minimizeOnExit == minimizeOnExit)&&(identical(other.hidden, hidden) || other.hidden == hidden)&&(identical(other.developerMode, developerMode) || other.developerMode == developerMode)&&(identical(other.restoreStrategy, restoreStrategy) || other.restoreStrategy == restoreStrategy)&&(identical(other.showTrayTitle, showTrayTitle) || other.showTrayTitle == showTrayTitle)&&(identical(other.monochromeTrayIcon, monochromeTrayIcon) || other.monochromeTrayIcon == monochromeTrayIcon)&&(identical(other.checkCertificate, checkCertificate) || other.checkCertificate == checkCertificate)&&const DeepCollectionEquality().equals(other.userAgents, _userAgents)&&const DeepCollectionEquality().equals(other.filters, _filters)&&(identical(other.hideIp, hideIp) || other.hideIp == hideIp)&&(identical(other.editorLineWrap, editorLineWrap) || other.editorLineWrap == editorLineWrap)&&(identical(other.editorFontSize, editorFontSize) || other.editorFontSize == editorFontSize)&&const DeepCollectionEquality().equals(other.serviceOrder, _serviceOrder)&&const DeepCollectionEquality().equals(other.disabledServices, _disabledServices)&&const DeepCollectionEquality().equals(other.tableColumnWidths, _tableColumnWidths)&&const DeepCollectionEquality().equals(other.recordGroupings, _recordGroupings));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppSettingProps&&(identical(other.locale, locale) || other.locale == locale)&&const DeepCollectionEquality().equals(other.dashboardWidgets, _dashboardWidgets)&&(identical(other.onlyStatisticsProxy, onlyStatisticsProxy) || other.onlyStatisticsProxy == onlyStatisticsProxy)&&(identical(other.showNotificationStopAction, showNotificationStopAction) || other.showNotificationStopAction == showNotificationStopAction)&&(identical(other.autoLaunch, autoLaunch) || other.autoLaunch == autoLaunch)&&(identical(other.silentLaunch, silentLaunch) || other.silentLaunch == silentLaunch)&&(identical(other.autoRun, autoRun) || other.autoRun == autoRun)&&(identical(other.openLogs, openLogs) || other.openLogs == openLogs)&&(identical(other.closeConnections, closeConnections) || other.closeConnections == closeConnections)&&(identical(other.requestFeed, requestFeed) || other.requestFeed == requestFeed)&&(identical(other.delayTestTimeout, delayTestTimeout) || other.delayTestTimeout == delayTestTimeout)&&(identical(other.tabAnimation, tabAnimation) || other.tabAnimation == tabAnimation)&&(identical(other.floatingNavigationBar, floatingNavigationBar) || other.floatingNavigationBar == floatingNavigationBar)&&(identical(other.autoCheckUpdate, autoCheckUpdate) || other.autoCheckUpdate == autoCheckUpdate)&&(identical(other.sidebarExpanded, sidebarExpanded) || other.sidebarExpanded == sidebarExpanded)&&(identical(other.acceptedDisclaimerVersion, acceptedDisclaimerVersion) || other.acceptedDisclaimerVersion == acceptedDisclaimerVersion)&&(identical(other.minimizeOnExit, minimizeOnExit) || other.minimizeOnExit == minimizeOnExit)&&(identical(other.hidden, hidden) || other.hidden == hidden)&&(identical(other.developerMode, developerMode) || other.developerMode == developerMode)&&(identical(other.restoreStrategy, restoreStrategy) || other.restoreStrategy == restoreStrategy)&&(identical(other.showTrayTitle, showTrayTitle) || other.showTrayTitle == showTrayTitle)&&(identical(other.monochromeTrayIcon, monochromeTrayIcon) || other.monochromeTrayIcon == monochromeTrayIcon)&&(identical(other.checkCertificate, checkCertificate) || other.checkCertificate == checkCertificate)&&const DeepCollectionEquality().equals(other.userAgents, _userAgents)&&const DeepCollectionEquality().equals(other.filters, _filters)&&(identical(other.hideIp, hideIp) || other.hideIp == hideIp)&&(identical(other.editorLineWrap, editorLineWrap) || other.editorLineWrap == editorLineWrap)&&(identical(other.editorFontSize, editorFontSize) || other.editorFontSize == editorFontSize)&&const DeepCollectionEquality().equals(other.serviceOrder, _serviceOrder)&&const DeepCollectionEquality().equals(other.disabledServices, _disabledServices)&&const DeepCollectionEquality().equals(other.tableColumnWidths, _tableColumnWidths)&&const DeepCollectionEquality().equals(other.recordGroupings, _recordGroupings)&&const DeepCollectionEquality().equals(other.autoGroups, _autoGroups));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hashAll([runtimeType,locale,const DeepCollectionEquality().hash(_dashboardWidgets),onlyStatisticsProxy,showNotificationStopAction,autoLaunch,silentLaunch,autoRun,openLogs,closeConnections,requestFeed,delayTestTimeout,tabAnimation,floatingNavigationBar,autoCheckUpdate,sidebarExpanded,acceptedDisclaimerVersion,minimizeOnExit,hidden,developerMode,restoreStrategy,showTrayTitle,monochromeTrayIcon,checkCertificate,const DeepCollectionEquality().hash(_userAgents),const DeepCollectionEquality().hash(_filters),hideIp,editorLineWrap,editorFontSize,const DeepCollectionEquality().hash(_serviceOrder),const DeepCollectionEquality().hash(_disabledServices),const DeepCollectionEquality().hash(_tableColumnWidths),const DeepCollectionEquality().hash(_recordGroupings)]);
+    return Object.hashAll([runtimeType,locale,const DeepCollectionEquality().hash(_dashboardWidgets),onlyStatisticsProxy,showNotificationStopAction,autoLaunch,silentLaunch,autoRun,openLogs,closeConnections,requestFeed,delayTestTimeout,tabAnimation,floatingNavigationBar,autoCheckUpdate,sidebarExpanded,acceptedDisclaimerVersion,minimizeOnExit,hidden,developerMode,restoreStrategy,showTrayTitle,monochromeTrayIcon,checkCertificate,const DeepCollectionEquality().hash(_userAgents),const DeepCollectionEquality().hash(_filters),hideIp,editorLineWrap,editorFontSize,const DeepCollectionEquality().hash(_serviceOrder),const DeepCollectionEquality().hash(_disabledServices),const DeepCollectionEquality().hash(_tableColumnWidths),const DeepCollectionEquality().hash(_recordGroupings),const DeepCollectionEquality().hash(_autoGroups)]);
 }
 
 @override
 String toString() {
-    return 'AppSettingProps(locale: $locale, dashboardWidgets: $dashboardWidgets, onlyStatisticsProxy: $onlyStatisticsProxy, showNotificationStopAction: $showNotificationStopAction, autoLaunch: $autoLaunch, silentLaunch: $silentLaunch, autoRun: $autoRun, openLogs: $openLogs, closeConnections: $closeConnections, requestFeed: $requestFeed, delayTestTimeout: $delayTestTimeout, tabAnimation: $tabAnimation, floatingNavigationBar: $floatingNavigationBar, autoCheckUpdate: $autoCheckUpdate, sidebarExpanded: $sidebarExpanded, acceptedDisclaimerVersion: $acceptedDisclaimerVersion, minimizeOnExit: $minimizeOnExit, hidden: $hidden, developerMode: $developerMode, restoreStrategy: $restoreStrategy, showTrayTitle: $showTrayTitle, monochromeTrayIcon: $monochromeTrayIcon, checkCertificate: $checkCertificate, userAgents: $userAgents, filters: $filters, hideIp: $hideIp, editorLineWrap: $editorLineWrap, editorFontSize: $editorFontSize, serviceOrder: $serviceOrder, disabledServices: $disabledServices, tableColumnWidths: $tableColumnWidths, recordGroupings: $recordGroupings)';
+    return 'AppSettingProps(locale: $locale, dashboardWidgets: $dashboardWidgets, onlyStatisticsProxy: $onlyStatisticsProxy, showNotificationStopAction: $showNotificationStopAction, autoLaunch: $autoLaunch, silentLaunch: $silentLaunch, autoRun: $autoRun, openLogs: $openLogs, closeConnections: $closeConnections, requestFeed: $requestFeed, delayTestTimeout: $delayTestTimeout, tabAnimation: $tabAnimation, floatingNavigationBar: $floatingNavigationBar, autoCheckUpdate: $autoCheckUpdate, sidebarExpanded: $sidebarExpanded, acceptedDisclaimerVersion: $acceptedDisclaimerVersion, minimizeOnExit: $minimizeOnExit, hidden: $hidden, developerMode: $developerMode, restoreStrategy: $restoreStrategy, showTrayTitle: $showTrayTitle, monochromeTrayIcon: $monochromeTrayIcon, checkCertificate: $checkCertificate, userAgents: $userAgents, filters: $filters, hideIp: $hideIp, editorLineWrap: $editorLineWrap, editorFontSize: $editorFontSize, serviceOrder: $serviceOrder, disabledServices: $disabledServices, tableColumnWidths: $tableColumnWidths, recordGroupings: $recordGroupings, autoGroups: $autoGroups)';
 }
 
 
@@ -632,7 +925,7 @@ abstract mixin class _$AppSettingPropsCopyWith<$Res> implements $AppSettingProps
   factory _$AppSettingPropsCopyWith(_AppSettingProps value, $Res Function(_AppSettingProps) _then) = __$AppSettingPropsCopyWithImpl;
 @override @useResult
 $Res call({
- String? locale,@JsonKey(fromJson: dashboardWidgetsFromJson) List<DashboardWidget> dashboardWidgets, bool onlyStatisticsProxy, bool showNotificationStopAction, bool autoLaunch, bool silentLaunch, bool autoRun, bool openLogs, bool closeConnections, RequestFeed requestFeed, int delayTestTimeout,@JsonKey(readValue: _readTabAnimation) TabAnimation tabAnimation, bool floatingNavigationBar, bool autoCheckUpdate,@JsonKey(readValue: _readSidebarExpanded) bool sidebarExpanded, int acceptedDisclaimerVersion, bool minimizeOnExit, bool hidden, bool developerMode, RestoreStrategy restoreStrategy, bool showTrayTitle, bool monochromeTrayIcon, bool checkCertificate,@JsonKey(readValue: _readUserAgents) List<String> userAgents, List<Filter> filters, bool hideIp, bool editorLineWrap, EditorFontSize editorFontSize, List<String> serviceOrder, List<String> disabledServices, Map<String, Map<String, double>> tableColumnWidths, Map<String, String> recordGroupings
+ String? locale,@JsonKey(fromJson: dashboardWidgetsFromJson) List<DashboardWidget> dashboardWidgets, bool onlyStatisticsProxy, bool showNotificationStopAction, bool autoLaunch, bool silentLaunch, bool autoRun, bool openLogs, bool closeConnections, RequestFeed requestFeed, int delayTestTimeout,@JsonKey(readValue: _readTabAnimation) TabAnimation tabAnimation, bool floatingNavigationBar, bool autoCheckUpdate,@JsonKey(readValue: _readSidebarExpanded) bool sidebarExpanded, int acceptedDisclaimerVersion, bool minimizeOnExit, bool hidden, bool developerMode, RestoreStrategy restoreStrategy, bool showTrayTitle, bool monochromeTrayIcon, bool checkCertificate,@JsonKey(readValue: _readUserAgents) List<String> userAgents, List<Filter> filters, bool hideIp, bool editorLineWrap, EditorFontSize editorFontSize, List<String> serviceOrder, List<String> disabledServices, Map<String, Map<String, double>> tableColumnWidths, Map<String, String> recordGroupings, List<AutoGroup> autoGroups
 });
 
 
@@ -649,7 +942,7 @@ class __$AppSettingPropsCopyWithImpl<$Res>
 
 /// Create a copy of AppSettingProps
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? locale = freezed,Object? dashboardWidgets = null,Object? onlyStatisticsProxy = null,Object? showNotificationStopAction = null,Object? autoLaunch = null,Object? silentLaunch = null,Object? autoRun = null,Object? openLogs = null,Object? closeConnections = null,Object? requestFeed = null,Object? delayTestTimeout = null,Object? tabAnimation = null,Object? floatingNavigationBar = null,Object? autoCheckUpdate = null,Object? sidebarExpanded = null,Object? acceptedDisclaimerVersion = null,Object? minimizeOnExit = null,Object? hidden = null,Object? developerMode = null,Object? restoreStrategy = null,Object? showTrayTitle = null,Object? monochromeTrayIcon = null,Object? checkCertificate = null,Object? userAgents = null,Object? filters = null,Object? hideIp = null,Object? editorLineWrap = null,Object? editorFontSize = null,Object? serviceOrder = null,Object? disabledServices = null,Object? tableColumnWidths = null,Object? recordGroupings = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? locale = freezed,Object? dashboardWidgets = null,Object? onlyStatisticsProxy = null,Object? showNotificationStopAction = null,Object? autoLaunch = null,Object? silentLaunch = null,Object? autoRun = null,Object? openLogs = null,Object? closeConnections = null,Object? requestFeed = null,Object? delayTestTimeout = null,Object? tabAnimation = null,Object? floatingNavigationBar = null,Object? autoCheckUpdate = null,Object? sidebarExpanded = null,Object? acceptedDisclaimerVersion = null,Object? minimizeOnExit = null,Object? hidden = null,Object? developerMode = null,Object? restoreStrategy = null,Object? showTrayTitle = null,Object? monochromeTrayIcon = null,Object? checkCertificate = null,Object? userAgents = null,Object? filters = null,Object? hideIp = null,Object? editorLineWrap = null,Object? editorFontSize = null,Object? serviceOrder = null,Object? disabledServices = null,Object? tableColumnWidths = null,Object? recordGroupings = null,Object? autoGroups = null,}) {
   return _then(_AppSettingProps(
 locale: freezed == locale ? _self.locale : locale // ignore: cast_nullable_to_non_nullable
 as String?,dashboardWidgets: null == dashboardWidgets ? _self._dashboardWidgets : dashboardWidgets // ignore: cast_nullable_to_non_nullable
@@ -683,7 +976,8 @@ as EditorFontSize,serviceOrder: null == serviceOrder ? _self._serviceOrder : ser
 as List<String>,disabledServices: null == disabledServices ? _self._disabledServices : disabledServices // ignore: cast_nullable_to_non_nullable
 as List<String>,tableColumnWidths: null == tableColumnWidths ? _self._tableColumnWidths : tableColumnWidths // ignore: cast_nullable_to_non_nullable
 as Map<String, Map<String, double>>,recordGroupings: null == recordGroupings ? _self._recordGroupings : recordGroupings // ignore: cast_nullable_to_non_nullable
-as Map<String, String>,
+as Map<String, String>,autoGroups: null == autoGroups ? _self._autoGroups : autoGroups // ignore: cast_nullable_to_non_nullable
+as List<AutoGroup>,
   ));
 }
 

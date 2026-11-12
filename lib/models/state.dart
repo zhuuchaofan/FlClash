@@ -5,6 +5,7 @@ import 'package:prism_ui/color.dart';
 import 'app.dart';
 import 'clash_config.dart';
 import 'common.dart';
+import 'config.dart';
 import 'core.dart';
 import 'profile.dart';
 
@@ -262,5 +263,6 @@ abstract class SetupState with _$SetupState {
     @Default({}) Map<int, String> proxyDialers,
     String? matchTarget,
     @Default([]) List<MitmModuleSource> mitmModules,
+    @Default([]) List<AutoGroup> autoGroups,
   }) = _SetupState;
 }

@@ -412,3 +412,34 @@ func TestEncodeConfigMappingKeepsEveryKeyAfterAnOpenEndedScalar(t *testing.T) {
 		t.Errorf("decoded %d rules, want all %d in order", len(decoded.Rules), len(rules))
 	}
 }
+
+func TestLoadConfigWithBaseAddsTheOverlayGroupsAfterTheProfiles(t *testing.T) {
+	path := writeBaseProfile(t, baseProfile)
+	base, err := handleGetProfileBase(PathParams{Path: path})
+	if err != nil {
+		t.Fatalf("handleGetProfileBase = %v", err)
+	}
+	overlay := overlayOf(t, base, nil, map[string]any{
+		"proxy-groups": []map[string]any{
+			{"name": "auto", "type": "url-test", "include-all": true, "filter": "^a$", "url": "https://www.gstatic.com/generate_204", "interval": 300},
+			{"name": "g", "type": "select", "proxies": []string{"DIRECT"}},
+		},
+	})
+	configPath := filepath.Join(t.TempDir(), "config.yaml")
+
+	cfg, err := loadConfigWithBase(&SetupBase{Path: path, Overlay: overlay}, configPath)
+
+	if err != nil {
+		t.Fatalf("loadConfigWithBase = %v", err)
+	}
+	auto := cfg.Proxies["auto"]
+	if auto == nil {
+		t.Fatalf("the overlay's group auto is missing")
+	}
+	if members := auto.Adapter().(interface{ Proxies() []constant.Proxy }).Proxies(); len(members) != 1 || members[0].Name() != "a" {
+		t.Errorf("auto members = %v, want only a", members)
+	}
+	if cfg.Proxies["g"].Type() != constant.Selector {
+		t.Errorf("g = %s, want the profile's selector over the overlay's", cfg.Proxies["g"].Type())
+	}
+}

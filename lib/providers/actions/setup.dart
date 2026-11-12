@@ -521,6 +521,7 @@ class SetupAction extends _$SetupAction {
     if (hasScript) {
       rawConfig = await handleEvaluate(scriptContent!, rawConfig);
     }
+    rawConfig = withAutoGroups(rawConfig, setupState.autoGroups);
     final directory = await appPath.profilesPath;
     final injected = await _resolveInjectedProviders(
       setupState,

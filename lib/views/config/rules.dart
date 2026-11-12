@@ -119,7 +119,7 @@ class _AddedRulesViewState extends ConsumerState<AddedRulesView> {
             }
           : null,
       child: Scaffold(
-        title: appLocalizations.addedRules,
+        title: simpleUi ? appLocalizations.rule : appLocalizations.addedRules,
         searchState: AppBarSearchState(onSearch: _handleSearch),
         actions: [
           if (!isSelecting)
@@ -130,6 +130,15 @@ class _AddedRulesViewState extends ConsumerState<AddedRulesView> {
             ),
         ],
         iconActions: [
+          if (!isSelecting && simpleUi)
+            IconButtonData(
+              glyph: AppGlyphs.info,
+              onPressed: () => dialogs.showAlert(
+                title: appLocalizations.rule,
+                message: TextSpan(text: appLocalizations.rulesHelp),
+              ),
+              tooltip: appLocalizations.tip,
+            ),
           if (!isSelecting)
             IconButtonData(
               glyph: AppGlyphs.rulePresets,
@@ -143,7 +152,9 @@ class _AddedRulesViewState extends ConsumerState<AddedRulesView> {
           isEmpty: rules.isEmpty,
           isSearching: isSearching,
           nullStatus: NullStatus(
-            label: appLocalizations.nullTip(appLocalizations.rule),
+            label: simpleUi
+                ? appLocalizations.rulesEmptyTip
+                : appLocalizations.nullTip(appLocalizations.rule),
             illustration: NullStatusIllustration.rules,
           ),
           child: Builder(

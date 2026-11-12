@@ -1,6 +1,7 @@
 export 'app_localizations.dart';
 export 'app_ports.dart';
 export 'app_update.dart';
+export 'auto_group.dart';
 export 'backup.dart';
 export 'changelog.dart';
 export 'cidr.dart';

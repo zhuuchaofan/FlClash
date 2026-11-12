@@ -234,6 +234,23 @@ abstract class Filter with _$Filter {
   factory Filter.fromJson(Map<String, Object?> json) => _$FilterFromJson(json);
 }
 
+enum AutoGroupStrategy { fastest, failover }
+
+/// A node group Flare adds to every profile: either the nodes whose names match
+/// [regex] (a region) or the nodes picked by name in [proxies].
+@freezed
+abstract class AutoGroup with _$AutoGroup {
+  const factory AutoGroup({
+    required String name,
+    String? regex,
+    @Default([]) List<String> proxies,
+    @Default(AutoGroupStrategy.fastest) AutoGroupStrategy strategy,
+  }) = _AutoGroup;
+
+  factory AutoGroup.fromJson(Map<String, Object?> json) =>
+      _$AutoGroupFromJson(json);
+}
+
 @freezed
 abstract class AppSettingProps with _$AppSettingProps {
   const factory AppSettingProps({
@@ -277,6 +294,7 @@ abstract class AppSettingProps with _$AppSettingProps {
     @Default([]) List<String> disabledServices,
     @Default({}) Map<String, Map<String, double>> tableColumnWidths,
     @Default({}) Map<String, String> recordGroupings,
+    @Default([]) List<AutoGroup> autoGroups,
   }) = _AppSettingProps;
 
   factory AppSettingProps.fromJson(Map<String, Object?> json) =>

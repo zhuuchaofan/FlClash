@@ -7663,8 +7663,7 @@ class AppLocalizations {
   String customImportDroppedSubRules(num count, Object label) {
     return Intl.plural(
       count,
-      one:
-          '1 SUB-RULE rule was dropped, since custom profiles do not support sub-rules',
+      one: '1 SUB-RULE rule was dropped, since custom profiles do not support sub-rules',
       other:
           '$label SUB-RULE rules were dropped, since custom profiles do not support sub-rules',
       name: 'customImportDroppedSubRules',
@@ -9068,6 +9067,536 @@ class AppLocalizations {
     return Intl.message(
       'These domains are resolved by Fallback directly.',
       name: 'fallbackFilterDomainDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Recently visited sites with the rule and node each used; open one to add a rule for it`
+  String get requestsDesc {
+    return Intl.message(
+      'Recently visited sites with the rule and node each used; open one to add a rule for it',
+      name: 'requestsDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send a site through the proxy, direct, or block it; takes priority over subscription rules and survives updates`
+  String get rulesDesc {
+    return Intl.message(
+      'Send a site through the proxy, direct, or block it; takes priority over subscription rules and survives updates',
+      name: 'rulesDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose which apps use the proxy, e.g. only the browser`
+  String get accessControlDesc {
+    return Intl.message(
+      'Choose which apps use the proxy, e.g. only the browser',
+      name: 'accessControlDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dark or light mode and the accent color`
+  String get themeDesc {
+    return Intl.message(
+      'Dark or light mode and the accent color',
+      name: 'themeDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back up profiles and settings to WebDAV or a local file`
+  String get backupAndRestoreDesc {
+    return Intl.message(
+      'Back up profiles and settings to WebDAV or a local file',
+      name: 'backupAndRestoreDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Version and open-source information`
+  String get aboutDesc {
+    return Intl.message(
+      'Version and open-source information',
+      name: 'aboutDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Domain and subdomains`
+  String get ruleTypeDomainSuffix {
+    return Intl.message(
+      'Domain and subdomains',
+      name: 'ruleTypeDomainSuffix',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Exact domain`
+  String get ruleTypeDomain {
+    return Intl.message(
+      'Exact domain',
+      name: 'ruleTypeDomain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Domain contains keyword`
+  String get ruleTypeDomainKeyword {
+    return Intl.message(
+      'Domain contains keyword',
+      name: 'ruleTypeDomainKeyword',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Site category`
+  String get ruleTypeGeosite {
+    return Intl.message(
+      'Site category',
+      name: 'ruleTypeGeosite',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `IP country`
+  String get ruleTypeGeoip {
+    return Intl.message(
+      'IP country',
+      name: 'ruleTypeGeoip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `IP range`
+  String get ruleTypeIpCidr {
+    return Intl.message('IP range', name: 'ruleTypeIpCidr', desc: '', args: []);
+  }
+
+  /// `Enter google.com to match google.com, www.google.com and every other subdomain. The most common choice.`
+  String get ruleTypeDomainSuffixHint {
+    return Intl.message(
+      'Enter google.com to match google.com, www.google.com and every other subdomain. The most common choice.',
+      name: 'ruleTypeDomainSuffixHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter www.google.com to match only that domain, without subdomains.`
+  String get ruleTypeDomainHint {
+    return Intl.message(
+      'Enter www.google.com to match only that domain, without subdomains.',
+      name: 'ruleTypeDomainHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter google to match any domain containing google.`
+  String get ruleTypeDomainKeywordHint {
+    return Intl.message(
+      'Enter google to match any domain containing google.',
+      name: 'ruleTypeDomainKeywordHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a category such as youtube, netflix, openai or cn to match a whole group of sites.`
+  String get ruleTypeGeositeHint {
+    return Intl.message(
+      'Enter a category such as youtube, netflix, openai or cn to match a whole group of sites.',
+      name: 'ruleTypeGeositeHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter a country code such as CN, JP or US to match by the destination IP's location.`
+  String get ruleTypeGeoipHint {
+    return Intl.message(
+      'Enter a country code such as CN, JP or US to match by the destination IP\'s location.',
+      name: 'ruleTypeGeoipHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter an IP range such as 192.168.0.0/16 or 1.2.3.4/32.`
+  String get ruleTypeIpCidrHint {
+    return Intl.message(
+      'Enter an IP range such as 192.168.0.0/16 or 1.2.3.4/32.',
+      name: 'ruleTypeIpCidrHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Proxy (subscription default)`
+  String get ruleTargetProxy {
+    return Intl.message(
+      'Proxy (subscription default)',
+      name: 'ruleTargetProxy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Direct`
+  String get ruleTargetDirect {
+    return Intl.message('Direct', name: 'ruleTargetDirect', desc: '', args: []);
+  }
+
+  /// `Block`
+  String get ruleTargetReject {
+    return Intl.message('Block', name: 'ruleTargetReject', desc: '', args: []);
+  }
+
+  /// `Direct skips the proxy; Block stops the connection; Proxy uses the subscription's default group. You can also pick a group or node from the current subscription.`
+  String get ruleTargetHint {
+    return Intl.message(
+      'Direct skips the proxy; Block stops the connection; Proxy uses the subscription\'s default group. You can also pick a group or node from the current subscription.',
+      name: 'ruleTargetHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Custom rules run before the subscription's rules and survive subscription updates.\n\nHold and drag a rule to reorder it; higher rules win.\n\nTap + to add a rule: choose how to match, enter the domain, then pick proxy, direct, block or a node.`
+  String get rulesHelp {
+    return Intl.message(
+      'Custom rules run before the subscription\'s rules and survive subscription updates.\n\nHold and drag a rule to reorder it; higher rules win.\n\nTap + to add a rule: choose how to match, enter the domain, then pick proxy, direct, block or a node.',
+      name: 'rulesHelp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No custom rules yet. Tap + at the top to add one.`
+  String get rulesEmptyTip {
+    return Intl.message(
+      'No custom rules yet. Tap + at the top to add one.',
+      name: 'rulesEmptyTip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Takes effect on save and runs before the subscription's rules. Manage all of them under Tools → Rules.`
+  String get requestRuleFooter {
+    return Intl.message(
+      'Takes effect on save and runs before the subscription\'s rules. Manage all of them under Tools → Rules.',
+      name: 'requestRuleFooter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auto node groups`
+  String get autoGroups {
+    return Intl.message(
+      'Auto node groups',
+      name: 'autoGroups',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pick the fastest node of a region and switch when it fails; usable in rules`
+  String get autoGroupsDesc {
+    return Intl.message(
+      'Pick the fastest node of a region and switch when it fails; usable in rules',
+      name: 'autoGroupsDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Auto node groups are added to every subscription and survive updates and switching.\n\nBy region: every node whose name marks that region, e.g. Japan matches 🇯🇵, 日本, Tokyo, JP.\n\nManual: only the nodes you tick.\n\nOnce connected, the group shows on the Proxies page and in a rule's policy list.`
+  String get autoGroupsHelp {
+    return Intl.message(
+      'Auto node groups are added to every subscription and survive updates and switching.\n\nBy region: every node whose name marks that region, e.g. Japan matches 🇯🇵, 日本, Tokyo, JP.\n\nManual: only the nodes you tick.\n\nOnce connected, the group shows on the Proxies page and in a rule\'s policy list.',
+      name: 'autoGroupsHelp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No auto node groups yet. Tap + at the top to add one.`
+  String get autoGroupsEmptyTip {
+    return Intl.message(
+      'No auto node groups yet. Tap + at the top to add one.',
+      name: 'autoGroupsEmptyTip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `These groups show on the Proxies page and in rule policies. Tap one to edit or delete it.`
+  String get autoGroupsFooter {
+    return Intl.message(
+      'These groups show on the Proxies page and in rule policies. Tap one to edit or delete it.',
+      name: 'autoGroupsFooter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add node group`
+  String get addAutoGroup {
+    return Intl.message(
+      'Add node group',
+      name: 'addAutoGroup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Edit node group`
+  String get editAutoGroup {
+    return Intl.message(
+      'Edit node group',
+      name: 'editAutoGroup',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{region} Auto`
+  String autoGroupDefaultName(Object region) {
+    return Intl.message(
+      '$region Auto',
+      name: 'autoGroupDefaultName',
+      desc: '',
+      args: [region],
+    );
+  }
+
+  /// `A node group with this name already exists`
+  String get autoGroupNameExists {
+    return Intl.message(
+      'A node group with this name already exists',
+      name: 'autoGroupNameExists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nodes`
+  String get autoGroupSource {
+    return Intl.message('Nodes', name: 'autoGroupSource', desc: '', args: []);
+  }
+
+  /// `By region`
+  String get autoGroupByRegion {
+    return Intl.message(
+      'By region',
+      name: 'autoGroupByRegion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pick manually`
+  String get autoGroupManual {
+    return Intl.message(
+      'Pick manually',
+      name: 'autoGroupManual',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `{count} picked nodes`
+  String autoGroupManualCount(Object count) {
+    return Intl.message(
+      '$count picked nodes',
+      name: 'autoGroupManualCount',
+      desc: '',
+      args: [count],
+    );
+  }
+
+  /// `Region`
+  String get autoGroupRegion {
+    return Intl.message('Region', name: 'autoGroupRegion', desc: '', args: []);
+  }
+
+  /// `Matches nodes by name, so new nodes join after a subscription update.`
+  String get autoGroupRegionHint {
+    return Intl.message(
+      'Matches nodes by name, so new nodes join after a subscription update.',
+      name: 'autoGroupRegionHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Switching`
+  String get autoGroupStrategy {
+    return Intl.message(
+      'Switching',
+      name: 'autoGroupStrategy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Fastest`
+  String get autoGroupFastest {
+    return Intl.message(
+      'Fastest',
+      name: 'autoGroupFastest',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Only on failure`
+  String get autoGroupFailover {
+    return Intl.message(
+      'Only on failure',
+      name: 'autoGroupFailover',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Tests latency every 5 minutes and uses the fastest node; it only moves when another is 100 ms faster, so it does not flap. A dead node is replaced at once.`
+  String get autoGroupFastestHint {
+    return Intl.message(
+      'Tests latency every 5 minutes and uses the fastest node; it only moves when another is 100 ms faster, so it does not flap. A dead node is replaced at once.',
+      name: 'autoGroupFastestHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Always uses the first node that works and moves on only when it fails. Fewest switches.`
+  String get autoGroupFailoverHint {
+    return Intl.message(
+      'Always uses the first node that works and moves on only when it fails. Fewest switches.',
+      name: 'autoGroupFailoverHint',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nodes`
+  String get autoGroupNodes {
+    return Intl.message('Nodes', name: 'autoGroupNodes', desc: '', args: []);
+  }
+
+  /// `Pick at least one node`
+  String get autoGroupNodesEmpty {
+    return Intl.message(
+      'Pick at least one node',
+      name: 'autoGroupNodesEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No node list yet. Connect the subscription once, then pick.`
+  String get autoGroupNoNodesTip {
+    return Intl.message(
+      'No node list yet. Connect the subscription once, then pick.',
+      name: 'autoGroupNoNodesTip',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Using {node} ({count} nodes)`
+  String autoGroupNow(Object node, Object count) {
+    return Intl.message(
+      'Using $node ($count nodes)',
+      name: 'autoGroupNow',
+      desc: '',
+      args: [node, count],
+    );
+  }
+
+  /// `No matching nodes`
+  String get autoGroupNoMatch {
+    return Intl.message(
+      'No matching nodes',
+      name: 'autoGroupNoMatch',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Hong Kong`
+  String get regionHongKong {
+    return Intl.message(
+      'Hong Kong',
+      name: 'regionHongKong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Taiwan`
+  String get regionTaiwan {
+    return Intl.message('Taiwan', name: 'regionTaiwan', desc: '', args: []);
+  }
+
+  /// `Japan`
+  String get regionJapan {
+    return Intl.message('Japan', name: 'regionJapan', desc: '', args: []);
+  }
+
+  /// `Singapore`
+  String get regionSingapore {
+    return Intl.message(
+      'Singapore',
+      name: 'regionSingapore',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `United States`
+  String get regionUnitedStates {
+    return Intl.message(
+      'United States',
+      name: 'regionUnitedStates',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `South Korea`
+  String get regionSouthKorea {
+    return Intl.message(
+      'South Korea',
+      name: 'regionSouthKorea',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `United Kingdom`
+  String get regionUnitedKingdom {
+    return Intl.message(
+      'United Kingdom',
+      name: 'regionUnitedKingdom',
       desc: '',
       args: [],
     );

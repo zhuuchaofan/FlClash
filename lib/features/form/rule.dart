@@ -2,11 +2,13 @@ library;
 
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/enum/enum.dart';
-import 'package:fl_clash/models/clash_config.dart';
+import 'package:fl_clash/models/models.dart';
+import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/state.dart';
 import 'package:fl_clash/ui/icons/icons.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'form_page.dart';
 import 'form_row.dart';
@@ -245,16 +247,46 @@ class RuleStatusItem extends StatelessWidget {
 
 enum _RuleField { content, target }
 
-class RuleForm extends StatefulWidget {
-  final Rule? rule;
+const _simpleRuleActions = [
+  RuleAction.DOMAIN_SUFFIX,
+  RuleAction.DOMAIN,
+  RuleAction.DOMAIN_KEYWORD,
+  RuleAction.GEOSITE,
+  RuleAction.GEOIP,
+  RuleAction.IP_CIDR,
+];
 
-  const RuleForm({super.key, this.rule});
+const _simpleBaseTargets = ['MATCH', 'DIRECT', 'REJECT'];
 
-  @override
-  State<RuleForm> createState() => _RuleFormState();
+/// Group and node names of the running config, groups first; a rule may name
+/// either, and only the names the current subscription defines resolve.
+List<String> _proxyTargetsOf(List<Group> groups) {
+  final names = <String>{};
+  for (final group in groups) {
+    if (group.name != GroupName.GLOBAL.name) names.add(group.name);
+  }
+  for (final group in groups) {
+    for (final proxy in group.all) {
+      names.add(proxy.name);
+    }
+  }
+  names.removeAll([...RuleTarget.ruleTargetNames, RuleAction.MATCH.value]);
+  return names.toList();
 }
 
-class _RuleFormState extends State<RuleForm> {
+class RuleForm extends ConsumerStatefulWidget {
+  final Rule? rule;
+
+  /// Prefills a new rule; unlike [rule], saving it adds instead of editing.
+  final Rule? draft;
+
+  const RuleForm({super.key, this.rule, this.draft});
+
+  @override
+  ConsumerState<RuleForm> createState() => _RuleFormState();
+}
+
+class _RuleFormState extends ConsumerState<RuleForm> {
   late RuleAction _ruleAction;
   late String _ruleTarget;
   late final TextEditingController _contentController;
@@ -265,9 +297,15 @@ class _RuleFormState extends State<RuleForm> {
   @override
   void initState() {
     super.initState();
-    final rule = widget.rule;
-    _ruleAction = rule?.ruleAction ?? RuleAction.addedRuleActions.first;
-    _ruleTarget = rule?.ruleTarget ?? RuleTarget.ruleTargetNames.first;
+    final rule = widget.rule ?? widget.draft;
+    _ruleAction =
+        rule?.ruleAction ??
+        (simpleUi
+            ? _simpleRuleActions.first
+            : RuleAction.addedRuleActions.first);
+    _ruleTarget =
+        rule?.ruleTarget ??
+        (simpleUi ? RuleAction.MATCH.value : RuleTarget.ruleTargetNames.first);
     _contentController = TextEditingController(text: rule?.content);
     _noResolve = rule?.noResolve ?? false;
     _src = rule?.src ?? false;
@@ -315,7 +353,7 @@ class _RuleFormState extends State<RuleForm> {
       return;
     }
     Navigator.of(context).pop(
-      (widget.rule ?? Rule(id: snowflake.id)).copyWith(
+      (widget.rule ?? widget.draft ?? Rule(id: snowflake.id)).copyWith(
         ruleAction: _ruleAction,
         content: _contentController.text,
         ruleTarget: _ruleTarget,
@@ -325,9 +363,59 @@ class _RuleFormState extends State<RuleForm> {
     );
   }
 
-  String _targetLabel(String target) => target == RuleAction.MATCH.value
-      ? context.appLocalizations.matchTarget
-      : target;
+  String _targetLabel(String target) {
+    final appLocalizations = context.appLocalizations;
+    if (simpleUi) {
+      switch (target) {
+        case 'MATCH':
+          return appLocalizations.ruleTargetProxy;
+        case 'DIRECT':
+          return appLocalizations.ruleTargetDirect;
+        case 'REJECT':
+          return appLocalizations.ruleTargetReject;
+      }
+    }
+    return target == RuleAction.MATCH.value
+        ? appLocalizations.matchTarget
+        : target;
+  }
+
+  String _actionLabel(RuleAction action) {
+    if (!simpleUi) return action.value;
+    final appLocalizations = context.appLocalizations;
+    return switch (action) {
+      RuleAction.DOMAIN_SUFFIX => appLocalizations.ruleTypeDomainSuffix,
+      RuleAction.DOMAIN => appLocalizations.ruleTypeDomain,
+      RuleAction.DOMAIN_KEYWORD => appLocalizations.ruleTypeDomainKeyword,
+      RuleAction.GEOSITE => appLocalizations.ruleTypeGeosite,
+      RuleAction.GEOIP => appLocalizations.ruleTypeGeoip,
+      RuleAction.IP_CIDR => appLocalizations.ruleTypeIpCidr,
+      _ => action.value,
+    };
+  }
+
+  String? _actionHint(RuleAction action) {
+    final appLocalizations = context.appLocalizations;
+    return switch (action) {
+      RuleAction.DOMAIN_SUFFIX => appLocalizations.ruleTypeDomainSuffixHint,
+      RuleAction.DOMAIN => appLocalizations.ruleTypeDomainHint,
+      RuleAction.DOMAIN_KEYWORD => appLocalizations.ruleTypeDomainKeywordHint,
+      RuleAction.GEOSITE => appLocalizations.ruleTypeGeositeHint,
+      RuleAction.GEOIP => appLocalizations.ruleTypeGeoipHint,
+      RuleAction.IP_CIDR => appLocalizations.ruleTypeIpCidrHint,
+      _ => null,
+    };
+  }
+
+  String? _contentExample(RuleAction action) => switch (action) {
+    RuleAction.DOMAIN_SUFFIX => 'google.com',
+    RuleAction.DOMAIN => 'www.google.com',
+    RuleAction.DOMAIN_KEYWORD => 'google',
+    RuleAction.GEOSITE => 'youtube',
+    RuleAction.GEOIP => 'JP',
+    RuleAction.IP_CIDR => '192.168.0.0/16',
+    _ => null,
+  };
 
   Widget _buildSwitchRow({
     required String title,
@@ -345,7 +433,16 @@ class _RuleFormState extends State<RuleForm> {
   Widget build(BuildContext context) {
     final appLocalizations = context.appLocalizations;
     final issue = _attempted ? _issue() : null;
-    final targets = [...RuleTarget.ruleTargetNames, RuleAction.MATCH.value];
+    final targets = simpleUi
+        ? [..._simpleBaseTargets, ..._proxyTargetsOf(ref.watch(groupsProvider))]
+        : [...RuleTarget.ruleTargetNames, RuleAction.MATCH.value];
+    final actions = simpleUi
+        ? [
+            if (!_simpleRuleActions.contains(_ruleAction)) _ruleAction,
+            ..._simpleRuleActions,
+          ]
+        : RuleAction.addedRuleActions;
+    final actionHint = simpleUi ? _actionHint(_ruleAction) : null;
     return FormPage(
       title: widget.rule != null
           ? appLocalizations.editRule
@@ -355,12 +452,15 @@ class _RuleFormState extends State<RuleForm> {
       children: [
         generateSection(
           title: appLocalizations.basicInfo,
+          footer: simpleUi
+              ? [?actionHint, appLocalizations.ruleTargetHint].join('\n\n')
+              : null,
           items: [
             ListItem<RuleAction>.options(
               title: Text(appLocalizations.proxyType),
-              options: RuleAction.addedRuleActions,
+              options: actions,
               value: _ruleAction,
-              textBuilder: (action) => action.value,
+              textBuilder: _actionLabel,
               onChanged: (action) {
                 setState(() {
                   _ruleAction = action;
@@ -372,7 +472,10 @@ class _RuleFormState extends State<RuleForm> {
               invalid: issue?.field == _RuleField.content,
               trailing: FormRowTextField(
                 controller: _contentController,
-                hintText: appLocalizations.inputRuleContent,
+                hintText: simpleUi
+                    ? _contentExample(_ruleAction) ??
+                          appLocalizations.inputRuleContent
+                    : appLocalizations.inputRuleContent,
                 autocorrect: false,
                 inputFormatters: TextInputLimits.limit(TextInputLimits.rule),
                 onChanged: (_) {

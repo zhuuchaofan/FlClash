@@ -141,10 +141,14 @@ func mergeProfileBase(base *SetupBase) (*yaml.Node, error) {
 	if err != nil {
 		return nil, err
 	}
+	appGroups := resolveAlias(mappingValue(root, "proxy-groups"))
 	for _, key := range profileBaseSections {
 		if value := mappingValue(profile, key); value != nil {
 			setMappingValue(root, key, value)
 		}
+	}
+	if groups := appendGroups(mappingValue(root, "proxy-groups"), appGroups); groups != nil {
+		setMappingValue(root, "proxy-groups", groups)
 	}
 	rules, err := appendRules(mappingValue(root, "rules"), mappingValue(profile, "rules"))
 	if err != nil {
@@ -216,6 +220,38 @@ func setMappingValue(mapping *yaml.Node, key string, value *yaml.Node) {
 		&yaml.Node{Kind: yaml.ScalarNode, Tag: "!!str", Value: key},
 		value,
 	)
+}
+
+// The overlay's groups are the app's own; the profile's win on a name clash.
+func appendGroups(profile, added *yaml.Node) *yaml.Node {
+	if added == nil || added.Kind != yaml.SequenceNode || len(added.Content) == 0 {
+		return nil
+	}
+	profile = resolveAlias(profile)
+	if profile == nil || isNull(profile) {
+		return added
+	}
+	if profile.Kind != yaml.SequenceNode {
+		return nil
+	}
+	names := map[string]bool{}
+	for _, group := range profile.Content {
+		if group = resolveAlias(group); group.Kind == yaml.MappingNode {
+			if name := mappingValue(group, "name"); name != nil {
+				names[name.Value] = true
+			}
+		}
+	}
+	content := append([]*yaml.Node{}, profile.Content...)
+	for _, group := range added.Content {
+		if group.Kind == yaml.MappingNode {
+			if name := mappingValue(group, "name"); name != nil && names[name.Value] {
+				continue
+			}
+		}
+		content = append(content, group)
+	}
+	return &yaml.Node{Kind: yaml.SequenceNode, Tag: "!!seq", Content: content}
 }
 
 // The overlay's rules are the ones the host adds in front of the profile's.

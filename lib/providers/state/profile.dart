@@ -70,6 +70,9 @@ Future<SetupState> setupState(Ref ref, int? profileId) async {
           ),
         );
   final allProfileProviders = ref.watch(profileProvidersProvider);
+  final autoGroups = ref.watch(
+    appSettingProvider.select((state) => state.autoGroups),
+  );
   final mitmModules =
       mitmFeature &&
           ref.watch(
@@ -106,6 +109,7 @@ Future<SetupState> setupState(Ref ref, int? profileId) async {
     }
   }
   return SetupState(
+    autoGroups: autoGroups,
     mitmModules: mitmModules == null
         ? const []
         : await mitmModuleSources(await mitmModules),
