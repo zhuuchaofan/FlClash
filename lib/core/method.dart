@@ -16,6 +16,7 @@ enum CoreMethod {
   configRead('config.read'),
   profileBase('profile.base'),
   profileOutbounds('profile.outbounds'),
+  profileRules('profile.rules'),
   profileBuild('profile.build'),
   profileClearEffect('profile.clearEffect'),
   proxyList('proxy.list'),

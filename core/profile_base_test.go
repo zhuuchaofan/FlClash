@@ -457,3 +457,37 @@ func TestLoadConfigWithBaseRejectsAnOverlayGroupNamedLikeAProfileGroup(t *testin
 		t.Fatalf("loadConfigWithBase = %v, want the duplicate group named", err)
 	}
 }
+
+func TestHandleGetProfileRulesListsTheRulesAsWritten(t *testing.T) {
+	rules, err := handleGetProfileRules(PathParams{Path: writeBaseProfile(t, baseProfile)})
+
+	if err != nil {
+		t.Fatalf("handleGetProfileRules = %v", err)
+	}
+	want := []string{"DOMAIN-SUFFIX,example.com,g", "match,DIRECT", "MATCH,g"}
+	if !reflect.DeepEqual(rules, want) {
+		t.Errorf("rules = %v, want %v", rules, want)
+	}
+}
+
+func TestLoadConfigWithBaseLeavesOutTheDisabledProfileRules(t *testing.T) {
+	path := writeBaseProfile(t, baseProfile)
+	base, err := handleGetProfileBase(PathParams{Path: path})
+	if err != nil {
+		t.Fatalf("handleGetProfileBase = %v", err)
+	}
+
+	cfg, err := loadConfigWithBase(&SetupBase{
+		Path:          path,
+		Overlay:       overlayOf(t, base, []string{"DOMAIN,added.test,DIRECT"}, nil),
+		DisabledRules: []string{"DOMAIN-SUFFIX,example.com,g", "DOMAIN,added.test,DIRECT"},
+	}, filepath.Join(t.TempDir(), "config.yaml"))
+
+	if err != nil {
+		t.Fatalf("loadConfigWithBase = %v", err)
+	}
+	want := []string{"Domain,added.test,DIRECT", "Match,,DIRECT", "Match,,g"}
+	if got := ruleStrings(cfg); !reflect.DeepEqual(got, want) {
+		t.Errorf("rules = %v, want only the profile's disabled rule left out", got)
+	}
+}

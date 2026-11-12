@@ -35,8 +35,12 @@ abstract class CoreOptions with _$CoreOptions {
 
 @freezed
 abstract class SetupBase with _$SetupBase {
-  const factory SetupBase({required String path, required String overlay}) =
-      _SetupBase;
+  const factory SetupBase({
+    required String path,
+    required String overlay,
+    @JsonKey(name: 'disabled-rules', includeIfNull: false)
+    List<String>? disabledRules,
+  }) = _SetupBase;
 
   factory SetupBase.fromJson(Map<String, dynamic> json) =>
       _$SetupBaseFromJson(json);

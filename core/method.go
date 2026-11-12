@@ -195,6 +195,7 @@ var methodHandlers = map[CoreMethod]methodHandler{
 
 	profileBaseMethod:        withFallible(handleGetProfileBase),
 	profileOutboundsMethod:   withFallible(handleGetProfileOutbounds),
+	profileRulesMethod:       withFallible(handleGetProfileRules),
 	profileBuildMethod:       withFallible(handleBuildProfile),
 	profileClearEffectMethod: command(handleClearEffect),
 

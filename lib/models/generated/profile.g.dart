@@ -57,6 +57,11 @@ _Profile _$ProfileFromJson(Map<String, dynamic> json) => _Profile(
   scriptId: (json['scriptId'] as num?)?.toInt(),
   matchTarget: json['matchTarget'] as String?,
   order: (json['order'] as num?)?.toInt(),
+  disabledRules:
+      (json['disabledRules'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toSet() ??
+      const {},
   overrides: json['overrides'] == null
       ? const ProfileOverrides()
       : ProfileOverrides.safeFromJson(
@@ -81,6 +86,7 @@ Map<String, dynamic> _$ProfileToJson(_Profile instance) => <String, dynamic>{
   'scriptId': instance.scriptId,
   'matchTarget': instance.matchTarget,
   'order': instance.order,
+  'disabledRules': instance.disabledRules.toList(),
   'overrides': instance.overrides,
 };
 

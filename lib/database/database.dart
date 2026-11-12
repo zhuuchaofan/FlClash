@@ -56,7 +56,7 @@ class Database extends _$Database {
   Database([QueryExecutor? executor]) : super(executor ?? _openConnection());
 
   @override
-  int get schemaVersion => 23;
+  int get schemaVersion => 24;
 
   static LazyDatabase _openConnection() {
     return LazyDatabase(() async {
@@ -125,6 +125,9 @@ class Database extends _$Database {
         }
         if (from < 23) {
           await m.alterTable(TableMigration(mitmModules));
+        }
+        if (from < 24) {
+          await _addColumnIfMissing(m, profiles, profiles.disabledRules);
         }
       }),
       beforeOpen: (_) => customStatement('PRAGMA foreign_keys = ON'),

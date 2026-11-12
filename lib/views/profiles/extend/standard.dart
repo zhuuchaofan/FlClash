@@ -91,6 +91,10 @@ class _StandardContentState extends ConsumerState<StandardContent> {
     BaseNavigator.push(context, _EditGlobalAddedRules(_profileId));
   }
 
+  void _handleToEditSubscriptionRules() {
+    BaseNavigator.push(context, _EditSubscriptionRules(_profileId));
+  }
+
   Widget _buildRuleItem(List<Rule> rules, int index, Set<dynamic> selected) {
     final rule = rules[index];
     return ReorderDragStartListener(
@@ -185,6 +189,12 @@ class _StandardContentState extends ConsumerState<StandardContent> {
             child: MoreActionButton(
               label: appLocalizations.controlGlobalAddedRules,
               onPressed: _handleToEditGlobalAddedRules,
+            ),
+          ),
+          SliverToBoxAdapter(
+            child: MoreActionButton(
+              label: appLocalizations.subscriptionRules,
+              onPressed: _handleToEditSubscriptionRules,
             ),
           ),
         ],
@@ -381,6 +391,101 @@ class _EditGlobalAddedRulesState extends ConsumerState<_EditGlobalAddedRules> {
                   child: MoreActionButton(
                     label: appLocalizations.goToConfigureAddedRules,
                     onPressed: _handleToAddedRules,
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: SizedBox(height: 12 + context.bottomInset),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _EditSubscriptionRules extends ConsumerStatefulWidget {
+  final int profileId;
+
+  const _EditSubscriptionRules(this.profileId);
+
+  @override
+  ConsumerState<_EditSubscriptionRules> createState() =>
+      _EditSubscriptionRulesState();
+}
+
+class _EditSubscriptionRulesState
+    extends ConsumerState<_EditSubscriptionRules> {
+  var _query = SearchQuery('');
+  final _parsed = <String, Rule>{};
+
+  int get profileId => widget.profileId;
+
+  // A subscription can carry tens of thousands of rules, so each is parsed
+  // only once it scrolls into view.
+  Rule _ruleOf(String value) => _parsed[value] ??= Rule.parse(value);
+
+  void _handleChange(String rule, bool enabled) {
+    ref.read(profilesProvider.notifier).updateProfile(profileId, (state) {
+      final disabledRules = {...state.disabledRules};
+      if (enabled) {
+        disabledRules.remove(rule);
+      } else {
+        disabledRules.add(rule);
+      }
+      return state.copyWith(disabledRules: disabledRules);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final appLocalizations = context.appLocalizations;
+    final disabledRules = ref.watch(
+      profileProvider(
+        profileId,
+      ).select((state) => state?.disabledRules ?? const <String>{}),
+    );
+    final rulesState = ref.watch(subscriptionRulesProvider(profileId));
+    final rules = (rulesState.value ?? const <String>[])
+        .whereMatches(_query, (rule) => [rule])
+        .toList();
+    return Scaffold(
+      title: appLocalizations.subscriptionRules,
+      searchState: AppBarSearchState(
+        onSearch: (query) => setState(() => _query = SearchQuery(query)),
+      ),
+      body: NullStatusSwitcher(
+        isLoading: rulesState.isLoading,
+        isEmpty: rules.isEmpty,
+        isSearching: _query.isNotEmpty,
+        nullStatus: NullStatus(
+          label: appLocalizations.nullTip(appLocalizations.rule),
+          illustration: NullStatusIllustration.rules,
+        ),
+        child: ScrollConfiguration(
+          behavior: const ShowBarScrollBehavior(),
+          child: Builder(
+            builder: (context) => CustomScrollView(
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ).copyWith(top: context.contentTopPadding),
+                  sliver: SliverFixedExtentList.builder(
+                    itemExtent: ruleItemHeight,
+                    itemCount: rules.length,
+                    itemBuilder: (context, index) {
+                      final rule = rules[index];
+                      return ItemPositionProvider(
+                        position: ItemPosition.get(index, rules.length),
+                        child: RuleStatusItem(
+                          status: !disabledRules.contains(rule),
+                          rule: _ruleOf(rule),
+                          onChange: (status) => _handleChange(rule, status),
+                        ),
+                      );
+                    },
                   ),
                 ),
                 SliverToBoxAdapter(

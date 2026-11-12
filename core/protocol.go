@@ -30,6 +30,7 @@ const (
 
 	profileBaseMethod        CoreMethod = "profile.base"
 	profileOutboundsMethod   CoreMethod = "profile.outbounds"
+	profileRulesMethod       CoreMethod = "profile.rules"
 	profileBuildMethod       CoreMethod = "profile.build"
 	profileClearEffectMethod CoreMethod = "profile.clearEffect"
 
@@ -134,6 +135,8 @@ type CoreOptions struct {
 type SetupBase struct {
 	Path    string `json:"path"`
 	Overlay string `json:"overlay"`
+	// Rules of the profile, as written, that the merge leaves out.
+	DisabledRules []string `json:"disabled-rules,omitempty"`
 }
 
 type ProfileBase struct {

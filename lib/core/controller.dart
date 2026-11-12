@@ -198,6 +198,12 @@ extension type CoreController._(CoreHandlerInterface _interface)
     );
   }
 
+  Future<List<String>> getProfileRules(int id) async {
+    return _interface.getProfileRules(
+      await appPath.getProfilePath(id.toString()),
+    );
+  }
+
   Future<String> buildProfile(SetupBase base) async {
     return readSpilledText(await _interface.buildProfile(base));
   }

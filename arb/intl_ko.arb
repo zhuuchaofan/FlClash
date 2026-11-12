@@ -1077,5 +1077,6 @@
   "fallbackFilterGeositeDesc": "이 GeoSite 분류의 도메인은 바로 Fallback으로 확인합니다.",
   "fallbackFilterIpcidrDesc": "Nameserver가 이 범위의 IP를 반환하면 Fallback 결과를 사용합니다.",
   "fallbackFilterDomainDesc": "이 도메인은 바로 Fallback으로 확인합니다.",
-  "userAdditionsLeftOut": "구성 로드에 실패하여 사용자 규칙과 그룹을 임시로 제외했습니다: {error}"
+  "userAdditionsLeftOut": "구성 로드에 실패하여 사용자 규칙과 그룹을 임시로 제외했습니다: {error}",
+  "subscriptionRules": "구독 규칙"
 }

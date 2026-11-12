@@ -40,10 +40,17 @@ Map<String, dynamic> _$CoreOptionsToJson(_CoreOptions instance) =>
 _SetupBase _$SetupBaseFromJson(Map<String, dynamic> json) => _SetupBase(
   path: json['path'] as String,
   overlay: json['overlay'] as String,
+  disabledRules: (json['disabled-rules'] as List<dynamic>?)
+      ?.map((e) => e as String)
+      .toList(),
 );
 
 Map<String, dynamic> _$SetupBaseToJson(_SetupBase instance) =>
-    <String, dynamic>{'path': instance.path, 'overlay': instance.overlay};
+    <String, dynamic>{
+      'path': instance.path,
+      'overlay': instance.overlay,
+      'disabled-rules': ?instance.disabledRules,
+    };
 
 _ProfileBase _$ProfileBaseFromJson(Map<String, dynamic> json) => _ProfileBase(
   config: json['config'] as Map<String, dynamic>,

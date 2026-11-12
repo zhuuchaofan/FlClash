@@ -78,6 +78,7 @@ class _RecordingCoreHandler extends CoreHandlerInterface {
         'mode': 'rule',
         'rule': ['MATCH,DIRECT'],
       },
+      CoreMethod.profileRules => ['DOMAIN,a.test,DIRECT', 'MATCH,g'],
       CoreMethod.profileOutbounds => {
         'proxies': [
           {'name': 'a', 'type': 'ss'},
@@ -585,6 +586,32 @@ void main() {
     ]);
     expect(handler.calls[CoreMethod.profileBuild], base.toJson());
     expect(built, '/home/responses/1.yaml');
+  });
+
+  test('the profile rules cross as a list of strings', () async {
+    final handler = _RecordingCoreHandler();
+
+    final rules = await handler.getProfileRules('/profiles/1.yaml');
+
+    expect(handler.calls[CoreMethod.profileRules], {
+      'path': '/profiles/1.yaml',
+    });
+    expect(rules, ['DOMAIN,a.test,DIRECT', 'MATCH,g']);
+  });
+
+  test('a setup base sends its disabled rules only when it has some', () {
+    expect(
+      const SetupBase(path: 'p', overlay: 'o').toJson(),
+      isNot(contains('disabled-rules')),
+    );
+    expect(
+      const SetupBase(
+        path: 'p',
+        overlay: 'o',
+        disabledRules: ['MATCH,g'],
+      ).toJson()['disabled-rules'],
+      ['MATCH,g'],
+    );
   });
 
   test('a proxy definition crosses as a nested mapping or null', () async {

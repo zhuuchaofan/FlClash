@@ -559,15 +559,20 @@ class SetupAction extends _$SetupAction {
       return (yaml: res.yaml, md5: res.md5, counts: res.counts, base: null);
     }
     final (:base, :path) = profileBase;
+    final disabledRules = setupState.disabledRules.toList()..sort();
     return (
       yaml: res.yaml,
-      md5: '${res.md5}${base.digest}'.toMd5(),
+      md5: '${res.md5}${base.digest}${disabledRules.join('\n')}'.toMd5(),
       counts: (
         groups: res.counts.groups + base.proxyGroups,
         proxies: res.counts.proxies + base.proxies,
         rules: res.counts.rules + base.rules,
       ),
-      base: SetupBase(path: path, overlay: res.yaml),
+      base: SetupBase(
+        path: path,
+        overlay: res.yaml,
+        disabledRules: disabledRules.isEmpty ? null : disabledRules,
+      ),
     );
   }
 
@@ -670,11 +675,17 @@ class SetupAction extends _$SetupAction {
   }) async {
     if (setupState == null ||
         setupState.profileType == ProfileType.custom ||
-        (setupState.addedRules.isEmpty && setupState.proxyGroups.isEmpty)) {
+        (setupState.addedRules.isEmpty &&
+            setupState.proxyGroups.isEmpty &&
+            setupState.disabledRules.isEmpty)) {
       return false;
     }
     final fallback = await getProfile(
-      setupState: setupState.copyWith(addedRules: [], proxyGroups: []),
+      setupState: setupState.copyWith(
+        addedRules: [],
+        proxyGroups: [],
+        disabledRules: {},
+      ),
       patchConfig: patchConfig,
     );
     if (fallback.base == null) {

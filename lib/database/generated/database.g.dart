@@ -110,6 +110,15 @@ class $ProfilesTable extends Profiles
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  @override
+  late final GeneratedColumnWithTypeConverter<Set<String>?, String>
+  disabledRules = GeneratedColumn<String>(
+    'disabled_rules',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  ).withConverter<Set<String>?>($ProfilesTable.$converterdisabledRulesn);
   static const VerificationMeta _autoUpdateDurationMillisMeta =
       const VerificationMeta('autoUpdateDurationMillis');
   @override
@@ -192,6 +201,7 @@ class $ProfilesTable extends Profiles
     extendType,
     scriptId,
     matchTarget,
+    disabledRules,
     autoUpdateDurationMillis,
     subscriptionInfo,
     autoUpdate,
@@ -351,6 +361,12 @@ class $ProfilesTable extends Profiles
         DriftSqlType.string,
         data['${effectivePrefix}match_target'],
       ),
+      disabledRules: $ProfilesTable.$converterdisabledRulesn.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.string,
+          data['${effectivePrefix}disabled_rules'],
+        ),
+      ),
       autoUpdateDurationMillis: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}auto_update_duration_millis'],
@@ -399,6 +415,10 @@ class $ProfilesTable extends Profiles
       const EnumNameConverter<ProfileType>(ProfileType.values);
   static JsonTypeConverter2<ExtendType, String, String> $converterextendType =
       const EnumNameConverter<ExtendType>(ExtendType.values);
+  static TypeConverter<Set<String>, String> $converterdisabledRules =
+      const StringSetConverter();
+  static TypeConverter<Set<String>?, String?> $converterdisabledRulesn =
+      NullAwareTypeConverter.wrap($converterdisabledRules);
   static TypeConverter<SubscriptionInfo?, String?> $convertersubscriptionInfo =
       const SubscriptionInfoConverter();
   static TypeConverter<Map<String, String>, String> $converterselectedMap =
@@ -420,6 +440,7 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
   final ExtendType extendType;
   final int? scriptId;
   final String? matchTarget;
+  final Set<String>? disabledRules;
   final int autoUpdateDurationMillis;
   final SubscriptionInfo? subscriptionInfo;
   final bool autoUpdate;
@@ -438,6 +459,7 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
     required this.extendType,
     this.scriptId,
     this.matchTarget,
+    this.disabledRules,
     required this.autoUpdateDurationMillis,
     this.subscriptionInfo,
     required this.autoUpdate,
@@ -474,6 +496,11 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
     }
     if (!nullToAbsent || matchTarget != null) {
       map['match_target'] = Variable<String>(matchTarget);
+    }
+    if (!nullToAbsent || disabledRules != null) {
+      map['disabled_rules'] = Variable<String>(
+        $ProfilesTable.$converterdisabledRulesn.toSql(disabledRules),
+      );
     }
     map['auto_update_duration_millis'] = Variable<int>(
       autoUpdateDurationMillis,
@@ -527,6 +554,9 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
       matchTarget: matchTarget == null && nullToAbsent
           ? const Value.absent()
           : Value(matchTarget),
+      disabledRules: disabledRules == null && nullToAbsent
+          ? const Value.absent()
+          : Value(disabledRules),
       autoUpdateDurationMillis: Value(autoUpdateDurationMillis),
       subscriptionInfo: subscriptionInfo == null && nullToAbsent
           ? const Value.absent()
@@ -563,6 +593,7 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
       ),
       scriptId: serializer.fromJson<int?>(json['scriptId']),
       matchTarget: serializer.fromJson<String?>(json['matchTarget']),
+      disabledRules: serializer.fromJson<Set<String>?>(json['disabledRules']),
       autoUpdateDurationMillis: serializer.fromJson<int>(
         json['autoUpdateDurationMillis'],
       ),
@@ -596,6 +627,7 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
       ),
       'scriptId': serializer.toJson<int?>(scriptId),
       'matchTarget': serializer.toJson<String?>(matchTarget),
+      'disabledRules': serializer.toJson<Set<String>?>(disabledRules),
       'autoUpdateDurationMillis': serializer.toJson<int>(
         autoUpdateDurationMillis,
       ),
@@ -621,6 +653,7 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
     ExtendType? extendType,
     Value<int?> scriptId = const Value.absent(),
     Value<String?> matchTarget = const Value.absent(),
+    Value<Set<String>?> disabledRules = const Value.absent(),
     int? autoUpdateDurationMillis,
     Value<SubscriptionInfo?> subscriptionInfo = const Value.absent(),
     bool? autoUpdate,
@@ -643,6 +676,9 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
     extendType: extendType ?? this.extendType,
     scriptId: scriptId.present ? scriptId.value : this.scriptId,
     matchTarget: matchTarget.present ? matchTarget.value : this.matchTarget,
+    disabledRules: disabledRules.present
+        ? disabledRules.value
+        : this.disabledRules,
     autoUpdateDurationMillis:
         autoUpdateDurationMillis ?? this.autoUpdateDurationMillis,
     subscriptionInfo: subscriptionInfo.present
@@ -676,6 +712,9 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
       matchTarget: data.matchTarget.present
           ? data.matchTarget.value
           : this.matchTarget,
+      disabledRules: data.disabledRules.present
+          ? data.disabledRules.value
+          : this.disabledRules,
       autoUpdateDurationMillis: data.autoUpdateDurationMillis.present
           ? data.autoUpdateDurationMillis.value
           : this.autoUpdateDurationMillis,
@@ -707,6 +746,7 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
           ..write('extendType: $extendType, ')
           ..write('scriptId: $scriptId, ')
           ..write('matchTarget: $matchTarget, ')
+          ..write('disabledRules: $disabledRules, ')
           ..write('autoUpdateDurationMillis: $autoUpdateDurationMillis, ')
           ..write('subscriptionInfo: $subscriptionInfo, ')
           ..write('autoUpdate: $autoUpdate, ')
@@ -730,6 +770,7 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
     extendType,
     scriptId,
     matchTarget,
+    disabledRules,
     autoUpdateDurationMillis,
     subscriptionInfo,
     autoUpdate,
@@ -752,6 +793,7 @@ class RawProfile extends DataClass implements Insertable<RawProfile> {
           other.extendType == this.extendType &&
           other.scriptId == this.scriptId &&
           other.matchTarget == this.matchTarget &&
+          other.disabledRules == this.disabledRules &&
           other.autoUpdateDurationMillis == this.autoUpdateDurationMillis &&
           other.subscriptionInfo == this.subscriptionInfo &&
           other.autoUpdate == this.autoUpdate &&
@@ -772,6 +814,7 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
   final Value<ExtendType> extendType;
   final Value<int?> scriptId;
   final Value<String?> matchTarget;
+  final Value<Set<String>?> disabledRules;
   final Value<int> autoUpdateDurationMillis;
   final Value<SubscriptionInfo?> subscriptionInfo;
   final Value<bool> autoUpdate;
@@ -790,6 +833,7 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
     this.extendType = const Value.absent(),
     this.scriptId = const Value.absent(),
     this.matchTarget = const Value.absent(),
+    this.disabledRules = const Value.absent(),
     this.autoUpdateDurationMillis = const Value.absent(),
     this.subscriptionInfo = const Value.absent(),
     this.autoUpdate = const Value.absent(),
@@ -809,6 +853,7 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
     required ExtendType extendType,
     this.scriptId = const Value.absent(),
     this.matchTarget = const Value.absent(),
+    this.disabledRules = const Value.absent(),
     required int autoUpdateDurationMillis,
     this.subscriptionInfo = const Value.absent(),
     required bool autoUpdate,
@@ -835,6 +880,7 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
     Expression<String>? extendType,
     Expression<int>? scriptId,
     Expression<String>? matchTarget,
+    Expression<String>? disabledRules,
     Expression<int>? autoUpdateDurationMillis,
     Expression<String>? subscriptionInfo,
     Expression<bool>? autoUpdate,
@@ -854,6 +900,7 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
       if (extendType != null) 'extend_type': extendType,
       if (scriptId != null) 'script_id': scriptId,
       if (matchTarget != null) 'match_target': matchTarget,
+      if (disabledRules != null) 'disabled_rules': disabledRules,
       if (autoUpdateDurationMillis != null)
         'auto_update_duration_millis': autoUpdateDurationMillis,
       if (subscriptionInfo != null) 'subscription_info': subscriptionInfo,
@@ -876,6 +923,7 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
     Value<ExtendType>? extendType,
     Value<int?>? scriptId,
     Value<String?>? matchTarget,
+    Value<Set<String>?>? disabledRules,
     Value<int>? autoUpdateDurationMillis,
     Value<SubscriptionInfo?>? subscriptionInfo,
     Value<bool>? autoUpdate,
@@ -895,6 +943,7 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
       extendType: extendType ?? this.extendType,
       scriptId: scriptId ?? this.scriptId,
       matchTarget: matchTarget ?? this.matchTarget,
+      disabledRules: disabledRules ?? this.disabledRules,
       autoUpdateDurationMillis:
           autoUpdateDurationMillis ?? this.autoUpdateDurationMillis,
       subscriptionInfo: subscriptionInfo ?? this.subscriptionInfo,
@@ -943,6 +992,11 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
     if (matchTarget.present) {
       map['match_target'] = Variable<String>(matchTarget.value);
     }
+    if (disabledRules.present) {
+      map['disabled_rules'] = Variable<String>(
+        $ProfilesTable.$converterdisabledRulesn.toSql(disabledRules.value),
+      );
+    }
     if (autoUpdateDurationMillis.present) {
       map['auto_update_duration_millis'] = Variable<int>(
         autoUpdateDurationMillis.value,
@@ -990,6 +1044,7 @@ class ProfilesCompanion extends UpdateCompanion<RawProfile> {
           ..write('extendType: $extendType, ')
           ..write('scriptId: $scriptId, ')
           ..write('matchTarget: $matchTarget, ')
+          ..write('disabledRules: $disabledRules, ')
           ..write('autoUpdateDurationMillis: $autoUpdateDurationMillis, ')
           ..write('subscriptionInfo: $subscriptionInfo, ')
           ..write('autoUpdate: $autoUpdate, ')
@@ -5370,6 +5425,7 @@ typedef $$ProfilesTableCreateCompanionBuilder =
       required ExtendType extendType,
       Value<int?> scriptId,
       Value<String?> matchTarget,
+      Value<Set<String>?> disabledRules,
       required int autoUpdateDurationMillis,
       Value<SubscriptionInfo?> subscriptionInfo,
       required bool autoUpdate,
@@ -5390,6 +5446,7 @@ typedef $$ProfilesTableUpdateCompanionBuilder =
       Value<ExtendType> extendType,
       Value<int?> scriptId,
       Value<String?> matchTarget,
+      Value<Set<String>?> disabledRules,
       Value<int> autoUpdateDurationMillis,
       Value<SubscriptionInfo?> subscriptionInfo,
       Value<bool> autoUpdate,
@@ -5536,6 +5593,12 @@ class $$ProfilesTableFilterComposer
   ColumnFilters<String> get matchTarget => $composableBuilder(
     column: $table.matchTarget,
     builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<Set<String>?, Set<String>, String>
+  get disabledRules => $composableBuilder(
+    column: $table.disabledRules,
+    builder: (column) => ColumnWithTypeConverterFilters(column),
   );
 
   ColumnFilters<int> get autoUpdateDurationMillis => $composableBuilder(
@@ -5741,6 +5804,11 @@ class $$ProfilesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get disabledRules => $composableBuilder(
+    column: $table.disabledRules,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get autoUpdateDurationMillis => $composableBuilder(
     column: $table.autoUpdateDurationMillis,
     builder: (column) => ColumnOrderings(column),
@@ -5826,6 +5894,12 @@ class $$ProfilesTableAnnotationComposer
     column: $table.matchTarget,
     builder: (column) => column,
   );
+
+  GeneratedColumnWithTypeConverter<Set<String>?, String> get disabledRules =>
+      $composableBuilder(
+        column: $table.disabledRules,
+        builder: (column) => column,
+      );
 
   GeneratedColumn<int> get autoUpdateDurationMillis => $composableBuilder(
     column: $table.autoUpdateDurationMillis,
@@ -6002,6 +6076,7 @@ class $$ProfilesTableTableManager
                 Value<ExtendType> extendType = const Value.absent(),
                 Value<int?> scriptId = const Value.absent(),
                 Value<String?> matchTarget = const Value.absent(),
+                Value<Set<String>?> disabledRules = const Value.absent(),
                 Value<int> autoUpdateDurationMillis = const Value.absent(),
                 Value<SubscriptionInfo?> subscriptionInfo =
                     const Value.absent(),
@@ -6021,6 +6096,7 @@ class $$ProfilesTableTableManager
                 extendType: extendType,
                 scriptId: scriptId,
                 matchTarget: matchTarget,
+                disabledRules: disabledRules,
                 autoUpdateDurationMillis: autoUpdateDurationMillis,
                 subscriptionInfo: subscriptionInfo,
                 autoUpdate: autoUpdate,
@@ -6041,6 +6117,7 @@ class $$ProfilesTableTableManager
                 required ExtendType extendType,
                 Value<int?> scriptId = const Value.absent(),
                 Value<String?> matchTarget = const Value.absent(),
+                Value<Set<String>?> disabledRules = const Value.absent(),
                 required int autoUpdateDurationMillis,
                 Value<SubscriptionInfo?> subscriptionInfo =
                     const Value.absent(),
@@ -6060,6 +6137,7 @@ class $$ProfilesTableTableManager
                 extendType: extendType,
                 scriptId: scriptId,
                 matchTarget: matchTarget,
+                disabledRules: disabledRules,
                 autoUpdateDurationMillis: autoUpdateDurationMillis,
                 subscriptionInfo: subscriptionInfo,
                 autoUpdate: autoUpdate,

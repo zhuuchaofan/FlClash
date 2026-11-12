@@ -150,6 +150,14 @@ abstract class CoreHandlerInterface {
     );
   }
 
+  Future<List<String>> getProfileRules(String path) {
+    return _query(
+      CoreMethod.profileRules,
+      (data) => [for (final rule in data as List? ?? const []) rule.toString()],
+      arguments: {'path': path},
+    );
+  }
+
   Future<String> buildProfile(SetupBase base) {
     return _query(
       CoreMethod.profileBuild,

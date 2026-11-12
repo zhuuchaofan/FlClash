@@ -74,6 +74,22 @@ func outboundsOf(mappings []map[string]any) []ProfileOutbound {
 
 // The merged config goes to the spill directory, so the host reads it as text
 // and never decodes it.
+func handleGetProfileRules(params PathParams) ([]string, error) {
+	defer scheduleLoadMemoryRelease()
+	buf, err := os.ReadFile(params.Path)
+	if err != nil {
+		return nil, err
+	}
+	raw, err := unmarshalRawConfig(buf)
+	if err != nil {
+		return nil, err
+	}
+	if raw.Rule == nil {
+		return []string{}, nil
+	}
+	return raw.Rule, nil
+}
+
 func handleBuildProfile(base *SetupBase) (string, error) {
 	defer scheduleLoadMemoryRelease()
 	document, err := mergeProfileBase(base)
@@ -154,7 +170,7 @@ func mergeProfileBase(base *SetupBase) (*yaml.Node, error) {
 	if groups != nil {
 		setMappingValue(root, "proxy-groups", groups)
 	}
-	rules, err := appendRules(mappingValue(root, "rules"), mappingValue(profile, "rules"))
+	rules, err := appendRules(mappingValue(root, "rules"), withoutRules(mappingValue(profile, "rules"), base.DisabledRules))
 	if err != nil {
 		return nil, err
 	}
@@ -279,6 +295,25 @@ func appendProxyGroups(added, profile *yaml.Node) (*yaml.Node, error) {
 	content := make([]*yaml.Node, 0, len(profile.Content)+len(added.Content))
 	content = append(append(content, profile.Content...), added.Content...)
 	return &yaml.Node{Kind: yaml.SequenceNode, Tag: "!!seq", Content: content}, nil
+}
+
+func withoutRules(rules *yaml.Node, disabled []string) *yaml.Node {
+	rules = resolveAlias(rules)
+	if len(disabled) == 0 || rules == nil || rules.Kind != yaml.SequenceNode {
+		return rules
+	}
+	skip := make(map[string]bool, len(disabled))
+	for _, rule := range disabled {
+		skip[rule] = true
+	}
+	content := make([]*yaml.Node, 0, len(rules.Content))
+	for _, rule := range rules.Content {
+		if value := resolveAlias(rule); value.Kind == yaml.ScalarNode && skip[value.Value] {
+			continue
+		}
+		content = append(content, rule)
+	}
+	return &yaml.Node{Kind: yaml.SequenceNode, Tag: "!!seq", Content: content}
 }
 
 func resolveAlias(node *yaml.Node) *yaml.Node {

@@ -89,7 +89,7 @@ final class CoreOptionsProvider
   }
 }
 
-String _$coreOptionsHash() => r'ef7cb84b1c8ad89180f56c91cf863376c1ff9db5';
+String _$coreOptionsHash() => r'43945407c97ebce7e8106973f53ca83ce95c861a';
 
 @ProviderFor(setupPatch)
 final setupPatchProvider = SetupPatchProvider._();
@@ -3605,6 +3605,95 @@ final class ClashConfigFamily extends $Family
   String toString() => r'clashConfigProvider';
 }
 
+/// The rules a url or file profile downloaded, as written, which stay in the
+/// Core between setups.
+
+@ProviderFor(subscriptionRules)
+final subscriptionRulesProvider = SubscriptionRulesFamily._();
+
+/// The rules a url or file profile downloaded, as written, which stay in the
+/// Core between setups.
+
+final class SubscriptionRulesProvider
+    extends
+        $FunctionalProvider<
+          AsyncValue<List<String>>,
+          List<String>,
+          FutureOr<List<String>>
+        >
+    with $FutureModifier<List<String>>, $FutureProvider<List<String>> {
+  /// The rules a url or file profile downloaded, as written, which stay in the
+  /// Core between setups.
+  SubscriptionRulesProvider._({
+    required SubscriptionRulesFamily super.from,
+    required int super.argument,
+  }) : super(
+         retry: null,
+         name: r'subscriptionRulesProvider',
+         isAutoDispose: true,
+         dependencies: null,
+         $allTransitiveDependencies: null,
+       );
+
+  @override
+  String debugGetCreateSourceHash() => _$subscriptionRulesHash();
+
+  @override
+  String toString() {
+    return r'subscriptionRulesProvider'
+        ''
+        '($argument)';
+  }
+
+  @$internal
+  @override
+  $FutureProviderElement<List<String>> $createElement(
+    $ProviderPointer pointer,
+  ) => $FutureProviderElement(pointer);
+
+  @override
+  FutureOr<List<String>> create(Ref ref) {
+    final argument = this.argument as int;
+    return subscriptionRules(ref, argument);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SubscriptionRulesProvider && other.argument == argument;
+  }
+
+  @override
+  int get hashCode {
+    return argument.hashCode;
+  }
+}
+
+String _$subscriptionRulesHash() => r'6ed66a90334c967acfb8578ebf084f9203ebf47b';
+
+/// The rules a url or file profile downloaded, as written, which stay in the
+/// Core between setups.
+
+final class SubscriptionRulesFamily extends $Family
+    with $FunctionalFamilyOverride<FutureOr<List<String>>, int> {
+  SubscriptionRulesFamily._()
+    : super(
+        retry: null,
+        name: r'subscriptionRulesProvider',
+        dependencies: null,
+        $allTransitiveDependencies: null,
+        isAutoDispose: true,
+      );
+
+  /// The rules a url or file profile downloaded, as written, which stay in the
+  /// Core between setups.
+
+  SubscriptionRulesProvider call(int profileId) =>
+      SubscriptionRulesProvider._(argument: profileId, from: this);
+
+  @override
+  String toString() => r'subscriptionRulesProvider';
+}
+
 @ProviderFor(setupState)
 final setupStateProvider = SetupStateFamily._();
 
@@ -3659,7 +3748,7 @@ final class SetupStateProvider
   }
 }
 
-String _$setupStateHash() => r'4cfdb0a779dc8097c8c1027b73252f19f925a3ad';
+String _$setupStateHash() => r'c8bd316b69dc98ce3e6ee14ee5275380dec21aa1';
 
 final class SetupStateFamily extends $Family
     with $FunctionalFamilyOverride<FutureOr<SetupState>, int?> {

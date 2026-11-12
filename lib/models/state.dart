@@ -261,6 +261,7 @@ abstract class SetupState with _$SetupState {
     @Default([]) List<CustomProxy> appProxies,
     @Default({}) Map<int, String> proxyDialers,
     String? matchTarget,
+    @Default({}) Set<String> disabledRules,
     @Default([]) List<MitmModuleSource> mitmModules,
   }) = _SetupState;
 }

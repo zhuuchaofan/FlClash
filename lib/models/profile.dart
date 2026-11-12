@@ -80,6 +80,9 @@ abstract class Profile with _$Profile {
     int? scriptId,
     String? matchTarget,
     int? order,
+
+    /// Rules of the subscription, as written, that the config leaves out.
+    @Default({}) Set<String> disabledRules,
     @Default(ProfileOverrides())
     @JsonKey(fromJson: ProfileOverrides.safeFromJson)
     ProfileOverrides overrides,

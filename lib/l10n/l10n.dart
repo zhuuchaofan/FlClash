@@ -7663,7 +7663,8 @@ class AppLocalizations {
   String customImportDroppedSubRules(num count, Object label) {
     return Intl.plural(
       count,
-      one: '1 SUB-RULE rule was dropped, since custom profiles do not support sub-rules',
+      one:
+          '1 SUB-RULE rule was dropped, since custom profiles do not support sub-rules',
       other:
           '$label SUB-RULE rules were dropped, since custom profiles do not support sub-rules',
       name: 'customImportDroppedSubRules',
@@ -9079,6 +9080,16 @@ class AppLocalizations {
       name: 'userAdditionsLeftOut',
       desc: '',
       args: [error],
+    );
+  }
+
+  /// `Subscription rules`
+  String get subscriptionRules {
+    return Intl.message(
+      'Subscription rules',
+      name: 'subscriptionRules',
+      desc: '',
+      args: [],
     );
   }
 }

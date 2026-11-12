@@ -43,6 +43,16 @@ Future<ClashConfig> clashConfig(Ref ref, int profileId) async {
   return clashConfigTask(outbounds);
 }
 
+/// The rules a url or file profile downloaded, as written, which stay in the
+/// Core between setups.
+@riverpod
+Future<List<String>> subscriptionRules(Ref ref, int profileId) {
+  ref.watch(
+    profileProvider(profileId).select((state) => state?.lastUpdateDate),
+  );
+  return ref.read(coreHandlerProvider).getProfileRules(profileId);
+}
+
 @riverpod
 Future<SetupState> setupState(Ref ref, int? profileId) async {
   final profile = ref.watch(profileProvider(profileId));
@@ -127,6 +137,10 @@ Future<SetupState> setupState(Ref ref, int? profileId) async {
         profileType != ProfileType.custom && extendType == ExtendType.standard
         ? profile?.matchTarget
         : null,
+    disabledRules:
+        profileType != ProfileType.custom && extendType == ExtendType.standard
+        ? profile?.disabledRules ?? const {}
+        : const {},
   );
 }
 

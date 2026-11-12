@@ -619,7 +619,7 @@ as bool,
 /// @nodoc
 mixin _$SetupBase {
 
- String get path; String get overlay;
+ String get path; String get overlay;@JsonKey(name: 'disabled-rules', includeIfNull: false) List<String>? get disabledRules;
 /// Create a copy of SetupBase
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -633,20 +633,20 @@ $SetupBaseCopyWith<SetupBase> get copyWith => _$SetupBaseCopyWithImpl<SetupBase>
 @override
 bool operator ==(Object other) {
   final _this = this as SetupBase;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SetupBase&&(identical(other.path, _this.path) || other.path == _this.path)&&(identical(other.overlay, _this.overlay) || other.overlay == _this.overlay));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SetupBase&&(identical(other.path, _this.path) || other.path == _this.path)&&(identical(other.overlay, _this.overlay) || other.overlay == _this.overlay)&&const DeepCollectionEquality().equals(other.disabledRules, _this.disabledRules));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
   final _this = this as SetupBase;
-  return Object.hash(runtimeType,_this.path,_this.overlay);
+  return Object.hash(runtimeType,_this.path,_this.overlay,const DeepCollectionEquality().hash(_this.disabledRules));
 }
 
 @override
 String toString() {
   final _this = this as SetupBase;
-  return 'SetupBase(path: ${_this.path}, overlay: ${_this.overlay})';
+  return 'SetupBase(path: ${_this.path}, overlay: ${_this.overlay}, disabledRules: ${_this.disabledRules})';
 }
 
 
@@ -657,7 +657,7 @@ abstract mixin class $SetupBaseCopyWith<$Res>  {
   factory $SetupBaseCopyWith(SetupBase value, $Res Function(SetupBase) _then) = _$SetupBaseCopyWithImpl;
 @useResult
 $Res call({
- String path, String overlay
+ String path, String overlay,@JsonKey(name: 'disabled-rules', includeIfNull: false) List<String>? disabledRules
 });
 
 
@@ -674,11 +674,12 @@ class _$SetupBaseCopyWithImpl<$Res>
 
 /// Create a copy of SetupBase
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? path = null,Object? overlay = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? path = null,Object? overlay = null,Object? disabledRules = freezed,}) {
   return _then(SetupBase(
 path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
 as String,overlay: null == overlay ? _self.overlay : overlay // ignore: cast_nullable_to_non_nullable
-as String,
+as String,disabledRules: freezed == disabledRules ? _self.disabledRules : disabledRules // ignore: cast_nullable_to_non_nullable
+as List<String>?,
   ));
 }
 
@@ -763,10 +764,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String path,  String overlay)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String path,  String overlay, @JsonKey(name: 'disabled-rules', includeIfNull: false)  List<String>? disabledRules)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SetupBase() when $default != null:
-return $default(_that.path,_that.overlay);case _:
+return $default(_that.path,_that.overlay,_that.disabledRules);case _:
   return orElse();
 
 }
@@ -784,10 +785,10 @@ return $default(_that.path,_that.overlay);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String path,  String overlay)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String path,  String overlay, @JsonKey(name: 'disabled-rules', includeIfNull: false)  List<String>? disabledRules)  $default,) {final _that = this;
 switch (_that) {
 case _SetupBase():
-return $default(_that.path,_that.overlay);case _:
+return $default(_that.path,_that.overlay,_that.disabledRules);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -804,10 +805,10 @@ return $default(_that.path,_that.overlay);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String path,  String overlay)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String path,  String overlay, @JsonKey(name: 'disabled-rules', includeIfNull: false)  List<String>? disabledRules)?  $default,) {final _that = this;
 switch (_that) {
 case _SetupBase() when $default != null:
-return $default(_that.path,_that.overlay);case _:
+return $default(_that.path,_that.overlay,_that.disabledRules);case _:
   return null;
 
 }
@@ -819,11 +820,20 @@ return $default(_that.path,_that.overlay);case _:
 @JsonSerializable()
 
 class _SetupBase implements SetupBase {
-  const _SetupBase({required this.path, required this.overlay});
+  const _SetupBase({required this.path, required this.overlay, @JsonKey(name: 'disabled-rules', includeIfNull: false)  List<String>? disabledRules}): _disabledRules = disabledRules;
   factory _SetupBase.fromJson(Map<String, dynamic> json) => _$SetupBaseFromJson(json);
 
 @override final  String path;
 @override final  String overlay;
+ final  List<String>? _disabledRules;
+@override@JsonKey(name: 'disabled-rules', includeIfNull: false) List<String>? get disabledRules {
+  final value = _disabledRules;
+  if (value == null) return null;
+  if (_disabledRules is EqualUnmodifiableListView) return _disabledRules;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 
 /// Create a copy of SetupBase
 /// with the given fields replaced by the non-null parameter values.
@@ -838,18 +848,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SetupBase&&(identical(other.path, path) || other.path == path)&&(identical(other.overlay, overlay) || other.overlay == overlay));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SetupBase&&(identical(other.path, path) || other.path == path)&&(identical(other.overlay, overlay) || other.overlay == overlay)&&const DeepCollectionEquality().equals(other.disabledRules, _disabledRules));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode {
-    return Object.hash(runtimeType,path,overlay);
+    return Object.hash(runtimeType,path,overlay,const DeepCollectionEquality().hash(_disabledRules));
 }
 
 @override
 String toString() {
-    return 'SetupBase(path: $path, overlay: $overlay)';
+    return 'SetupBase(path: $path, overlay: $overlay, disabledRules: $disabledRules)';
 }
 
 
@@ -860,7 +870,7 @@ abstract mixin class _$SetupBaseCopyWith<$Res> implements $SetupBaseCopyWith<$Re
   factory _$SetupBaseCopyWith(_SetupBase value, $Res Function(_SetupBase) _then) = __$SetupBaseCopyWithImpl;
 @override @useResult
 $Res call({
- String path, String overlay
+ String path, String overlay,@JsonKey(name: 'disabled-rules', includeIfNull: false) List<String>? disabledRules
 });
 
 
@@ -877,11 +887,12 @@ class __$SetupBaseCopyWithImpl<$Res>
 
 /// Create a copy of SetupBase
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? path = null,Object? overlay = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? path = null,Object? overlay = null,Object? disabledRules = freezed,}) {
   return _then(_SetupBase(
 path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
 as String,overlay: null == overlay ? _self.overlay : overlay // ignore: cast_nullable_to_non_nullable
-as String,
+as String,disabledRules: freezed == disabledRules ? _self._disabledRules : disabledRules // ignore: cast_nullable_to_non_nullable
+as List<String>?,
   ));
 }
 

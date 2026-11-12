@@ -1664,6 +1664,46 @@ void main() {
       expect(second['proxy-groups'], isNot(isA<YamlList>()));
     });
 
+    test('the subscription rules a user disabled go to the Core with the base '
+        'and change what counts as applied', () async {
+      final profile = Profile.normal(label: 'p');
+      final core = _MockCoreHandlerInterface();
+      when(
+        () => core.getProfileBase(any()),
+      ).thenAnswer((_) async => const ProfileBase(config: {}, digest: 'd'));
+      final pushed = <SetupParams>[];
+      when(() => core.setupConfig(any())).thenAnswer((invocation) async {
+        pushed.add(invocation.positionalArguments.single as SetupParams);
+      });
+      var disabledRules = {'MATCH,g', 'DOMAIN,a.test,g'};
+      final scoped = ProviderContainer(
+        overrides: [
+          profilesProvider.overrideWith(() => TestProfiles([profile])),
+          currentProfileIdProvider.overrideWithBuild((_, _) => profile.id),
+          setupStateProvider.overrideWith(
+            (_, profileId) => nullProfileSetupState.copyWith(
+              profileId: profileId,
+              disabledRules: disabledRules,
+            ),
+          ),
+          coreHandlerProvider.overrideWithValue(CoreController.scoped(core)),
+          setupActionProvider.overrideWith(SetupAction.new),
+        ],
+      );
+      addTearDown(scoped.dispose);
+      addTearDown(() => globalState.lastConfigCounts = null);
+      final setupAction = scoped.read(setupActionProvider.notifier);
+
+      expect(await setupAction.applyProfile(force: true), isTrue);
+      expect(pushed.single.base!.disabledRules, ['DOMAIN,a.test,g', 'MATCH,g']);
+
+      disabledRules = {'MATCH,g'};
+      scoped.invalidate(setupStateProvider);
+      expect(await setupAction.applyProfile(), isTrue);
+      expect(pushed, hasLength(2));
+      expect(pushed.last.base!.disabledRules, ['MATCH,g']);
+    });
+
     test('the preview shows the config the Core merges', () async {
       final profile = Profile.normal(label: 'p');
       final core = _MockCoreHandlerInterface();
