@@ -244,11 +244,13 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m98(label) => "${label}은(는) URL이어야 합니다";
 
-  static String m99(date) => "${date}까지 유효";
+  static String m99(error) => "구성 로드에 실패하여 사용자 규칙과 그룹을 임시로 제외했습니다: ${error}";
 
-  static String m100(count) => "${Intl.plural(count, other: '${count}년 전')}";
+  static String m100(date) => "${date}까지 유효";
 
   static String m101(count) => "${Intl.plural(count, other: '${count}년 전')}";
+
+  static String m102(count) => "${Intl.plural(count, other: '${count}년 전')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
@@ -1802,9 +1804,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "useSystemHosts": MessageLookupByLibrary.simpleMessage("시스템 hosts 사용"),
     "usedShort": MessageLookupByLibrary.simpleMessage("사용"),
     "usedTraffic": MessageLookupByLibrary.simpleMessage("사용한 트래픽"),
+    "userAdditionsLeftOut": m99,
     "userAgent": MessageLookupByLibrary.simpleMessage("User-Agent"),
     "username": MessageLookupByLibrary.simpleMessage("사용자 이름"),
-    "validUntil": m99,
+    "validUntil": m100,
     "value": MessageLookupByLibrary.simpleMessage("값"),
     "view": MessageLookupByLibrary.simpleMessage("보기"),
     "viewAll": MessageLookupByLibrary.simpleMessage("모두 보기"),
@@ -1819,8 +1822,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "writeToSystemDesc": MessageLookupByLibrary.simpleMessage(
       "시스템에 기록하면 시스템 시계도 설정합니다. Android에서는 무시됩니다.",
     ),
-    "yearsAgo": m100,
-    "yearsAgoShort": m101,
+    "yearsAgo": m101,
+    "yearsAgoShort": m102,
     "yes": MessageLookupByLibrary.simpleMessage("예"),
     "zhCN": MessageLookupByLibrary.simpleMessage("중국어 간체"),
   };

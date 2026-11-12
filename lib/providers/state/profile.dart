@@ -99,6 +99,7 @@ Future<SetupState> setupState(Ref ref, int? profileId) async {
       };
     } else if (extendType == ExtendType.standard) {
       addedRules = await database.rulesDao.queryAddedRules(profileId).get();
+      proxyGroups = await database.proxyGroupsDao.query(profileId).get();
     } else if (extendType == ExtendType.script) {
       script = scriptId == null
           ? null

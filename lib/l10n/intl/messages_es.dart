@@ -274,12 +274,15 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m98(label) => "${label} debe ser una URL";
 
-  static String m99(date) => "Válido hasta el ${date}";
+  static String m99(error) =>
+      "La configuración no se pudo cargar; tus reglas y grupos se omitieron temporalmente: ${error}";
 
-  static String m100(count) =>
-      "${Intl.plural(count, one: 'hace 1 año', other: 'hace ${count} años')}";
+  static String m100(date) => "Válido hasta el ${date}";
 
   static String m101(count) =>
+      "${Intl.plural(count, one: 'hace 1 año', other: 'hace ${count} años')}";
+
+  static String m102(count) =>
       "${Intl.plural(count, other: 'hace ${count} a')}";
 
   final messages = _notInlinedMessages(_notInlinedMessages);
@@ -1125,9 +1128,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "installCertificateSuccess": MessageLookupByLibrary.simpleMessage(
       "Certificado instalado",
     ),
-    "installedAppsPermissionDeniedMessage": MessageLookupByLibrary.simpleMessage(
-      "Se denegó el permiso de lista de apps, por lo que no se pueden mostrar las apps instaladas. Concédelo manualmente en los ajustes del sistema.",
-    ),
+    "installedAppsPermissionDeniedMessage":
+        MessageLookupByLibrary.simpleMessage(
+          "Se denegó el permiso de lista de apps, por lo que no se pueden mostrar las apps instaladas. Concédelo manualmente en los ajustes del sistema.",
+        ),
     "installedAppsPermissionDesc": MessageLookupByLibrary.simpleMessage(
       "Este sistema oculta la lista de apps instaladas hasta que se concede el permiso. Autorízalo para configurar el proxy por app.",
     ),
@@ -2303,9 +2307,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "usedShort": MessageLookupByLibrary.simpleMessage("usado"),
     "usedTraffic": MessageLookupByLibrary.simpleMessage("Tráfico usado"),
+    "userAdditionsLeftOut": m99,
     "userAgent": MessageLookupByLibrary.simpleMessage("User-Agent"),
     "username": MessageLookupByLibrary.simpleMessage("Usuario"),
-    "validUntil": m99,
+    "validUntil": m100,
     "value": MessageLookupByLibrary.simpleMessage("Valor"),
     "view": MessageLookupByLibrary.simpleMessage("Ver"),
     "viewAll": MessageLookupByLibrary.simpleMessage("Ver todo"),
@@ -2324,8 +2329,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "writeToSystemDesc": MessageLookupByLibrary.simpleMessage(
       "Escribir en el sistema también ajusta el reloj del sistema; Android lo ignora.",
     ),
-    "yearsAgo": m100,
-    "yearsAgoShort": m101,
+    "yearsAgo": m101,
+    "yearsAgoShort": m102,
     "yes": MessageLookupByLibrary.simpleMessage("Sí"),
     "zhCN": MessageLookupByLibrary.simpleMessage("Chino simplificado"),
   };

@@ -516,7 +516,9 @@ class SetupAction extends _$SetupAction {
             ),
           }
         : profileBase?.base.config ?? await _core.readConfig(profileId);
-    final proxyGroups = isCustom ? setupState.proxyGroups : <ProxyGroup>[];
+    final proxyGroups = isCustom || setupState.proxyGroups.isEmpty
+        ? setupState.proxyGroups
+        : await _profileUserGroups(profileId, setupState.proxyGroups);
     final rules = isCustom ? setupState.rules : <Rule>[];
     if (hasScript) {
       rawConfig = await handleEvaluate(scriptContent!, rawConfig);
@@ -567,6 +569,27 @@ class SetupAction extends _$SetupAction {
       ),
       base: SetupBase(path: path, overlay: res.yaml),
     );
+  }
+
+  /// A url or file profile's own groups, with the members its subscription no
+  /// longer has taken out so one stale name cannot fail the whole config.
+  Future<List<ProxyGroup>> _profileUserGroups(
+    int profileId,
+    List<ProxyGroup> groups,
+  ) async {
+    final outbounds = await _core.getProfileOutbounds(profileId);
+    final pruned = pruneUserGroups(groups, [
+      for (final section in ['proxies', 'proxy-groups'])
+        for (final item in outbounds[section] as List? ?? const [])
+          if (item is Map && item['name'] is String) item['name'] as String,
+    ]);
+    if (pruned.missing.isNotEmpty) {
+      commonPrint.log(
+        'user groups lost members: ${pruned.missing}',
+        logLevel: LogLevel.warning,
+      );
+    }
+    return pruned.groups;
   }
 
   /// Only what the custom profile actually references is injected, so an
@@ -635,6 +658,43 @@ class SetupAction extends _$SetupAction {
       dialogs.showBanner(e.toString(), level: BannerLevel.error);
     }
     return '';
+  }
+
+  /// Pushes what the subscription alone builds, for a Core that rejected the
+  /// config with the user's rules and groups. False when there were none to
+  /// leave out or the Core rejects the subscription too.
+  Future<bool> _pushWithoutUserAdditions(
+    SetupState? setupState,
+    PatchClashConfig patchConfig, {
+    Future<void> Function()? preloadInvoke,
+  }) async {
+    if (setupState == null ||
+        setupState.profileType == ProfileType.custom ||
+        (setupState.addedRules.isEmpty && setupState.proxyGroups.isEmpty)) {
+      return false;
+    }
+    final fallback = await getProfile(
+      setupState: setupState.copyWith(addedRules: [], proxyGroups: []),
+      patchConfig: patchConfig,
+    );
+    if (fallback.base == null) {
+      await File(
+        await appPath.configFilePath,
+      ).writeAsStringAtomically(fallback.yaml);
+    }
+    try {
+      await _core.setupConfig(
+        params: _setupParams.copyWith(base: fallback.base),
+        preloadInvoke: preloadInvoke,
+      );
+    } on CoreMethodException catch (error) {
+      if (error.code == 'config_rejected') {
+        return false;
+      }
+      rethrow;
+    }
+    globalState.lastConfigCounts = fallback.counts;
+    return true;
   }
 
   PatchClashConfig _effectivePatchConfig(PatchClashConfig patchConfig) {
@@ -808,6 +868,18 @@ class SetupAction extends _$SetupAction {
           } on CoreMethodException catch (error) {
             if (error.code != 'config_rejected') {
               rethrow;
+            }
+            if (await _pushWithoutUserAdditions(
+              setupState,
+              realPatchConfig,
+              preloadInvoke: preloadInvoke,
+            )) {
+              dialogs.showBanner(
+                currentAppLocalizations.userAdditionsLeftOut(error.message),
+                level: BannerLevel.error,
+              );
+              await globalState.safeRun(() => onUpdated?.call());
+              return;
             }
             globalState.lastConfigCounts = configCountsOf(const {});
             await globalState.safeRun(() => onUpdated?.call());

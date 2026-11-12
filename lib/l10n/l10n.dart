@@ -7663,8 +7663,7 @@ class AppLocalizations {
   String customImportDroppedSubRules(num count, Object label) {
     return Intl.plural(
       count,
-      one:
-          '1 SUB-RULE rule was dropped, since custom profiles do not support sub-rules',
+      one: '1 SUB-RULE rule was dropped, since custom profiles do not support sub-rules',
       other:
           '$label SUB-RULE rules were dropped, since custom profiles do not support sub-rules',
       name: 'customImportDroppedSubRules',
@@ -9070,6 +9069,16 @@ class AppLocalizations {
       name: 'fallbackFilterDomainDesc',
       desc: '',
       args: [],
+    );
+  }
+
+  /// `Your rules and groups were left out because the config failed to load: {error}`
+  String userAdditionsLeftOut(Object error) {
+    return Intl.message(
+      'Your rules and groups were left out because the config failed to load: $error',
+      name: 'userAdditionsLeftOut',
+      desc: '',
+      args: [error],
     );
   }
 }

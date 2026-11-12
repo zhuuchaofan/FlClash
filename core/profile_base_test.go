@@ -412,3 +412,48 @@ func TestEncodeConfigMappingKeepsEveryKeyAfterAnOpenEndedScalar(t *testing.T) {
 		t.Errorf("decoded %d rules, want all %d in order", len(decoded.Rules), len(rules))
 	}
 }
+
+func TestLoadConfigWithBaseAppendsTheOverlayGroupsAfterTheProfiles(t *testing.T) {
+	path := writeBaseProfile(t, baseProfile)
+	base, err := handleGetProfileBase(PathParams{Path: path})
+	if err != nil {
+		t.Fatalf("handleGetProfileBase = %v", err)
+	}
+	overlay := overlayOf(t, base, []string{"DOMAIN,auto.test,auto"}, map[string]any{
+		"proxy-groups": []any{map[string]any{
+			"name": "auto", "type": "url-test", "proxies": []string{"a", "b"},
+			"url": "https://www.gstatic.com/generate_204", "interval": 180, "tolerance": 50,
+		}},
+	})
+
+	cfg, err := loadConfigWithBase(&SetupBase{Path: path, Overlay: overlay}, filepath.Join(t.TempDir(), "config.yaml"))
+
+	if err != nil {
+		t.Fatalf("loadConfigWithBase = %v", err)
+	}
+	for _, name := range []string{"g", "auto"} {
+		if cfg.Proxies[name] == nil {
+			t.Errorf("group %s is missing", name)
+		}
+	}
+	if got := ruleStrings(cfg)[0]; got != "Domain,auto.test,auto" {
+		t.Errorf("first rule = %s, want the one naming the added group", got)
+	}
+}
+
+func TestLoadConfigWithBaseRejectsAnOverlayGroupNamedLikeAProfileGroup(t *testing.T) {
+	path := writeBaseProfile(t, baseProfile)
+	base, err := handleGetProfileBase(PathParams{Path: path})
+	if err != nil {
+		t.Fatalf("handleGetProfileBase = %v", err)
+	}
+	overlay := overlayOf(t, base, nil, map[string]any{
+		"proxy-groups": []any{map[string]any{"name": "g", "type": "fallback", "proxies": []string{"a"}}},
+	})
+
+	_, err = loadConfigWithBase(&SetupBase{Path: path, Overlay: overlay}, filepath.Join(t.TempDir(), "config.yaml"))
+
+	if err == nil || !strings.Contains(err.Error(), `"g"`) {
+		t.Fatalf("loadConfigWithBase = %v, want the duplicate group named", err)
+	}
+}

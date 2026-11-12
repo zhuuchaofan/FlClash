@@ -375,9 +375,10 @@ Future<RealProfile> _makeRealProfileTask(MakeRealProfileState data) async {
     rules = data.rules.map((item) => item.rawValue).toList();
   }
   if (data.proxyGroups.isNotEmpty) {
-    rawConfig['proxy-groups'] = data.proxyGroups
-        .map((item) => item.definition)
-        .toList();
+    rawConfig['proxy-groups'] = [
+      ...?rawConfig['proxy-groups'] as List?,
+      ...data.proxyGroups.map((item) => item.definition),
+    ];
   }
   rawConfig['rules'] = [...mitm.rules, ...rules];
   final yaml = await _encodeYaml(Map<String, dynamic>.from(rawConfig));

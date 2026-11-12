@@ -1598,6 +1598,72 @@ void main() {
       expect(globalState.lastConfigCounts, (groups: 0, proxies: 0, rules: 0));
     });
 
+    test('a config the Core rejects with the user additions is pushed again '
+        'without them', () async {
+      final profile = Profile.normal(label: 'p');
+      final core = _MockCoreHandlerInterface();
+      when(
+        () => core.getProfileBase(any()),
+      ).thenAnswer((_) async => const ProfileBase(config: {}, digest: 'd'));
+      when(() => core.getProfileOutbounds(any())).thenAnswer(
+        (_) async => const {
+          'proxies': [
+            {'name': 'a', 'type': 'ss'},
+          ],
+        },
+      );
+      final pushed = <SetupParams>[];
+      when(() => core.setupConfig(any())).thenAnswer((invocation) async {
+        final params = invocation.positionalArguments.single as SetupParams;
+        pushed.add(params);
+        if (pushed.length == 1) {
+          throw const CoreMethodException(
+            code: 'config_rejected',
+            message: 'rejected',
+          );
+        }
+      });
+      final scoped = ProviderContainer(
+        overrides: [
+          profilesProvider.overrideWith(() => TestProfiles([profile])),
+          currentProfileIdProvider.overrideWithBuild((_, _) => profile.id),
+          setupStateProvider.overrideWith(
+            (_, profileId) => nullProfileSetupState.copyWith(
+              profileId: profileId,
+              addedRules: [Rule.parse('DOMAIN,added.test,auto')],
+              proxyGroups: [
+                const ProxyGroup(
+                  id: 1,
+                  name: 'auto',
+                  type: GroupType.URLTest,
+                  proxies: ['a', 'gone'],
+                ),
+              ],
+            ),
+          ),
+          coreHandlerProvider.overrideWithValue(CoreController.scoped(core)),
+          setupActionProvider.overrideWith(SetupAction.new),
+        ],
+      );
+      addTearDown(scoped.dispose);
+      addTearDown(() => globalState.lastConfigCounts = null);
+
+      expect(
+        await scoped
+            .read(setupActionProvider.notifier)
+            .applyProfile(force: true),
+        isTrue,
+      );
+
+      expect(pushed, hasLength(2));
+      final first = loadYaml(pushed.first.base!.overlay) as YamlMap;
+      expect(first['rules'], ['DOMAIN,added.test,auto']);
+      expect((first['proxy-groups'] as YamlList).single['proxies'], ['a']);
+      final second = loadYaml(pushed.last.base!.overlay) as YamlMap;
+      expect(second['rules'], isEmpty);
+      expect(second['proxy-groups'], isNot(isA<YamlList>()));
+    });
+
     test('the preview shows the config the Core merges', () async {
       final profile = Profile.normal(label: 'p');
       final core = _MockCoreHandlerInterface();
