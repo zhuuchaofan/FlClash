@@ -1,8 +1,9 @@
 import 'package:fl_clash/common/common.dart';
 import 'package:fl_clash/enum/enum.dart';
-import 'package:fl_clash/features/form/simple_rule.dart';
 import 'package:fl_clash/models/models.dart';
+import 'package:fl_clash/features/form/rule.dart';
 import 'package:fl_clash/providers/config.dart';
+import 'package:fl_clash/providers/database.dart';
 import 'package:fl_clash/ui/icons/icons.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/services.dart';
@@ -56,12 +57,6 @@ List<PopupMenuItem> trackerInfoMenuItems(
   }
 
   return [
-    if (metadata.host.isNotEmpty)
-      PopupMenuItem(
-        glyph: AppGlyphs.rules,
-        label: appLocalizations.changeRule,
-        onPressed: () => editWebsiteRule(context, metadata.host),
-      ),
     if (metadata.host.isNotEmpty)
       PopupMenuItem(
         glyph: AppGlyphs.copy,
@@ -260,6 +255,90 @@ class _TrackerInfoBody extends StatelessWidget {
   }
 }
 
+const _secondLevelLabels = {'com', 'co', 'net', 'org', 'gov', 'edu', 'ac'};
+
+/// The registrable part of [host], so a rule covers the whole site:
+/// www.google.com -> google.com, news.bbc.co.uk -> bbc.co.uk.
+String _siteDomainOf(String host) {
+  final labels = host.split('.');
+  if (labels.length <= 2 || RegExp(r'^[\d.]+$').hasMatch(host)) return host;
+  final keep =
+      labels.last.length == 2 &&
+          _secondLevelLabels.contains(labels[labels.length - 2])
+      ? 3
+      : 2;
+  return labels.sublist(labels.length - keep).join('.');
+}
+
+bool _ruleMatchesHost(Rule rule, String host) {
+  final content = rule.content?.toLowerCase();
+  if (content == null || content.isEmpty) return false;
+  return switch (rule.ruleAction) {
+    RuleAction.DOMAIN => host == content,
+    RuleAction.DOMAIN_SUFFIX => host == content || host.endsWith('.$content'),
+    RuleAction.DOMAIN_KEYWORD => host.contains(content),
+    _ => false,
+  };
+}
+
+/// Adds a custom rule for the connection's site, or edits the custom rule
+/// that already catches it.
+class _HostRuleSection extends ConsumerWidget {
+  final String host;
+
+  const _HostRuleSection({required this.host});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appLocalizations = context.appLocalizations;
+    final normalized = host.toLowerCase();
+    final existing = (ref.watch(globalRulesProvider).value ?? const <Rule>[])
+        .where((rule) => _ruleMatchesHost(rule, normalized))
+        .firstOrNull;
+    Future<void> open() async {
+      final res = await showFormSheet<Rule>(
+        context: context,
+        builder: (_) => existing != null
+            ? RuleForm(rule: existing)
+            : RuleForm(
+                draft: Rule(
+                  id: snowflake.id,
+                  ruleAction: RuleAction.DOMAIN_SUFFIX,
+                  content: _siteDomainOf(normalized),
+                  ruleTarget: RuleAction.MATCH.value,
+                ),
+              ),
+      );
+      if (res != null) {
+        ref.read(globalRulesProvider.notifier).put(res);
+      }
+    }
+
+    return generateSection(
+      title: appLocalizations.rule,
+      footer: appLocalizations.requestRuleFooter,
+      items: [
+        ListItem(
+          leading: GlyphIcon(
+            existing != null ? AppGlyphs.edit : AppGlyphs.addCircle,
+          ),
+          title: Text(
+            existing != null
+                ? appLocalizations.editRule
+                : appLocalizations.addRule,
+          ),
+          subtitle: Text(
+            existing != null
+                ? '${existing.ruleAction.value},${existing.content} → ${existing.ruleTarget}'
+                : _siteDomainOf(normalized),
+          ),
+          onTap: open,
+        ),
+      ],
+    );
+  }
+}
+
 /// Adds the host of a connection to the hostnames or excludes it, so that the
 /// list can be filled from what the apps really connect to.
 class _MitmHostSection extends ConsumerWidget {
@@ -372,6 +451,7 @@ class TrackerInfoDetailView extends ConsumerWidget {
         top: context.sectionsTopPadding,
       ),
       children: [
+        if (metadata.host.isNotEmpty) _HostRuleSection(host: metadata.host),
         generateSection(
           title: appLocalizations.basicInfo,
           items: _buildRows([
@@ -383,16 +463,6 @@ class TrackerInfoDetailView extends ConsumerWidget {
             (appLocalizations.download, trackerInfo.download.traffic.show),
           ]),
         ),
-        if (metadata.host.isNotEmpty)
-          generateSection(
-            items: [
-              ListItem(
-                leading: const GlyphIcon(AppGlyphs.rules),
-                title: Text(appLocalizations.changeRule),
-                onTap: () => editWebsiteRule(context, metadata.host),
-              ),
-            ],
-          ),
         generateSection(
           title: appLocalizations.address,
           items: _buildRows([

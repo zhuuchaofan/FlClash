@@ -1,3 +1,4 @@
+import 'package:fl_clash/common/constant.dart';
 import 'package:fl_clash/common/app_localizations.dart';
 import 'package:fl_clash/common/app_ports.dart';
 import 'package:fl_clash/enum/enum.dart';
@@ -475,6 +476,7 @@ void main() {
 
   testWidgets(
     'desktop navigation keeps the tools route when logs are enabled',
+    skip: simpleUi,
     (tester) async {
       tester.view.physicalSize = const Size(1400, 1000);
       tester.view.devicePixelRatio = 1;

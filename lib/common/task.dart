@@ -375,9 +375,11 @@ Future<RealProfile> _makeRealProfileTask(MakeRealProfileState data) async {
     rules = data.rules.map((item) => item.rawValue).toList();
   }
   if (data.proxyGroups.isNotEmpty) {
+    // Groups already in the config are the app's auto groups; they go last.
+    final existing = rawConfig['proxy-groups'];
     rawConfig['proxy-groups'] = [
-      ...?rawConfig['proxy-groups'] as List?,
       ...data.proxyGroups.map((item) => item.definition),
+      if (existing is List) ...existing,
     ];
   }
   rawConfig['rules'] = [...mitm.rules, ...rules];

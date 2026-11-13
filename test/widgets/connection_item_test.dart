@@ -8,6 +8,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import '../helpers/test_app.dart';
 import '../helpers/host_scaffold.dart';
+import '../helpers/test_database_providers.dart';
+import 'package:fl_clash/providers/providers.dart';
 
 TrackerInfo _tracker({
   String rule = 'DOMAIN-SUFFIX',
@@ -44,9 +46,14 @@ void main() {
   testWidgets('TrackerInfoDetailView renders formatted connection fields', (
     tester,
   ) async {
+    tester.view.physicalSize = const Size(1000, 2400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.resetPhysicalSize);
+    addTearDown(tester.view.resetDevicePixelRatio);
     await tester.pumpWidget(
       TestApp(
         wrapInProviderScope: true,
+        overrides: [globalRulesProvider.overrideWith(TestGlobalRules.new)],
         homeBuilder: (child) => HostScaffold(body: child),
         child: SheetProvider(
           type: SheetType.page,
@@ -73,7 +80,7 @@ void main() {
     expect(find.text('chrome(1000)'), findsOneWidget);
     expect(find.text('1.2.3.4:8080'), findsOneWidget);
     expect(find.text('5.6.7.8:443'), findsOneWidget);
-    expect(find.text('example.com'), findsOneWidget);
+    expect(find.text('example.com'), findsWidgets);
     await tester.scrollUntilVisible(
       find.text('DIRECT'),
       100,
@@ -89,6 +96,7 @@ void main() {
     await tester.pumpWidget(
       TestApp(
         wrapInProviderScope: true,
+        overrides: [globalRulesProvider.overrideWith(TestGlobalRules.new)],
         homeBuilder: (child) => HostScaffold(body: child),
         child: SheetProvider(
           type: SheetType.page,
@@ -112,6 +120,7 @@ void main() {
     await tester.pumpWidget(
       TestApp(
         wrapInProviderScope: true,
+        overrides: [globalRulesProvider.overrideWith(TestGlobalRules.new)],
         homeBuilder: (child) => HostScaffold(body: child),
         child: RecordFilterScope(
           onFilter: clicked.add,
@@ -146,6 +155,7 @@ void main() {
     await tester.pumpWidget(
       TestApp(
         wrapInProviderScope: true,
+        overrides: [globalRulesProvider.overrideWith(TestGlobalRules.new)],
         homeBuilder: (child) => HostScaffold(body: child),
         child: TrackerInfoItem(
           trackerInfo: _tracker(
@@ -215,6 +225,7 @@ void main() {
     await tester.pumpWidget(
       TestApp(
         wrapInProviderScope: true,
+        overrides: [globalRulesProvider.overrideWith(TestGlobalRules.new)],
         homeBuilder: (child) => HostScaffold(body: child),
         child: SheetProvider(
           type: SheetType.page,

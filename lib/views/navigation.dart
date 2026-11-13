@@ -1,4 +1,5 @@
 import 'package:fl_clash/common/app_ports.dart';
+import 'package:fl_clash/common/constant.dart';
 import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:fl_clash/ui/icons/app_glyphs.dart';
@@ -27,15 +28,9 @@ class Navigation implements NavigationPort {
             : [],
       ),
       NavigationItem(
-        glyph: AppGlyphs.rules,
-        label: PageLabel.rules,
-        builder: (_) => const RulesView(),
-      ),
-      NavigationItem(
         glyph: AppGlyphs.profiles,
         label: PageLabel.profiles,
         builder: (_) => const ProfilesView(),
-        modes: [NavigationItemMode.desktop, NavigationItemMode.more],
       ),
       NavigationItem(
         glyph: AppGlyphs.requests,
@@ -47,19 +42,19 @@ class Navigation implements NavigationPort {
         glyph: AppGlyphs.dns,
         label: PageLabel.dns,
         builder: (_) => const DnsQueriesView(),
-        modes: [NavigationItemMode.moreFull],
+        modes: simpleUi ? [] : [NavigationItemMode.moreFull],
       ),
       NavigationItem(
         glyph: AppGlyphs.resources,
         label: PageLabel.resources,
         builder: (_) => const ResourcesView(),
-        modes: [NavigationItemMode.more],
+        modes: simpleUi ? [] : [NavigationItemMode.more],
       ),
       NavigationItem(
         glyph: AppGlyphs.logs,
         label: PageLabel.logs,
         builder: (_) => const LogsView(),
-        modes: openLogs
+        modes: openLogs && !simpleUi
             ? [NavigationItemMode.desktop, NavigationItemMode.more]
             : [],
       ),

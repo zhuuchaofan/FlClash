@@ -531,7 +531,6 @@ enum PageLabel {
   requests,
   resources,
   dns,
-  rules,
 }
 
 enum RuleAction {

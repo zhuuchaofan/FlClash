@@ -13,7 +13,9 @@ import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'auto_groups.dart';
 import 'config/advanced.dart';
+import 'config/rules.dart';
 import 'developer.dart';
 import 'disclaimer.dart';
 import 'theme.dart';
@@ -30,6 +32,9 @@ class _ToolViewState extends ConsumerState<ToolsView> {
     return ListItem.open(
       leading: GlyphIcon(navigationItem.glyph),
       title: Text(navigationItem.label.label),
+      subtitle: navigationItem.label == PageLabel.requests
+          ? Text(context.appLocalizations.requestsDesc)
+          : null,
       widget: navigationItem.builder(context),
       forceFull: navigationItem.modes.contains(NavigationItemMode.moreFull),
     );
@@ -39,8 +44,8 @@ class _ToolViewState extends ConsumerState<ToolsView> {
     return generateSection(
       title: context.appLocalizations.other,
       items: [
-        const _DisclaimerItem(),
-        if (enableDeveloperMode) const _DeveloperItem(),
+        if (!simpleUi) const _DisclaimerItem(),
+        if (enableDeveloperMode && !simpleUi) const _DeveloperItem(),
         const _InfoItem(),
       ],
     );
@@ -50,13 +55,17 @@ class _ToolViewState extends ConsumerState<ToolsView> {
     return generateSection(
       title: context.appLocalizations.settings,
       items: [
-        const _LocaleItem(),
-        const _ThemeItem(),
-        if (system.isDesktop) const _HotkeyItem(),
+        const _RulesItem(),
+        const _AutoGroupsItem(),
         if (system.isAndroid) const _AccessItem(),
+        const _ThemeItem(),
         const _BackupItem(),
-        const _AdvancedConfigItem(),
-        const _GeneralItem(),
+        if (!simpleUi) ...[
+          const _LocaleItem(),
+          if (system.isDesktop) const _HotkeyItem(),
+          const _AdvancedConfigItem(),
+          const _GeneralItem(),
+        ],
       ],
     );
   }
@@ -129,6 +138,34 @@ class _LocaleItem extends ConsumerWidget {
   }
 }
 
+class _RulesItem extends StatelessWidget {
+  const _RulesItem();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListItem.open(
+      leading: const GlyphIcon(AppGlyphs.rules),
+      title: Text(context.appLocalizations.rule),
+      subtitle: Text(context.appLocalizations.rulesDesc),
+      widget: const AddedRulesView(),
+    );
+  }
+}
+
+class _AutoGroupsItem extends StatelessWidget {
+  const _AutoGroupsItem();
+
+  @override
+  Widget build(BuildContext context) {
+    return ListItem.open(
+      leading: const GlyphIcon(AppGlyphs.proxies),
+      title: Text(context.appLocalizations.autoGroups),
+      subtitle: Text(context.appLocalizations.autoGroupsDesc),
+      widget: const AutoGroupsView(),
+    );
+  }
+}
+
 class _ThemeItem extends StatelessWidget {
   const _ThemeItem();
 
@@ -137,6 +174,7 @@ class _ThemeItem extends StatelessWidget {
     return ListItem.open(
       leading: const GlyphIcon(AppGlyphs.paintbrush),
       title: Text(context.appLocalizations.theme),
+      subtitle: Text(context.appLocalizations.themeDesc),
       widget: const ThemeView(),
     );
   }
@@ -150,6 +188,7 @@ class _BackupItem extends StatelessWidget {
     return ListItem.open(
       leading: const GlyphIcon(AppGlyphs.cloudSync),
       title: Text(context.appLocalizations.backupAndRestore),
+      subtitle: Text(context.appLocalizations.backupAndRestoreDesc),
       widget: const BackupAndRestore(),
     );
   }
@@ -176,6 +215,7 @@ class _AccessItem extends StatelessWidget {
     return ListItem.open(
       leading: const GlyphIcon(AppGlyphs.appsList),
       title: Text(context.appLocalizations.accessControl),
+      subtitle: Text(context.appLocalizations.accessControlDesc),
       widget: const AccessView(),
     );
   }
@@ -228,6 +268,7 @@ class _InfoItem extends StatelessWidget {
     return ListItem.open(
       leading: const GlyphIcon(AppGlyphs.info),
       title: Text(context.appLocalizations.about),
+      subtitle: Text(context.appLocalizations.aboutDesc),
       widget: const AboutView(),
     );
   }

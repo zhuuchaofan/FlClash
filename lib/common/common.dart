@@ -1,6 +1,7 @@
 export 'app_localizations.dart';
 export 'app_ports.dart';
 export 'app_update.dart';
+export 'auto_group.dart';
 export 'backup.dart';
 export 'changelog.dart';
 export 'cidr.dart';
@@ -48,8 +49,6 @@ export 'string.dart';
 export 'system.dart';
 export 'system_fonts.dart';
 export 'task.dart';
-export 'user_groups.dart';
-export 'website.dart';
 export 'task_pool.dart';
 export 'webdav.dart';
 export 'yaml.dart';

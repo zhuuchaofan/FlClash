@@ -1,8 +1,10 @@
 import 'package:fl_clash/common/common.dart';
+import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/features/features.dart';
 import 'package:fl_clash/models/clash_config.dart';
 import 'package:fl_clash/providers/providers.dart';
 import 'package:fl_clash/ui/icons/icons.dart';
+import 'package:fl_clash/views/profiles/extend/standard.dart';
 import 'package:fl_clash/widgets/widgets.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,6 +20,9 @@ class _AddedRulesViewState extends ConsumerState<AddedRulesView> {
   final _key = uniqueId;
   var _query = SearchQuery('');
   final _searchTexts = Expando<String>();
+  int? _profileId;
+  Set<String> _runningTargets = const {};
+  Set<int> _disabledIds = const {};
 
   List<Rule> _visibleRules(List<Rule> rules) {
     return rules
@@ -99,6 +104,23 @@ class _AddedRulesViewState extends ConsumerState<AddedRulesView> {
     final isSearching = _query.isNotEmpty;
     final selectedRules = ref.watch(itemsProvider(_key));
     final isSelecting = selectedRules.isNotEmpty;
+    final profile = ref.watch(currentProfileProvider);
+    _profileId =
+        profile != null &&
+            profile.type != ProfileType.custom &&
+            profile.extendType == ExtendType.standard
+        ? profile.id
+        : null;
+    _disabledIds = {
+      if (_profileId case final profileId?)
+        ...?ref.watch(profileDisabledRuleIdsProvider(profileId)).value,
+    };
+    _runningTargets = {
+      for (final group in ref.watch(groupsProvider)) ...[
+        group.name,
+        for (final proxy in group.all) proxy.name,
+      ],
+    };
     final selectionActions = [
       IconButtonData(
         glyph: AppGlyphs.delete,
@@ -119,7 +141,7 @@ class _AddedRulesViewState extends ConsumerState<AddedRulesView> {
             }
           : null,
       child: Scaffold(
-        title: appLocalizations.addedRules,
+        title: simpleUi ? appLocalizations.rule : appLocalizations.addedRules,
         searchState: AppBarSearchState(onSearch: _handleSearch),
         actions: [
           if (!isSelecting)
@@ -130,6 +152,24 @@ class _AddedRulesViewState extends ConsumerState<AddedRulesView> {
             ),
         ],
         iconActions: [
+          if (!isSelecting && simpleUi)
+            IconButtonData(
+              glyph: AppGlyphs.info,
+              onPressed: () => dialogs.showAlert(
+                title: appLocalizations.rule,
+                message: TextSpan(text: appLocalizations.rulesHelp),
+              ),
+              tooltip: appLocalizations.tip,
+            ),
+          if (!isSelecting && _profileId != null)
+            IconButtonData(
+              glyph: AppGlyphs.layers,
+              onPressed: () => BaseNavigator.push(
+                context,
+                SubscriptionRulesView(_profileId!),
+              ),
+              tooltip: appLocalizations.subscriptionRules,
+            ),
           if (!isSelecting)
             IconButtonData(
               glyph: AppGlyphs.rulePresets,
@@ -143,7 +183,9 @@ class _AddedRulesViewState extends ConsumerState<AddedRulesView> {
           isEmpty: rules.isEmpty,
           isSearching: isSearching,
           nullStatus: NullStatus(
-            label: appLocalizations.nullTip(appLocalizations.rule),
+            label: simpleUi
+                ? appLocalizations.rulesEmptyTip
+                : appLocalizations.nullTip(appLocalizations.rule),
             illustration: NullStatusIllustration.rules,
           ),
           child: Builder(
@@ -187,6 +229,19 @@ class _AddedRulesViewState extends ConsumerState<AddedRulesView> {
     16 + context.bottomInset,
   );
 
+  // A global rule may name any group or node of the running config; with no
+  // config running there is nothing to check it against.
+  String? _invalidMessageOf(Rule rule) {
+    final target = rule.ruleTarget ?? '';
+    if (_runningTargets.isEmpty ||
+        _runningTargets.contains(target) ||
+        RuleTarget.ruleTargets.contains(target) ||
+        target.toUpperCase() == RuleAction.MATCH.value) {
+      return null;
+    }
+    return context.appLocalizations.invalidPolicy(target);
+  }
+
   Widget _buildRuleItem(List<Rule> rules, int index, Set<dynamic> selected) {
     final rule = rules[index];
     return ItemPositionProvider(
@@ -196,6 +251,18 @@ class _AddedRulesViewState extends ConsumerState<AddedRulesView> {
         hasMatch: true,
         isEditing: selected.isNotEmpty,
         rule: rule,
+        invalidMessageOf: _invalidMessageOf,
+        enabled: !_disabledIds.contains(rule.id),
+        onEnabledChanged: switch (_profileId) {
+          final profileId? => (enabled) {
+            final disabled = ref.read(
+              profileDisabledRuleIdsProvider(profileId).notifier,
+            );
+            enabled ? disabled.del(rule.id) : disabled.put(rule.id);
+            ref.read(setupActionProvider.notifier).applyIfGlobalRulesUsed();
+          },
+          null => null,
+        },
         isSelected: selected.contains(rule.id),
         onSelected: () {
           _handleSelected(rule.id);

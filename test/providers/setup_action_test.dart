@@ -1631,13 +1631,8 @@ void main() {
             (_, profileId) => nullProfileSetupState.copyWith(
               profileId: profileId,
               addedRules: [Rule.parse('DOMAIN,added.test,auto')],
-              proxyGroups: [
-                const ProxyGroup(
-                  id: 1,
-                  name: 'auto',
-                  type: GroupType.URLTest,
-                  proxies: ['a', 'gone'],
-                ),
+              autoGroups: [
+                const AutoGroup(name: 'auto', proxies: ['a']),
               ],
             ),
           ),
@@ -1658,7 +1653,7 @@ void main() {
       expect(pushed, hasLength(2));
       final first = loadYaml(pushed.first.base!.overlay) as YamlMap;
       expect(first['rules'], ['DOMAIN,added.test,auto']);
-      expect((first['proxy-groups'] as YamlList).single['proxies'], ['a']);
+      expect((first['proxy-groups'] as YamlList).single['name'], 'auto');
       final second = loadYaml(pushed.last.base!.overlay) as YamlMap;
       expect(second['rules'], isEmpty);
       expect(second['proxy-groups'], isNot(isA<YamlList>()));

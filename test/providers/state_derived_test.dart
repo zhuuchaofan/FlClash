@@ -373,11 +373,11 @@ void main() {
     final mobile = container.read(currentNavigationItemsStateProvider).value;
     expect(
       mobile.map((item) => item.label),
-      containsAll([PageLabel.dashboard, PageLabel.rules, PageLabel.tools]),
+      containsAll([PageLabel.dashboard, PageLabel.profiles, PageLabel.tools]),
     );
     expect(
       mobile.map((item) => item.label),
-      isNot(anyOf(contains(PageLabel.requests), contains(PageLabel.profiles))),
+      isNot(contains(PageLabel.requests)),
     );
 
     container

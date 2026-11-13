@@ -516,13 +516,12 @@ class SetupAction extends _$SetupAction {
             ),
           }
         : profileBase?.base.config ?? await _core.readConfig(profileId);
-    final proxyGroups = isCustom || setupState.proxyGroups.isEmpty
-        ? setupState.proxyGroups
-        : await _profileUserGroups(profileId, setupState.proxyGroups);
+    final proxyGroups = isCustom ? setupState.proxyGroups : <ProxyGroup>[];
     final rules = isCustom ? setupState.rules : <Rule>[];
     if (hasScript) {
       rawConfig = await handleEvaluate(scriptContent!, rawConfig);
     }
+    rawConfig = withAutoGroups(rawConfig, setupState.autoGroups);
     final directory = await appPath.profilesPath;
     final injected = await _resolveInjectedProviders(
       setupState,
@@ -574,27 +573,6 @@ class SetupAction extends _$SetupAction {
         disabledRules: disabledRules.isEmpty ? null : disabledRules,
       ),
     );
-  }
-
-  /// A url or file profile's own groups, with the members its subscription no
-  /// longer has taken out so one stale name cannot fail the whole config.
-  Future<List<ProxyGroup>> _profileUserGroups(
-    int profileId,
-    List<ProxyGroup> groups,
-  ) async {
-    final outbounds = await _core.getProfileOutbounds(profileId);
-    final pruned = pruneUserGroups(groups, [
-      for (final section in ['proxies', 'proxy-groups'])
-        for (final item in outbounds[section] as List? ?? const [])
-          if (item is Map && item['name'] is String) item['name'] as String,
-    ]);
-    if (pruned.missing.isNotEmpty) {
-      commonPrint.log(
-        'user groups lost members: ${pruned.missing}',
-        logLevel: LogLevel.warning,
-      );
-    }
-    return pruned.groups;
   }
 
   /// Only what the custom profile actually references is injected, so an
@@ -676,14 +654,14 @@ class SetupAction extends _$SetupAction {
     if (setupState == null ||
         setupState.profileType == ProfileType.custom ||
         (setupState.addedRules.isEmpty &&
-            setupState.proxyGroups.isEmpty &&
+            setupState.autoGroups.isEmpty &&
             setupState.disabledRules.isEmpty)) {
       return false;
     }
     final fallback = await getProfile(
       setupState: setupState.copyWith(
         addedRules: [],
-        proxyGroups: [],
+        autoGroups: [],
         disabledRules: {},
       ),
       patchConfig: patchConfig,

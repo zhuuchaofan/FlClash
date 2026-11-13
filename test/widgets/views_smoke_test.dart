@@ -1,3 +1,4 @@
+import 'package:fl_clash/common/constant.dart';
 import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/features/form/form.dart';
 import 'package:fl_clash/models/models.dart';
@@ -19,6 +20,7 @@ import 'package:fl_clash/views/config/scripts.dart';
 import 'package:fl_clash/views/config/sniffer.dart';
 import 'package:fl_clash/views/config/tun.dart';
 import 'package:fl_clash/views/config/user_agents.dart';
+import 'package:fl_clash/views/auto_groups.dart';
 import 'package:fl_clash/views/hotkey.dart';
 import 'package:fl_clash/views/profiles/custom/custom.dart';
 import 'package:fl_clash/views/profiles/custom/custom_proxies.dart';
@@ -117,8 +119,13 @@ void main() {
   final toolDestinations = <String, Type>{
     'Theme': ThemeView,
     'Backup and restore': BackupAndRestore,
-    'General': GeneralView,
-    'Advanced configuration': AdvancedConfigView,
+    if (simpleUi) ...{
+      'Rule': AddedRulesView,
+      'Auto node groups': AutoGroupsView,
+    } else ...{
+      'General': GeneralView,
+      'Advanced configuration': AdvancedConfigView,
+    },
   };
 
   for (final entry in toolDestinations.entries) {
@@ -159,48 +166,50 @@ void main() {
     });
   }
 
-  testWidgets('custom resources list directly in advanced config', (
-    tester,
-  ) async {
-    tester.view.physicalSize = const Size(1400, 1000);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.resetPhysicalSize);
-    addTearDown(tester.view.resetDevicePixelRatio);
+  testWidgets(
+    'custom resources list directly in advanced config',
+    skip: simpleUi,
+    (tester) async {
+      tester.view.physicalSize = const Size(1400, 1000);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.resetPhysicalSize);
+      addTearDown(tester.view.resetDevicePixelRatio);
 
-    final container = ProviderContainer(
-      overrides: [profilesProvider.overrideWith(TestProfiles.new)],
-    );
-    addTearDown(container.dispose);
-    globalState.container = container;
-    container
-        .read(viewSizeProvider.notifier)
-        .update((_) => const Size(1400, 1000));
+      final container = ProviderContainer(
+        overrides: [profilesProvider.overrideWith(TestProfiles.new)],
+      );
+      addTearDown(container.dispose);
+      globalState.container = container;
+      container
+          .read(viewSizeProvider.notifier)
+          .update((_) => const Size(1400, 1000));
 
-    await tester.pumpWidget(
-      UncontrolledProviderScope(
-        container: container,
-        child: const TestApp(child: ToolsView()),
-      ),
-    );
-    await tester.pump();
+      await tester.pumpWidget(
+        UncontrolledProviderScope(
+          container: container,
+          child: const TestApp(child: ToolsView()),
+        ),
+      );
+      await tester.pump();
 
-    final advanced = find.text('Advanced configuration');
-    await tester.scrollUntilVisible(
-      advanced,
-      500,
-      scrollable: find.byType(Scrollable).first,
-    );
-    await tester.tap(advanced);
-    await tester.pumpAndSettle();
+      final advanced = find.text('Advanced configuration');
+      await tester.scrollUntilVisible(
+        advanced,
+        500,
+        scrollable: find.byType(Scrollable).first,
+      );
+      await tester.tap(advanced);
+      await tester.pumpAndSettle();
 
-    expect(find.text('Custom'), findsOneWidget);
+      expect(find.text('Custom'), findsOneWidget);
 
-    await tester.tap(find.text('Filters'));
-    await tester.pumpAndSettle();
+      await tester.tap(find.text('Filters'));
+      await tester.pumpAndSettle();
 
-    expect(find.byType(FiltersView), findsOneWidget);
-    expect(tester.takeException(), null);
-  });
+      expect(find.byType(FiltersView), findsOneWidget);
+      expect(tester.takeException(), null);
+    },
+  );
 
   testWidgets('user agent item opens the page that applies a preset', (
     tester,

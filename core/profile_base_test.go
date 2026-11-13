@@ -413,48 +413,34 @@ func TestEncodeConfigMappingKeepsEveryKeyAfterAnOpenEndedScalar(t *testing.T) {
 	}
 }
 
-func TestLoadConfigWithBaseAppendsTheOverlayGroupsAfterTheProfiles(t *testing.T) {
-	path := writeBaseProfile(t, baseProfile)
-	base, err := handleGetProfileBase(PathParams{Path: path})
-	if err != nil {
-		t.Fatalf("handleGetProfileBase = %v", err)
-	}
-	overlay := overlayOf(t, base, []string{"DOMAIN,auto.test,auto"}, map[string]any{
-		"proxy-groups": []any{map[string]any{
-			"name": "auto", "type": "url-test", "proxies": []string{"a", "b"},
-			"url": "https://www.gstatic.com/generate_204", "interval": 180, "tolerance": 50,
-		}},
-	})
-
-	cfg, err := loadConfigWithBase(&SetupBase{Path: path, Overlay: overlay}, filepath.Join(t.TempDir(), "config.yaml"))
-
-	if err != nil {
-		t.Fatalf("loadConfigWithBase = %v", err)
-	}
-	for _, name := range []string{"g", "auto"} {
-		if cfg.Proxies[name] == nil {
-			t.Errorf("group %s is missing", name)
-		}
-	}
-	if got := ruleStrings(cfg)[0]; got != "Domain,auto.test,auto" {
-		t.Errorf("first rule = %s, want the one naming the added group", got)
-	}
-}
-
-func TestLoadConfigWithBaseRejectsAnOverlayGroupNamedLikeAProfileGroup(t *testing.T) {
+func TestLoadConfigWithBaseAddsTheOverlayGroupsAfterTheProfiles(t *testing.T) {
 	path := writeBaseProfile(t, baseProfile)
 	base, err := handleGetProfileBase(PathParams{Path: path})
 	if err != nil {
 		t.Fatalf("handleGetProfileBase = %v", err)
 	}
 	overlay := overlayOf(t, base, nil, map[string]any{
-		"proxy-groups": []any{map[string]any{"name": "g", "type": "fallback", "proxies": []string{"a"}}},
+		"proxy-groups": []map[string]any{
+			{"name": "auto", "type": "url-test", "include-all": true, "filter": "^a$", "url": "https://www.gstatic.com/generate_204", "interval": 300},
+			{"name": "g", "type": "select", "proxies": []string{"DIRECT"}},
+		},
 	})
+	configPath := filepath.Join(t.TempDir(), "config.yaml")
 
-	_, err = loadConfigWithBase(&SetupBase{Path: path, Overlay: overlay}, filepath.Join(t.TempDir(), "config.yaml"))
+	cfg, err := loadConfigWithBase(&SetupBase{Path: path, Overlay: overlay}, configPath)
 
-	if err == nil || !strings.Contains(err.Error(), `"g"`) {
-		t.Fatalf("loadConfigWithBase = %v, want the duplicate group named", err)
+	if err != nil {
+		t.Fatalf("loadConfigWithBase = %v", err)
+	}
+	auto := cfg.Proxies["auto"]
+	if auto == nil {
+		t.Fatalf("the overlay's group auto is missing")
+	}
+	if members := auto.Adapter().(interface{ Proxies() []constant.Proxy }).Proxies(); len(members) != 1 || members[0].Name() != "a" {
+		t.Errorf("auto members = %v, want only a", members)
+	}
+	if cfg.Proxies["g"].Type() != constant.Selector {
+		t.Errorf("g = %s, want the profile's selector over the overlay's", cfg.Proxies["g"].Type())
 	}
 }
 

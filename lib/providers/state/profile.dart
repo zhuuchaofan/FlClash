@@ -80,6 +80,9 @@ Future<SetupState> setupState(Ref ref, int? profileId) async {
           ),
         );
   final allProfileProviders = ref.watch(profileProvidersProvider);
+  final autoGroups = ref.watch(
+    appSettingProvider.select((state) => state.autoGroups),
+  );
   final mitmModules =
       mitmFeature &&
           ref.watch(
@@ -109,7 +112,6 @@ Future<SetupState> setupState(Ref ref, int? profileId) async {
       };
     } else if (extendType == ExtendType.standard) {
       addedRules = await database.rulesDao.queryAddedRules(profileId).get();
-      proxyGroups = await database.proxyGroupsDao.query(profileId).get();
     } else if (extendType == ExtendType.script) {
       script = scriptId == null
           ? null
@@ -117,6 +119,7 @@ Future<SetupState> setupState(Ref ref, int? profileId) async {
     }
   }
   return SetupState(
+    autoGroups: autoGroups,
     mitmModules: mitmModules == null
         ? const []
         : await mitmModuleSources(await mitmModules),

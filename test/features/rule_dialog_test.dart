@@ -56,7 +56,7 @@ void main() {
 
     expect(find.byType(RuleForm), findsNothing);
     expect(result, isNotNull);
-    expect(result!.ruleAction, RuleAction.DOMAIN);
+    expect(result!.ruleAction, RuleAction.DOMAIN_SUFFIX);
     expect(result!.content, 'example.com');
     expect(result!.ruleTarget, isNotEmpty);
 
@@ -180,7 +180,7 @@ void main() {
     await tester.pumpWidget(const SizedBox.shrink());
   });
 
-  testWidgets('selecting MATCH target shows the label but stores MATCH', (
+  testWidgets('selecting the proxy target shows its label but stores MATCH', (
     tester,
   ) async {
     Rule? result;
@@ -212,11 +212,17 @@ void main() {
     await tester.enterText(find.byType(TextFormField), 'example.com');
     await tester.tap(find.text(l10n.splitStrategy));
     await tester.pumpAndSettle();
-    await tester.ensureVisible(find.text(l10n.matchTarget).last);
+    await tester.ensureVisible(find.text(l10n.ruleTargetDirect).last);
     await tester.pumpAndSettle();
-    await tester.tap(find.text(l10n.matchTarget).last);
+    await tester.tap(find.text(l10n.ruleTargetDirect).last);
     await tester.pumpAndSettle();
-    expect(find.text(l10n.matchTarget), findsOneWidget);
+    await tester.tap(find.text(l10n.ruleTargetDirect));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.text(l10n.ruleTargetProxy).last);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(l10n.ruleTargetProxy).last);
+    await tester.pumpAndSettle();
+    expect(find.text(l10n.ruleTargetProxy), findsOneWidget);
 
     await tester.tap(find.widgetWithText(TextButton, l10n.save));
     await tester.pumpAndSettle();

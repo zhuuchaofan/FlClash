@@ -14,6 +14,30 @@ Map<String, dynamic> _$FilterToJson(_Filter instance) => <String, dynamic>{
   'regex': instance.regex,
 };
 
+_AutoGroup _$AutoGroupFromJson(Map<String, dynamic> json) => _AutoGroup(
+  name: json['name'] as String,
+  regex: json['regex'] as String?,
+  proxies:
+      (json['proxies'] as List<dynamic>?)?.map((e) => e as String).toList() ??
+      const [],
+  strategy:
+      $enumDecodeNullable(_$AutoGroupStrategyEnumMap, json['strategy']) ??
+      AutoGroupStrategy.fastest,
+);
+
+Map<String, dynamic> _$AutoGroupToJson(_AutoGroup instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'regex': instance.regex,
+      'proxies': instance.proxies,
+      'strategy': _$AutoGroupStrategyEnumMap[instance.strategy]!,
+    };
+
+const _$AutoGroupStrategyEnumMap = {
+  AutoGroupStrategy.fastest: 'fastest',
+  AutoGroupStrategy.failover: 'failover',
+};
+
 _AppSettingProps _$AppSettingPropsFromJson(
   Map<String, dynamic> json,
 ) => _AppSettingProps(
@@ -95,6 +119,11 @@ _AppSettingProps _$AppSettingPropsFromJson(
         (k, e) => MapEntry(k, e as String),
       ) ??
       const {},
+  autoGroups:
+      (json['autoGroups'] as List<dynamic>?)
+          ?.map((e) => AutoGroup.fromJson(e as Map<String, dynamic>))
+          .toList() ??
+      const [],
 );
 
 Map<String, dynamic> _$AppSettingPropsToJson(_AppSettingProps instance) =>
@@ -133,6 +162,7 @@ Map<String, dynamic> _$AppSettingPropsToJson(_AppSettingProps instance) =>
       'disabledServices': instance.disabledServices,
       'tableColumnWidths': instance.tableColumnWidths,
       'recordGroupings': instance.recordGroupings,
+      'autoGroups': instance.autoGroups,
     };
 
 const _$RequestFeedEnumMap = {

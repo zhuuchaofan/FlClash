@@ -9,7 +9,10 @@ import 'package:fl_clash/enum/enum.dart';
 import 'package:fl_clash/models/models.dart';
 import 'package:flutter/widgets.dart';
 
-const appName = 'FlClash';
+const appName = 'Flare';
+
+// Flare hides power-user pages; flip to false to restore the full FlClash UI.
+const simpleUi = true;
 const appHelperService = 'FlClashHelperService';
 const coreManifestName = 'manifest.json';
 const browserUa =
@@ -172,7 +175,7 @@ const proxiesListStoreKey = PageStorageKey<String>('proxies_list');
 const toolsStoreKey = PageStorageKey<String>('tools');
 const profilesStoreKey = PageStorageKey<String>('profiles');
 
-const defaultPrimaryColor = 0xFF007AFF;
+const defaultPrimaryColor = 0xFFFF8D28;
 
 const maxLogsLength = 5000;
 const maxRequestsLength = 2000;
@@ -190,7 +193,7 @@ const defaultPrimaryColors = [
   0xFFCB30E0,
   0xFFFF2D55,
   0xFFFF383C,
-  0xFFFF8D28,
+  0xFF007AFF,
   0xFFFFCC00,
   0xFF34C759,
   0xFF8E8E93,

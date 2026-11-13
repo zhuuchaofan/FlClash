@@ -21,8 +21,8 @@
                             android:startY="33.19"
                             android:endX="116.42"
                             android:endY="123.19"
-                            android:startColor="#726BF1"
-                            android:endColor="#5B5EE1"/>
+                            android:startColor="#FFB347"
+                            android:endColor="#FF9A1F"/>
                 </aapt:attr>
             </path>
             <path
@@ -34,8 +34,8 @@
                             android:startY="101.76"
                             android:endX="117.04"
                             android:endY="164.76"
-                            android:startColor="#4183F2"
-                            android:endColor="#1C76E0"/>
+                            android:startColor="#FF7A2E"
+                            android:endColor="#F05A1A"/>
                 </aapt:attr>
             </path>
             <path
@@ -47,8 +47,8 @@
                             android:startY="170.33"
                             android:endX="117.65"
                             android:endY="206.33"
-                            android:startColor="#66B6F4"
-                            android:endColor="#4FA8E1"/>
+                            android:startColor="#FFD166"
+                            android:endColor="#FFC13B"/>
                 </aapt:attr>
             </path>
         </group>

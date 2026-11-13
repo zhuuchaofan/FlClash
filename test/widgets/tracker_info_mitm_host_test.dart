@@ -9,6 +9,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:prism_ui/common_button.dart';
 
 import '../helpers/test_app.dart';
+import '../helpers/test_database_providers.dart';
 import '../helpers/test_profiles.dart';
 
 TrackerInfo _tracker({
@@ -56,7 +57,10 @@ void main() {
     addTearDown(tester.view.resetPhysicalSize);
     addTearDown(tester.view.resetDevicePixelRatio);
     container = ProviderContainer(
-      overrides: [profilesProvider.overrideWith(TestProfiles.new)],
+      overrides: [
+        profilesProvider.overrideWith(TestProfiles.new),
+        globalRulesProvider.overrideWith(TestGlobalRules.new),
+      ],
     );
     addTearDown(container.dispose);
     globalState.container = container;
@@ -150,5 +154,8 @@ void main() {
       expect(find.text(currentAppLocalizations.mitmDecryptHost), findsNothing);
       expect(find.text(currentAppLocalizations.mitmExcludeHost), findsNothing);
     }
+    await tester.pumpWidget(const SizedBox.shrink());
+    container.dispose();
+    await tester.pump(const Duration(seconds: 1));
   });
 }

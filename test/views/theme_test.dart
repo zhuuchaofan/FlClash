@@ -82,13 +82,13 @@ void main() {
           widget is Semantics && widget.properties.label == Color(color).hex,
     );
 
-    testWidgets('starts on blue among the system colors', (tester) async {
+    testWidgets('starts on orange among the system colors', (tester) async {
       container
           .read(themeSettingProvider.notifier)
           .update((_) => defaultThemeProps);
       await pumpThemeView(tester);
 
-      expect(readTheme().primaryColor, 0xFF007AFF);
+      expect(readTheme().primaryColor, 0xFFFF8D28);
       for (final color in defaultPrimaryColors) {
         expect(swatch(color), findsOneWidget);
       }
@@ -120,19 +120,19 @@ void main() {
 
     testWidgets('deletes a color from its context menu', (tester) async {
       await pumpThemeView(tester);
-      await tester.tap(swatch(0xFFFF8D28));
+      await tester.tap(swatch(0xFF007AFF));
       await tester.pumpAndSettle();
 
-      await tester.longPress(swatch(0xFFFF8D28));
+      await tester.longPress(swatch(0xFF007AFF));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Delete'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Delete'));
       await tester.pumpAndSettle();
 
-      expect(readTheme().primaryColors, isNot(contains(0xFFFF8D28)));
+      expect(readTheme().primaryColors, isNot(contains(0xFF007AFF)));
       expect(readTheme().primaryColor, defaultPrimaryColor);
-      expect(swatch(0xFFFF8D28), findsNothing);
+      expect(swatch(0xFF007AFF), findsNothing);
     });
 
     Future<void> editColor(WidgetTester tester, int color, String hex) async {
